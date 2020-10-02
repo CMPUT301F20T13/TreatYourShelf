@@ -1,11 +1,24 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
-public class Book {
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
+public class Book {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String title;
     private String author;
     private String Description;
     private String imageUrl;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

@@ -13,12 +13,13 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
 
-    private ArrayList<Book> bookList;
+    private List<Book> bookList;
 
-    public BookListAdapter(ArrayList<Book> bookList) {
+    public BookListAdapter(List<Book> bookList) {
         this.bookList = bookList;
     }
 
@@ -52,6 +53,11 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
         }
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+        notifyDataSetChanged();
     }
 
 }
