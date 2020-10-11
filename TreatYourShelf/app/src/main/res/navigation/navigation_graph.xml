@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nagivation_graph"
-    app:startDestination="@id/bookListFragment">
+    app:startDestination="@id/cameraXFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BookListFragment"
         android:label="BookListFragment" />
+    <fragment
+        android:id="@+id/cameraXFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
+        android:label="CameraXFragment" />
 </navigation>
