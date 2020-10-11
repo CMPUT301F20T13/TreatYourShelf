@@ -60,6 +60,7 @@ public class CameraXFragment extends Fragment {
     private File outputDirectory;
     private ExecutorService cameraExecutor;
     private String[] permissions;
+    private RectF rectF;
 
     public CameraXFragment() {
         permissions = new String[]{Manifest.permission.CAMERA};
@@ -73,12 +74,7 @@ public class CameraXFragment extends Fragment {
 
         //
 
-        if (allPermissionsGranted()) {
-            startCameraPreview();
-        } else {
-            requireActivity().requestPermissions(permissions, 11);
-        }
-        cameraExecutor = Executors.newSingleThreadExecutor();
+
         return view;
     }
 
@@ -118,11 +114,14 @@ public class CameraXFragment extends Fragment {
                         public void barcodeFound(com.google.mlkit.vision.barcode.Barcode barcode) {
                             barcode.getRawValue();
                             barcode.getBoundingBox();
-                            System.out.println(barcode.getBoundingBox());
-                            System.out.println(barcode.getRawValue());
+//                            System.out.println(barcode.getBoundingBox());
+//                            System.out.println(barcode.getRawValue());
+
+                            cameraProvider.unbindAll();
+                            Toast.makeText(requireContext(),barcode.getRawValue(),Toast.LENGTH_SHORT).show();
                         }
 
-                    }, 8 , 74));
+                    }, 74, 8 , requireContext()));
 
 
                     try {
@@ -151,7 +150,7 @@ public class CameraXFragment extends Fragment {
         overlay.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-                drawOverlay(overlay.getHolder(), 74, 8);
+                 rectF = drawOverlay(overlay.getHolder(), 74, 8);
             }
 
             @Override
@@ -164,6 +163,13 @@ public class CameraXFragment extends Fragment {
 
             }
         });
+
+        if (allPermissionsGranted()) {
+            startCameraPreview();
+        } else {
+            requireActivity().requestPermissions(permissions, 11);
+        }
+        cameraExecutor = Executors.newSingleThreadExecutor();
     }
 
 
@@ -195,7 +201,7 @@ public class CameraXFragment extends Fragment {
         }
     }
 
-    private void drawOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
+    private RectF drawOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
                              int widthCropPercent) {
         // Set paint colors and styles for rectangle outline, background and fill
         Canvas canvas = surfaceHolder.lockCanvas();
@@ -220,6 +226,7 @@ public class CameraXFragment extends Fragment {
         float rectBottom = surfaceHeight * (1 - heightCropPercent / 2 / 100f);
         // Create the rectangle object
         RectF rect = new RectF(rectLeft, rectTop, rectRight, rectBottom);
+
         // draw to canvas
         canvas.drawRoundRect(
                 rect, cornerRadius, cornerRadius, rectPaint
@@ -229,6 +236,7 @@ public class CameraXFragment extends Fragment {
         );
 
         surfaceHolder.unlockCanvasAndPost(canvas);
+        return rect;
     }
 
 }

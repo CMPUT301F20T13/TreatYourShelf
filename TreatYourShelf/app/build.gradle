@@ -9,7 +9,7 @@ android {
         targetSdkVersion 30
 
         renderscriptTargetApi 24
-        renderscriptSupportModeEnabled true
+        renderscriptSupportModeEnabled false
 
         versionCode 1
         versionName "1.0"
