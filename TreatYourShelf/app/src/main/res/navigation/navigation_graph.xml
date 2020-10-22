@@ -7,4 +7,8 @@
         android:id="@+id/bookListFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BookListFragment"
         android:label="BookListFragment" />
+    <fragment
+        android:id="@+id/cameraXFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
+        android:label="CameraXFragment" />
 </navigation>
