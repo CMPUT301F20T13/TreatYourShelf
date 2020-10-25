@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
@@ -19,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
+        bottomAppBar.setNavigationOnClickListener(view -> {
+            Toast.makeText(this, "Clicked on menu", Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       
+
         if (item.getItemId() == R.id.bottom_app_bar_books) {
 
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
