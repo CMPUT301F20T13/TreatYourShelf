@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nagivation_graph"
-    app:startDestination="@id/bookListFragment">
+    app:startDestination="@id/myBooksFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
@@ -11,4 +11,9 @@
         android:id="@+id/cameraXFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
         android:label="CameraXFragment" />
+    <fragment
+        android:id="@+id/myBooksFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.my_books.MyBooksFragment"
+        android:label="MyBooksFragment" />
+
 </navigation>
