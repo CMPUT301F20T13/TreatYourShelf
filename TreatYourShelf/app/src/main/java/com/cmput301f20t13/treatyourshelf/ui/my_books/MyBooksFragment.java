@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
@@ -28,6 +29,7 @@ public class MyBooksFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         RecyclerView bookList_rv = view.findViewById(R.id.book_list_rv);
+        bookList_rv.setLayoutManager(new LinearLayoutManager(getContext()));
         myBookListAdapter = new MyBookListAdapter(new ArrayList<Book>());
         bookList_rv.setAdapter(myBookListAdapter);
         myBookListAdapter.setOnClick(new MyBookListAdapter.OnItemClicked() {
@@ -37,7 +39,6 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
-        myBookListAdapter.notifyDataSetChanged();
         myBookViewModel = new ViewModelProvider(this).get(MyBookViewModel.class);
 
         myBookViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
@@ -58,6 +59,7 @@ public class MyBooksFragment extends Fragment {
     private void setInitialData() {
 
         Book book = new Book("How To Fail All Your Classes And Lose The Will To Live", "Charlie Chen");
+
         myBookViewModel.insert(book);
 
     }
