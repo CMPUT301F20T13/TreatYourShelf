@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
@@ -21,22 +22,37 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+// Referenced: https://stackoverflow.com/questions/30398247/how-to-filter-a-recyclerview-with-a-searchview
+
 public class SearchFragment extends Fragment {
-    //private BookListAdapter bookListAdapter;
-    //private BookListViewModel bookListViewModel;
+    private SearchListAdapter searchListAdapter;
+    private SearchListViewModel searchListViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_page, container, false);
 
-        /*RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
-        bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        bookListAdapter = new BookListAdapter(new ArrayList<Book>());
-        bookRv.setAdapter(bookListAdapter);
-        bookListViewModel = new ViewModelProvider(this).get(BookListViewModel.class);
+        RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
+        SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-        bookListViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchListAdapter = new SearchListAdapter(new ArrayList<Book>());
+        bookRv.setAdapter(searchListAdapter);
+        searchListViewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
+
+        searchListViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
             @Override
             public void onChanged(List<Book> books) {
                 if (books.isEmpty()) {
@@ -44,27 +60,19 @@ public class SearchFragment extends Fragment {
                     setInitialData();
                 }
 
-                bookListAdapter.setBookList(books);
+                searchListAdapter.setBookList(books);
             }
-        });*/
+        });
 
         return view;
     }
 
-    /*private void setInitialData() {
+    private void setInitialData() {
 
-        Book book = new Book("Eat a Peach", "Gabe Ulla and David Chang");
-        bookListViewModel.insert(book);
-        book = new Book("A Killing Frost", "Seanan McGuire");
-        bookListViewModel.insert(book);
-        book = new Book("Our Malady", "Timothy Snyder");
-        bookListViewModel.insert(book);
-        book = new Book("Donald Trump v. The United States", "Michael S. Schmidt");
-        bookListViewModel.insert(book);
-        book = new Book("Star Wars: Thrawn Ascendancy (Book I: Chaos Rising)", "Timothy Zahn");
-        bookListViewModel.insert(book);
-        book = new Book("Fifty Words for Rain", "Asha Lemmie");
-        bookListViewModel.insert(book);
+        Book book = new Book("Kevin", "is cool");
+        searchListViewModel.insert(book);
+        book = new Book("Anton", " is not");
+        searchListViewModel.insert(book);
 
-    }*/
+    }
 }
