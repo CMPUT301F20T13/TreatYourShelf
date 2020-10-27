@@ -3,14 +3,17 @@ package com.cmput301f20t13.treatyourshelf.data;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class Book {
+public class Book implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String author;
     private String Description;
     private String imageUrl;
+    private String isbn;
 
 
     public int getId() {
@@ -56,5 +59,13 @@ public class Book {
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }
