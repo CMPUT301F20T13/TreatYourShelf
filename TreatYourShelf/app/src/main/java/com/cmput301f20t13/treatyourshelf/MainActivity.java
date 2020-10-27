@@ -6,11 +6,9 @@ import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
+import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +20,11 @@ public class MainActivity extends AppCompatActivity {
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
         bottomAppBar.setNavigationOnClickListener(view -> {
-            Toast.makeText(this, "Clicked on menu", Toast.LENGTH_SHORT).show();
+
+            BottomSheetNavigationMenu bottomSheetNavigationMenu = new BottomSheetNavigationMenu();
+            bottomSheetNavigationMenu.show(getSupportFragmentManager(), null);
         });
+
 
     }
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.bottom_app_bar_books) {
+        if (item.getItemId() == R.id.bottom_app_search) {
 
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
         }
