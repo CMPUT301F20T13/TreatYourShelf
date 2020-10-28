@@ -28,6 +28,9 @@ public class AddBookFragment extends Fragment {
         EditText txtIsbn = (EditText) view.findViewById(R.id.isbn);
         Button addButton = (Button) view.findViewById(R.id.addbutton);
         final int selected;
+        /*
+        for editing an existing book
+         */
         if(getArguments() != null) {
             Book book = (Book) getArguments().getSerializable("book");
             selected = getArguments().getInt("selected");
@@ -35,15 +38,18 @@ public class AddBookFragment extends Fragment {
             txtAuthor.setText(book.getAuthor());
             txtDesc.setText(book.getDescription());
             txtIsbn.setText(book.getIsbn());
-            Toast.makeText(getActivity(),"Do You Smell Burnt Toast?",Toast.LENGTH_SHORT).show();
         }
 
+        /*
+        adding a book
+         */
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString());
                 book.setDescription(txtDesc.getText().toString());
                 book.setIsbn(txtIsbn.getText().toString());
+                Toast.makeText(getActivity(),"Do You Smell Burnt Toast?",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -51,6 +57,9 @@ public class AddBookFragment extends Fragment {
         return view;
     }
 
+    /*
+    for editing an existing book
+     */
     static AddBookFragment newInstance (int selected, Book book) {
         Bundle args = new Bundle();
         args.putSerializable("book", book);
