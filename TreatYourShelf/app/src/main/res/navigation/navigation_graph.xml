@@ -11,4 +11,17 @@
         android:id="@+id/cameraXFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
         android:label="CameraXFragment" />
+    <fragment
+        android:id="@+id/borrReqBooksFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BorrReqBooksFragment"
+        android:label="BorrReqBooksFragment" />
+    <fragment
+        android:id="@+id/ownReqBooksFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.OwnReqBooksFragment"
+        android:label="OwnReqBooksFragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>
