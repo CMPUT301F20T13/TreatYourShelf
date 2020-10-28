@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -35,6 +36,11 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(navigationItem.getNavigationDestination());
             dismiss();
         }));
+        ConstraintLayout constraintLayout = view.findViewById(R.id.profile_container);
+        constraintLayout.setOnClickListener(view1 -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileFragment);
+            dismiss();
+        });
         return view;
     }
 
