@@ -22,9 +22,16 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
 
     private List<NavigationItem> navigationItemList;
     private Context context;
-    public NavigationItemAdapter(List<NavigationItem> navigationItemList, Context context) {
+    private OnNavigationItemClick onNavigationItemClick;
+
+    public interface OnNavigationItemClick {
+        public void onClick(NavigationItem navigationItem);
+    }
+
+    public NavigationItemAdapter(List<NavigationItem> navigationItemList, Context context, OnNavigationItemClick onNavigationItemClick) {
         this.navigationItemList = navigationItemList;
         this.context = context;
+        this.onNavigationItemClick = onNavigationItemClick;
     }
 
     @NonNull
@@ -38,7 +45,8 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
     @Override
     public void onBindViewHolder(@NonNull NavigationItemAdapter.MyViewHolder holder, int position) {
         holder.navigationName.setText(navigationItemList.get(position).getDestinationName());
-        holder.navigationIcon.setImageDrawable(ContextCompat.getDrawable(context,navigationItemList.get(position).getIcon()));
+        holder.navigationIcon.setImageDrawable(ContextCompat.getDrawable(context, navigationItemList.get(position).getIcon()));
+        holder.itemView.setOnClickListener(view -> onNavigationItemClick.onClick(navigationItemList.get(position)));
     }
 
     @Override
@@ -57,6 +65,7 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
 
             navigationIcon = itemView.findViewById(R.id.navigationIcon);
             navigationName = itemView.findViewById(R.id.navigationName);
+
         }
     }
 

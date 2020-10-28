@@ -12,7 +12,7 @@ public class NavigationItem {
         this.destinationName = destinationName;
     }
 
-    public int getNavigationDestionation() {
+    public int getNavigationDestination() {
         return navigationDestination;
     }
 
