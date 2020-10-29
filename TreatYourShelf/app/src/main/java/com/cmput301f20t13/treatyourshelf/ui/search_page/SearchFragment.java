@@ -25,13 +25,17 @@ import androidx.recyclerview.widget.RecyclerView;
 // Referenced: https://stackoverflow.com/questions/30398247/how-to-filter-a-recyclerview-with-a-searchview
 
 public class SearchFragment extends Fragment {
-    private SearchListAdapter searchListAdapter;
-    private SearchListViewModel searchListViewModel;
+    private BookListAdapter searchListAdapter;
+    private BookListViewModel searchListViewModel;
+
+    private List<Book> filteredList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_page, container, false);
+
+
 
         RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
         SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
@@ -43,21 +47,21 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 return false;
             }
         });
 
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        searchListAdapter = new SearchListAdapter(new ArrayList<Book>());
+        searchListAdapter = new BookListAdapter(new ArrayList<Book>());
         bookRv.setAdapter(searchListAdapter);
-        searchListViewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
+        searchListViewModel = new ViewModelProvider(this).get(BookListViewModel.class);
 
         searchListViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
             @Override
             public void onChanged(List<Book> books) {
                 if (books.isEmpty()) {
                     // Initial list will be empty due to no data stored in the app, therefore we insert data into the database
-                    setInitialData();
                 }
 
                 searchListAdapter.setBookList(books);
@@ -65,14 +69,5 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
-    }
-
-    private void setInitialData() {
-
-        Book book = new Book("Kevin", "is cool");
-        searchListViewModel.insert(book);
-        book = new Book("Anton", " is not");
-        searchListViewModel.insert(book);
-
     }
 }
