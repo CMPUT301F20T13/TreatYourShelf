@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TreatYourShelf</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="already_member_text">Already a Member? Click to sign in.</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
 </resources>
