@@ -119,6 +119,8 @@ public class CameraXFragment extends Fragment {
 
                             cameraProvider.unbindAll();
                             Toast.makeText(requireContext(),barcode.getRawValue(),Toast.LENGTH_SHORT).show();
+                            //TODO: Start barcode loading animation
+                            //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
                         }
 
                     }, 74, 8 , requireContext()));
@@ -145,7 +147,7 @@ public class CameraXFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SurfaceView overlay = view.findViewById(R.id.overlay);
 
-        overlay.setZOrderOnTop(true);
+        overlay.setZOrderMediaOverlay(true);
         overlay.getHolder().setFormat(PixelFormat.TRANSPARENT);
         overlay.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
