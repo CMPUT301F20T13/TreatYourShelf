@@ -1,6 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -11,6 +12,17 @@ public class Book {
     private String author;
     private String Description;
     private String imageUrl;
+
+    @Ignore
+    public Book() {
+        this.title = "default title";
+        this.author = "default author";
+    }
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
 
     public int getId() {
         return id;
@@ -52,8 +64,4 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
-    public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
-    }
 }
