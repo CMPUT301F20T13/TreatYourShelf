@@ -16,6 +16,13 @@ public class Profile {
         this.phoneNumber = phoneNumber;
     }
 
+    public Profile() {
+        this.username = "default user";
+        this.password = "password123";
+        this.email = "default@gmail.com";
+        this.phoneNumber = "555-555-5555";
+    }
+
     public String getUsername() {
         return username;
     }

@@ -5,8 +5,7 @@ import com.cmput301f20t13.treatyourshelf.data.Profile;
 
 public class ProfileRepository {
     private LiveData<Profile> profile;
-
-
+    
     public ProfileRepository(LiveData<Profile> profile) {
         this.profile = profile;
     }
