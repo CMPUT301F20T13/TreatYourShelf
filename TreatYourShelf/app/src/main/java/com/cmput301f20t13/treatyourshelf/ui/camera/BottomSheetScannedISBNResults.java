@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,30 +26,12 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bottomsheet_navigation, container, false);
-        RecyclerView navigationRv = view.findViewById(R.id.navigation_rv);
-        navigationRv.setLayoutManager(new LinearLayoutManager(requireContext()));
+        View view = inflater.inflate(R.layout.bottomsheet_barcode_scanning_results, container, false);
 
-        navigationRv.setAdapter(new NavigationItemAdapter(setUpNavigationList(), requireContext(), navigationItem -> {
-
-            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(navigationItem.getNavigationDestination());
-            dismiss();
-        }));
-        ConstraintLayout constraintLayout = view.findViewById(R.id.profile_container);
-        constraintLayout.setOnClickListener(view1 -> {
-            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileFragment);
-            dismiss();
-        });
+        ImageView closeBottomSheet = view.findViewById(R.id.close_bottomsheet);
+        closeBottomSheet.setOnClickListener(view1 -> dismiss());
         return view;
     }
 
-    private List<NavigationItem> setUpNavigationList() {
-        List<NavigationItem> navigationItems = new ArrayList<>();
-        NavigationItem navigationItem = new NavigationItem(R.id.borrReqBooksFragment, R.drawable.ic_book_clock, "My Requests");
-        navigationItems.add(navigationItem);
-        NavigationItem navigationItem2 = new NavigationItem(R.id.cameraXFragment, R.drawable.ic_qrcode, "Barcode Scanner");
-        navigationItems.add(navigationItem2);
-        return navigationItems;
 
-    }
 }

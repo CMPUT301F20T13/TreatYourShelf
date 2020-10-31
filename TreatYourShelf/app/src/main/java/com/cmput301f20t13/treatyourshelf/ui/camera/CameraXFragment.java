@@ -35,6 +35,7 @@ import androidx.camera.view.PreviewView;
 import androidx.constraintlayout.solver.widgets.Rectangle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.google.android.gms.vision.Frame;
@@ -118,12 +119,14 @@ public class CameraXFragment extends Fragment {
 //                            System.out.println(barcode.getRawValue());
 
                             cameraProvider.unbindAll();
-                            Toast.makeText(requireContext(),barcode.getRawValue(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
                             //TODO: Start barcode loading animation
                             //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
+                            BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults();
+                            bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
                         }
 
-                    }, 74, 8 , requireContext()));
+                    }, 74, 8, requireContext()));
 
 
                     try {
@@ -152,7 +155,7 @@ public class CameraXFragment extends Fragment {
         overlay.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-                 rectF = drawOverlay(overlay.getHolder(), 74, 8);
+                rectF = drawOverlay(overlay.getHolder(), 74, 8);
             }
 
             @Override
@@ -204,7 +207,45 @@ public class CameraXFragment extends Fragment {
     }
 
     private RectF drawOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
-                             int widthCropPercent) {
+                              int widthCropPercent) {
+        // Set paint colors and styles for rectangle outline, background and fill
+        Canvas canvas = surfaceHolder.lockCanvas();
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setAlpha(140);
+        canvas.drawPaint(backgroundPaint);
+        Paint rectPaint = new Paint();
+        rectPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        rectPaint.setStyle(Paint.Style.FILL);
+        rectPaint.setColor(Color.WHITE);
+        Paint outlinePaint = new Paint();
+        outlinePaint.setStyle(Paint.Style.STROKE);
+        outlinePaint.setColor(Color.WHITE);
+        outlinePaint.setStrokeWidth(4f);
+        int surfaceWidth = surfaceHolder.getSurfaceFrame().width();
+        int surfaceHeight = surfaceHolder.getSurfaceFrame().height();
+        float cornerRadius = 25f;
+        // Set rectangle centered in frame
+        float rectTop = surfaceHeight * heightCropPercent / 2 / 100f;
+        float rectLeft = surfaceWidth * widthCropPercent / 2 / 100f;
+        float rectRight = surfaceWidth * (1 - widthCropPercent / 2 / 100f);
+        float rectBottom = surfaceHeight * (1 - heightCropPercent / 2 / 100f);
+        // Create the rectangle object
+        RectF rect = new RectF(rectLeft, rectTop, rectRight, rectBottom);
+
+        // draw to canvas
+        canvas.drawRoundRect(
+                rect, cornerRadius, cornerRadius, rectPaint
+        );
+        canvas.drawRoundRect(
+                rect, cornerRadius, cornerRadius, outlinePaint
+        );
+
+        surfaceHolder.unlockCanvasAndPost(canvas);
+        return rect;
+    }
+
+    private RectF drawLoadingOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
+                                     int widthCropPercent) {
         // Set paint colors and styles for rectangle outline, background and fill
         Canvas canvas = surfaceHolder.lockCanvas();
         Paint backgroundPaint = new Paint();
