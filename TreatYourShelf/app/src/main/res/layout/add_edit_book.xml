@@ -90,4 +90,16 @@
         android:layout_height="wrap_content"
         android:text="Add Book" />
 
+    <Button
+        android:id="@+id/editbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit" />
+
+    <Button
+        android:id="@+id/deletebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
+
 </LinearLayout>
