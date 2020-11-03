@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -35,17 +36,20 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(navigationItem.getNavigationDestination());
             dismiss();
         }));
+        ConstraintLayout constraintLayout = view.findViewById(R.id.profile_container);
+        constraintLayout.setOnClickListener(view1 -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileFragment);
+            dismiss();
+        });
         return view;
     }
 
     private List<NavigationItem> setUpNavigationList() {
-        List<NavigationItem> navigationItems = new ArrayList<NavigationItem>();
+        List<NavigationItem> navigationItems = new ArrayList<>();
         NavigationItem navigationItem = new NavigationItem(R.id.bookListFragment, R.drawable.ic_book_clock, "All Books");
         navigationItems.add(navigationItem);
         NavigationItem navigationItem2 = new NavigationItem(R.id.cameraXFragment, R.drawable.ic_qrcode, "Barcode Scanner");
         navigationItems.add(navigationItem2);
-        NavigationItem navigationItem3 = new NavigationItem(R.id.profileFragment, R.drawable.ic_book_clock, "Profile");
-        navigationItems.add(navigationItem3);
         return navigationItems;
 
     }

@@ -28,7 +28,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     public BookListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_list_item, parent, false);
         return new MyViewHolder(view);
-
     }
 
     @Override
@@ -40,6 +39,10 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     @Override
     public int getItemCount() {
         return bookList.size();
+    }
+
+    public void clear(){
+        bookList.clear();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

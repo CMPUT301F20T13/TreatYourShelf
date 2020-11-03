@@ -1,28 +1,30 @@
 package com.cmput301f20t13.treatyourshelf.ui.BookList;
 
-import android.app.Application;
+import android.os.Handler;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.database.BookRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-public class BookListViewModel extends AndroidViewModel {
+public class BookListViewModel extends ViewModel {
 
-    private BookRepository bookRepository;
-    public LiveData<List<Book>> bookList;
+    private BookListRepository repository = new BookListRepository();
+    public MutableLiveData<List<Book>> bookList = new MutableLiveData<List<Book>>();
+    BookListLiveData liveData = null;
 
-    public BookListViewModel(@NonNull Application application) {
-        super(application);
-        bookRepository = new BookRepository(application);
-        bookList = bookRepository.getBookList();
+    public LiveData<List<Book>> getBookListLiveData() {
+        liveData = repository.getFirestoreLiveData();
+        return liveData;
     }
 
-    public void insert(Book book){
-        bookRepository.insert(book);
+    public LiveData<List<Book>> getBookList() {
+        return liveData.bookList;
     }
 }
