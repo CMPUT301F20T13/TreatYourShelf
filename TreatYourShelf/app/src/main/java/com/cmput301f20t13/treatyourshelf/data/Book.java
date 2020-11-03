@@ -10,6 +10,7 @@ public class Book {
     private int id;
     private String title;
     private String author;
+    private String isbn;
     private String Description;
     private String imageUrl;
 
@@ -17,11 +18,13 @@ public class Book {
     public Book() {
         this.title = "default title";
         this.author = "default author";
+        this.author = "default isbn";
     }
 
-    public Book(String title, String author) {
+    public Book(String title, String author, String isbn) {
         this.title = title;
         this.author = author;
+        this.isbn = isbn;
     }
 
     public int getId() {
@@ -64,4 +67,11 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 }

@@ -7,32 +7,35 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
+
 public class BookListLiveData extends
         LiveData<List<Book>> implements
-        EventListener<DocumentSnapshot> {
-    private List<Book> bookListTemp = new ArrayList<>();
-    private DocumentReference documentReference;
+        EventListener<QuerySnapshot> {
+    private final List<Book> bookListTemp = new ArrayList<>();
+    private final Query isbnQuery;
     public MutableLiveData<List<Book>> bookList = new MutableLiveData<>();
 
     private ListenerRegistration listenerRegistration = () -> {};
 
-    public BookListLiveData(DocumentReference documentReference) {
-        this.documentReference = documentReference;
+    public BookListLiveData(Query isbnQuery) {
+        this.isbnQuery = isbnQuery;
     }
 
     @Override
     protected void onActive() {
-        listenerRegistration = documentReference.addSnapshotListener(this);
+        listenerRegistration = isbnQuery.addSnapshotListener(this);
         super.onActive();
     }
 
@@ -43,22 +46,22 @@ public class BookListLiveData extends
     }
 
     @Override
-    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-        Log.d("TAG", "live data event");
-        if(documentSnapshot != null && documentSnapshot.exists()) {
-            Map<String, Object> bookListItems = documentSnapshot.getData();
-            bookListTemp.clear();
-            for (Map.Entry<String, Object> entry : bookListItems.entrySet()) {
-                Book itemToAdd = new Book();
-                Map<String, Object> bookDetails = (Map<String, Object>) entry.getValue();
-                itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
-                itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
-                Log.d("TAG", "got a new book "+ itemToAdd.getTitle()+ " "+ itemToAdd.getAuthor());
-                bookListTemp.add(itemToAdd);
+    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+        isbnQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                bookListTemp.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                        Book itemToAdd = new Book();
+                        Map<String, Object> bookDetails = document.getData();
+                        itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
+                        itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
+                        itemToAdd.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
+                        bookListTemp.add(itemToAdd);
+                }
+                bookList.setValue(bookListTemp);
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
             }
-            bookList.setValue(bookListTemp);
-        } else {
-            Log.d("TAG", "error");
-        }
+        });
     }
 }
