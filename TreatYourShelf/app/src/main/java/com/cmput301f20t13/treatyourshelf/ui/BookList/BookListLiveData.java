@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -50,7 +51,7 @@ public class BookListLiveData extends
         isbnQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 bookListTemp.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Book itemToAdd = new Book();
                         Map<String, Object> bookDetails = document.getData();
                         itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));

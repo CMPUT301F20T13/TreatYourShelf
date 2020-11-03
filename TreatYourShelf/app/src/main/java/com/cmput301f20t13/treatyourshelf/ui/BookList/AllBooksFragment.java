@@ -26,7 +26,7 @@ public class AllBooksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+        ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
 
         BookListViewModel bookListViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(BookListViewModel.class);
