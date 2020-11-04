@@ -1,94 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.BookDetails.BookDetailsDtab"
-    android:orientation="vertical">
+    android:id="@+id/book_details_table"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
 
-    <TableLayout
-        android:id="@+id/book_details_table"
+    android:stretchColumns="*">
+
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
 
-        android:stretchColumns="*">
-
-        <TableRow
+        <TextView
+            android:id="@+id/isbn_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:gravity="center">
+            android:gravity="start"
+            android:text="@string/isbn"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/isbn_header"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
-                android:text="@string/isbn"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/book_isbn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:gravity="end"
-                android:text="123456789"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/book_isbn"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/owner_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@string/owner"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+            android:gravity="end"
+            android:text="123456789"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </TableRow>
 
-            <TextView
-                android:id="@+id/book_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="OWNER"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/owner_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/owner"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/borrower_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@string/current_borrower"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/book_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="OWNER"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </TableRow>
 
-            <TextView
-                android:id="@+id/book_borrower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="NONE"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/borrower_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/current_borrower"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/book_borrower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="NONE"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </TableRow>
 
 
-    </TableLayout>
-
-
-</LinearLayout>
+</TableLayout>

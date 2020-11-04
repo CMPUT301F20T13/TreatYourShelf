@@ -2,12 +2,12 @@
     <string name="app_name">TreatYourShelf</string>
     <string name="email_header">Email:</string>
     <string name="phone_header">Phone Number:</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="summary">Summary</string>
     <string name="details">Details</string>
     <string name="isbn">ISBN:</string>
     <string name="owner">Owner:</string>
     <string name="current_borrower">Current Borrower:</string>
     <string name="image">Image</string>
+    <string name="request_book">REQUEST BOOK</string>
+    <string name="edit_button">edit_button</string>
 </resources>

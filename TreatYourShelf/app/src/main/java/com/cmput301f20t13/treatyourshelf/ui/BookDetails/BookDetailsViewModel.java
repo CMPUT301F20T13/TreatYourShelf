@@ -1,6 +1,8 @@
 package com.cmput301f20t13.treatyourshelf.ui.BookDetails;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.content.DialogInterface;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -26,4 +28,12 @@ public class BookDetailsViewModel extends AndroidViewModel {
         bookRepository.insert(book);
     }
 
+    public void editBook() {
+        /*TODO - calls the add book fragment with filled in edit texts*/
+    }
+
+    public void requestBook() {
+        /*TODO - adds to requested book list */
+
+    }
 }

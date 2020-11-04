@@ -3,13 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.BookDetails.BookDetailsStab">
+    tools:context=".ui.BookDetails.BookDetailsStab"
+    android:layout_margin="8dp">
 
 
     <TextView
         android:id="@+id/book_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="description"
+        android:layout_margin="8dp"
+        android:lines="10"
+        />
 
 </FrameLayout>
