@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/bookListFragment"
-        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BookListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragment"
         android:label="BookListFragment" />
     <fragment
         android:id="@+id/cameraXFragment"
@@ -20,4 +20,12 @@
         android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"
         android:label="AddBookFragment" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.book_details.BookDetailsFragment"
+        android:label="BookDetailsFragment" />
 </navigation>

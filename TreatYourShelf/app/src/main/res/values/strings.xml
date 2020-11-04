@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TreatYourShelf</string>
+    <string name="email_header">Email:</string>
+    <string name="phone_header">Phone Number:</string>
 </resources>

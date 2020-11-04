@@ -1,6 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -11,10 +12,24 @@ public class Book implements Serializable {
     private int id;
     private String title;
     private String author;
+    private String isbn;
     private String Description;
     private String imageUrl;
     private String isbn;
 
+
+    @Ignore
+    public Book() {
+        this.title = "default title";
+        this.author = "default author";
+        this.author = "default isbn";
+    }
+
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
 
     public int getId() {
         return id;
@@ -56,9 +71,12 @@ public class Book implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getIsbn() {
