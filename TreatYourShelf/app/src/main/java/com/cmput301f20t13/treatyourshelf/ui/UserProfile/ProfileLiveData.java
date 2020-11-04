@@ -1,4 +1,4 @@
-package com.cmput301f20t13.treatyourshelf.ui.BookList;
+package com.cmput301f20t13.treatyourshelf.ui.UserProfile;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.data.Profile;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -14,23 +14,20 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
-public class BookListLiveData extends
-        LiveData<List<Book>> implements
+public class ProfileLiveData extends
+        LiveData<Profile> implements
         EventListener<QuerySnapshot> {
-    private final List<Book> bookListTemp = new ArrayList<>();
     private final Query query;
-    public MutableLiveData<List<Book>> bookList = new MutableLiveData<>();
+    public MutableLiveData<Profile> profile = new MutableLiveData<>();
 
     private ListenerRegistration listenerRegistration = () -> {};
 
-    public BookListLiveData(Query query) {
+    public ProfileLiveData(Query query) {
         this.query = query;
     }
 
@@ -50,16 +47,15 @@ public class BookListLiveData extends
     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                bookListTemp.clear();
+                Profile profileTemp = new Profile();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Book itemToAdd = new Book();
-                        Map<String, Object> bookDetails = document.getData();
-                        itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
-                        itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
-                        itemToAdd.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
-                        bookListTemp.add(itemToAdd);
+                        Map<String, Object> profileDetails = document.getData();
+                        profileTemp.setUsername((String) profileDetails.getOrDefault("username", "default title"));
+                        profileTemp.setPassword((String) profileDetails.getOrDefault("password", "default author"));
+                        profileTemp.setEmail((String) profileDetails.getOrDefault("email", "default isbn"));
+                        // profileTemp.setProfileImage((ImageView) profileDetails.getOrDefault("profileImage", ""));
                 }
-                bookList.setValue(bookListTemp);
+                profile.setValue(profileTemp);
             } else {
                 Log.w(TAG, "Error getting documents.", task.getException());
             }
