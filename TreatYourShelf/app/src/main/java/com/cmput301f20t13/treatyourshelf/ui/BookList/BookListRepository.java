@@ -1,12 +1,13 @@
 package com.cmput301f20t13.treatyourshelf.ui.BookList;
 
+import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookLiveData;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class BookListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    public BookListLiveData getBookByIsbnLiveData(String isbn) {
+    public AddBookLiveData getBookByIsbnLiveData(String isbn) {
         Query query = firebaseFirestore.collection("books").whereEqualTo("isbn", isbn);
         return new BookListLiveData(query);
     }

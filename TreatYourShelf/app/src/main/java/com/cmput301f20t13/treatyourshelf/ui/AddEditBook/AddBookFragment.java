@@ -2,6 +2,7 @@ package com.cmput301f20t13.treatyourshelf.ui.AddEditBook;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
-
-import java.io.Serializable;
 
 public class AddBookFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_edit_book, container, false);
+
+        AddBookViewModel addBookViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(AddBookViewModel.class);
+
+
         EditText txtTitle = (EditText) view.findViewById(R.id.title);
         EditText txtAuthor = (EditText) view.findViewById(R.id.author);
         EditText txtDesc = (EditText) view.findViewById(R.id.desc);
@@ -35,6 +39,19 @@ public class AddBookFragment extends Fragment {
         addButton.setVisibility(View.VISIBLE);
         editButton.setVisibility(View.INVISIBLE);
         deleteButton.setVisibility(View.INVISIBLE);
+        addBookViewModel.getBookBYIsbn("223-4-56-789101-1").observe(getViewLifecycleOwner(), Observable -> {});
+
+        addBookViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
+            if (book != null ) {
+                txtAuthor.setText(book.getAuthor());
+                txtTitle.setText(book.getTitle());
+                txtIsbn.setText(book.getIsbn());
+                txtDesc.setText(book.getDescription());
+            }
+            else {
+                Log.d("TAG", "waiting for info");
+            }
+        });
         final int selected;
         /*
         for editing an existing book
@@ -58,10 +75,10 @@ public class AddBookFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString());
+                Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString(), txtIsbn.getText().toString());
                 book.setDescription(txtDesc.getText().toString());
-                book.setIsbn(txtIsbn.getText().toString());
                 Toast.makeText(getActivity(),"Do You Smell Burnt Toast?",Toast.LENGTH_SHORT).show();
+
             }
         });
 

@@ -12,6 +12,14 @@
         android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
         android:label="CameraXFragment" />
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.book_details.BookDetailsFragment"
+        android:label="BookDetailsFragment" />
+    <fragment
         android:id="@+id/myBooksFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.my_books.MyBooksFragment"
         android:label="MyBooksFragment" />

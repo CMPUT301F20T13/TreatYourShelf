@@ -15,14 +15,13 @@ public class Book implements Serializable {
     private String isbn;
     private String Description;
     private String imageUrl;
-    private String isbn;
 
 
     @Ignore
     public Book() {
         this.title = "default title";
         this.author = "default author";
-        this.author = "default isbn";
+        this.isbn = "default isbn";
     }
 
     public Book(String title, String author, String isbn) {
@@ -79,11 +78,4 @@ public class Book implements Serializable {
         this.isbn = isbn;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
 }
