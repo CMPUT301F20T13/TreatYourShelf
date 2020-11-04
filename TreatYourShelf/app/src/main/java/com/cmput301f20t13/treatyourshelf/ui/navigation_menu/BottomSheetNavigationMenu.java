@@ -46,7 +46,9 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
 
     private List<NavigationItem> setUpNavigationList() {
         List<NavigationItem> navigationItems = new ArrayList<>();
-        NavigationItem navigationItem = new NavigationItem(R.id.borrReqBooksFragment, R.drawable.ic_book_clock, "My Requests");
+
+        NavigationItem navigationItem = new NavigationItem(R.id.bookListFragment, R.drawable.ic_book_clock, "All Books");
+
         navigationItems.add(navigationItem);
         NavigationItem navigationItem2 = new NavigationItem(R.id.cameraXFragment, R.drawable.ic_qrcode, "Barcode Scanner");
         navigationItems.add(navigationItem2);
