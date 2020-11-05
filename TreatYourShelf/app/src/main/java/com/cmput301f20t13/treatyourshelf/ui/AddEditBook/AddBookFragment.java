@@ -36,9 +36,24 @@ public class AddBookFragment extends Fragment {
         Button editButton = (Button) view.findViewById(R.id.editbutton);
         Button deleteButton = (Button) view.findViewById(R.id.deletebutton);
 
-        addButton.setVisibility(View.VISIBLE);
-        editButton.setVisibility(View.INVISIBLE);
-        deleteButton.setVisibility(View.INVISIBLE);
+//        addButton.setVisibility(View.VISIBLE);
+//        editButton.setVisibility(View.INVISIBLE);
+//        deleteButton.setVisibility(View.INVISIBLE);
+        final int selected;
+        /*
+        for editing an existing book
+         */
+        String isbn = "";
+        if(getArguments() != null) {
+            isbn = (String) getArguments().getString("isbn");
+            selected = getArguments().getInt("selected");
+//            addButton.setVisibility(View.INVISIBLE);
+//            editButton.setVisibility(View.VISIBLE);
+//            deleteButton.setVisibility(View.VISIBLE);
+        }
+
+
+
         addBookViewModel.getBookBYIsbn("223-4-56-789101-1").observe(getViewLifecycleOwner(), Observable -> {});
 
         addBookViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
@@ -52,21 +67,7 @@ public class AddBookFragment extends Fragment {
                 Log.d("TAG", "waiting for info");
             }
         });
-        final int selected;
-        /*
-        for editing an existing book
-         */
-        if(getArguments() != null) {
-            Book book = (Book) getArguments().getSerializable("book");
-            selected = getArguments().getInt("selected");
-            txtTitle.setText(book.getTitle());
-            txtAuthor.setText(book.getAuthor());
-            txtDesc.setText(book.getDescription());
-            txtIsbn.setText(book.getIsbn());
-            addButton.setVisibility(View.INVISIBLE);
-            editButton.setVisibility(View.VISIBLE);
-            deleteButton.setVisibility(View.VISIBLE);
-        }
+
 
 
         /*
@@ -77,8 +78,19 @@ public class AddBookFragment extends Fragment {
             public void onClick(View v) {
                 Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString(), txtIsbn.getText().toString());
                 book.setDescription(txtDesc.getText().toString());
-                Toast.makeText(getActivity(),"Do You Smell Burnt Toast?",Toast.LENGTH_SHORT).show();
+                addBookViewModel.addBook(book);
+                Toast.makeText(getActivity(),"book added",Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString(), txtIsbn.getText().toString());
+                book.setDescription(txtDesc.getText().toString());
+                addBookViewModel.editBook(book);
+//                Toast.makeText(getActivity(),"book edited",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -93,7 +105,9 @@ public class AddBookFragment extends Fragment {
                         // The dialog is automatically dismissed when a dialog button is clicked.
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
+                                Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString(), txtIsbn.getText().toString());
+                                addBookViewModel.deleteBook(book.getIsbn());
+//                                Toast.makeText(getActivity(),"book deleted",Toast.LENGTH_SHORT).show();
                             }
                         })
 
@@ -112,9 +126,9 @@ public class AddBookFragment extends Fragment {
     /*
     for editing an existing book
      */
-    static AddBookFragment newInstance (int selected, Book book) {
+    static AddBookFragment newInstance (int selected, String isbn) {
         Bundle args = new Bundle();
-        args.putSerializable("book", book);
+        args.putString("isbn", isbn);
         args.putInt("selected", selected);
         AddBookFragment fragment = new AddBookFragment();
         fragment.setArguments(args);
