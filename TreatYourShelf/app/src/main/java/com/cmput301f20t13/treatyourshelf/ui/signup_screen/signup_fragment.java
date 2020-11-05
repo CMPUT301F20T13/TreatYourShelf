@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
+// https://console.firebase.google.com/u/1/
 public class signup_fragment extends Fragment {
 
     @Nullable
