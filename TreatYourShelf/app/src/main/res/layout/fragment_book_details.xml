@@ -42,9 +42,9 @@
                 android:layout_marginBottom="-30dp"
                 android:layout_gravity="end"
                 android:layout_marginHorizontal="30dp"
+                android:visibility="invisible"
                 android:clickable="true"
                 android:focusable="true"
-
                 app:srcCompat="@android:drawable/ic_menu_add"/>
 
 
@@ -67,10 +67,11 @@
                     android:id="@+id/book_edit_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="end"
-                    android:background="#FFFFFF"
                     android:layout_margin="3dp"
+                    android:layout_gravity="end"
+                    android:visibility="invisible"
+                    android:scaleType="fitXY"
+                    android:background="#FFFFFF"
                     android:src="@drawable/edit_icon_grey"
                     android:contentDescription="@string/edit_button" />
 

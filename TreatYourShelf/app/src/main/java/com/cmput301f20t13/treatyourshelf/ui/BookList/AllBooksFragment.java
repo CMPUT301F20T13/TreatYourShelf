@@ -29,9 +29,10 @@ public class AllBooksFragment extends Fragment {
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
 
-        BookListViewModel bookListViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(BookListViewModel.class);
+        //BookListViewModel bookListViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(BookListViewModel.class);
+        BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         ArrayList<Book> bookArray = new ArrayList<>();
-        bookListAdapter = new BookListAdapter(bookArray);
+        bookListAdapter = new BookListAdapter(bookArray, bookListViewModel);
 
         bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
 

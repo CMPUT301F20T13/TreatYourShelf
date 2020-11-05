@@ -13,6 +13,8 @@ public class Book {
     private String isbn;
     private String Description;
     private String imageUrl;
+    private String owner;
+    private String borrower;
 
     @Ignore
     public Book() {
@@ -26,6 +28,7 @@ public class Book {
         this.author = author;
         this.isbn = isbn;
     }
+
 
     public int getId() {
         return id;
@@ -74,4 +77,13 @@ public class Book {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
+    public void setOwner(String owner) { this.owner = owner; }
+
+    public String getOwner() { return owner; }
+
+    public void setBorrower(String borrower) { this.borrower = borrower; }
+
+    public String getBorrower() { return borrower; }
+
 }
