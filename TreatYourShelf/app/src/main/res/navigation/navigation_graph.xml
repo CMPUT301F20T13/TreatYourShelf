@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nagivation_graph"
-    app:startDestination="@id/searchFragment">
+    app:startDestination="@id/signup_fragment">
 
     <fragment
         android:id="@+id/bookListFragment"
@@ -20,7 +20,7 @@
         android:name="com.cmput301f20t13.treatyourshelf.ui.login_screen.login_fragment"
         android:label="login_fragment" />
     <fragment
-        android:id="@+id/signin_fragment"
+        android:id="@+id/signup_fragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.signup_screen.signup_fragment"
-        android:label="signin_fragment" />
+        android:label="signup_fragment" />
 </navigation>
