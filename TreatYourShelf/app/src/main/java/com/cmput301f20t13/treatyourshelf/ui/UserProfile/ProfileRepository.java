@@ -1,20 +1,13 @@
 package com.cmput301f20t13.treatyourshelf.ui.UserProfile;
 
-import androidx.lifecycle.LiveData;
-import com.cmput301f20t13.treatyourshelf.data.Profile;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class ProfileRepository {
-    private LiveData<Profile> profile;
-    
-    public ProfileRepository(LiveData<Profile> profile) {
-        this.profile = profile;
-    }
+    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    public LiveData<Profile> getProfile(){return profile; }
-
-    public void editProfile() {
-
+    public ProfileLiveData getProfileByUsernameLiveData(String username) {
+        Query query = firebaseFirestore.collection("users").whereEqualTo("username", username);
+        return new ProfileLiveData(query);
     }
 }
-
-

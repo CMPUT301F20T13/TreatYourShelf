@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/bookListFragment"
-        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BookListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragment"
         android:label="BookListFragment" />
     <fragment
         android:id="@+id/cameraXFragment"

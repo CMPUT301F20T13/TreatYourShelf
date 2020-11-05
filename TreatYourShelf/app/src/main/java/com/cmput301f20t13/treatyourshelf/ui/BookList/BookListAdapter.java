@@ -6,13 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
@@ -28,7 +26,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     public BookListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_list_item, parent, false);
         return new MyViewHolder(view);
-
     }
 
     @Override
@@ -42,9 +39,19 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         return bookList.size();
     }
 
+    public void clear(){
+        bookList.clear();
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+        notifyDataSetChanged();
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title, author;
+        private final TextView title;
+        private final TextView author;
 
         public MyViewHolder(@NonNull View itemView) {
 
@@ -54,11 +61,5 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             author = itemView.findViewById(R.id.book_author);
         }
     }
-
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
-        notifyDataSetChanged();
-    }
-
 }
 
