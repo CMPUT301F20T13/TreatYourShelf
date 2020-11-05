@@ -21,7 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
+/**
+ * Login Fragment, allows the user to log in
+ * using there email address and a password.
+ * Uses firebase authentication.
+ */
 public class login_fragment extends Fragment {
 
     private FirebaseAuth mAuth;
@@ -30,6 +34,11 @@ public class login_fragment extends Fragment {
     private TextInputLayout email_layout;
     private TextInputLayout password_layout;
 
+    /**
+     * On Start is called prior to onCreateView.
+     * Contains firebase initialization steps and
+     * checks if the user is already logged in.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -43,6 +52,13 @@ public class login_fragment extends Fragment {
         }
     }
 
+    /**
+     * This creates the fragment view.
+     * @param inflater the view inflater used to create the view
+     * @param container the viewGroup
+     * @param savedInstanceState a bundle of the current state
+     * @return      returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +84,10 @@ public class login_fragment extends Fragment {
         return view;
     }
 
+    /**
+     * Sets the error option on the material textviews
+     * @param errorExists If there is an error
+     */
     public void setError(boolean errorExists){
         if(!errorExists){
             email_layout.setError(null);
@@ -78,6 +98,11 @@ public class login_fragment extends Fragment {
         }
     }
 
+    /**
+     * Checks if the user email and password match a user on firebase.
+     * @param email the email provided.
+     * @param password the password provided.
+     */
     public void checkValid(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -100,6 +125,9 @@ public class login_fragment extends Fragment {
                 });
     }
 
+    /**
+     * Navigates to the next screen
+     */
     public void navigateToNextScreen(){
 
     }

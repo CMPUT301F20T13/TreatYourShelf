@@ -27,12 +27,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-// https://console.firebase.google.com/u/1/
+/**
+ * Sign up Fragment, allows the user to sign up
+ * using there email address and a password.
+ * Both Fields cannot be empty.
+ * Uses firebase authentication.
+ */
 public class signup_fragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private final String TAG = "SIGNUP_FRAGMENT";
 
+
+    /**
+     * On Start is called prior to onCreateView.
+     * Contains firebase initialization steps and
+     * checks if the user is already logged in.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -46,6 +57,14 @@ public class signup_fragment extends Fragment {
         }
     }
 
+
+    /**
+     * This creates the fragment view.
+     * @param inflater the view inflater used to create the view
+     * @param container the viewGroup
+     * @param savedInstanceState a bundle of the current state
+     * @return      returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +77,7 @@ public class signup_fragment extends Fragment {
         TextInputLayout password_layout = (TextInputLayout) view.findViewById(R.id.password_layout);
         TextView already_member_tv = (TextView) view.findViewById(R.id.already_member_tv);
 
+        // Handles sign up button click
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,15 +89,13 @@ public class signup_fragment extends Fragment {
                     email_layout.setError("Email field can not be empty.");
                 }else if(password.isEmpty()){
                     password_layout.setError("Password field can not be empty.");
-                }else{
+                }else{ // If non-empty password and email
                     createNewUser(email, password);
-                    email_layout.setError(null);
-                    password_layout.setError(null);
-                    // Navigate to next screen
                 }
             }
         });
 
+        // Handles already a member text field clicked
         already_member_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +107,12 @@ public class signup_fragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * Creates a new user using firebase authentication.
+     * @param email the email address provided.
+     * @param password the password provided.
+     */
     public void createNewUser(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -109,10 +133,16 @@ public class signup_fragment extends Fragment {
                 });
     }
 
+    /**
+     * Navigates to the next screen
+     */
     public void navigateToNextScreen(){
 
     }
 
+    /**
+     * Navigates to the login screen
+     */
     public void navigateToLogin(){
 
     }
