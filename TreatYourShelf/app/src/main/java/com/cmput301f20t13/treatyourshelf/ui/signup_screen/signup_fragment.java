@@ -31,19 +31,18 @@ import androidx.fragment.app.Fragment;
 public class signup_fragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private boolean signedIn;
     private final String TAG = "SIGNUP_FRAGMENT";
 
     @Override
     public void onStart() {
         super.onStart();
 
+        FirebaseApp.initializeApp(getContext());
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        signedIn = (currentUser != null);
-
-        if(signedIn){
-            //navigate to other screen.
+        if(currentUser != null){
+            navigateToNextScreen();
         }
     }
 
@@ -83,7 +82,7 @@ public class signup_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Navigate to login", Toast.LENGTH_SHORT).show();
-                // Naviate to login
+                navigateToLogin();
             }
         });
 
@@ -92,22 +91,29 @@ public class signup_fragment extends Fragment {
 
     public void createNewUser(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getContext(), "Sign up was successful", Toast.LENGTH_SHORT).show();
-                            // Navigate to the other screen
+                            Toast.makeText(getContext(), "Sign up successful.", Toast.LENGTH_SHORT).show();
+                            navigateToNextScreen();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Sign up failed.", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
+    }
+
+    public void navigateToNextScreen(){
+
+    }
+
+    public void navigateToLogin(){
+
     }
 }
