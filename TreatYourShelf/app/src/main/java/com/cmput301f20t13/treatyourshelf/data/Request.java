@@ -2,11 +2,9 @@ package com.cmput301f20t13.treatyourshelf.data;
 
 public class Request {
 
-    enum Status{Accepted, Undetermined, Declined}
-
     private String username;
     private String bookId;
-    private Status status;
+    private String status;
 
     public String getUsername() {
         return username;
@@ -18,11 +16,11 @@ public class Request {
 
     public void setBookId(String bookId) { this.bookId = bookId; }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

@@ -27,6 +27,14 @@
         android:id="@+id/requestDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragment"
         android:label="RequestDetailsFragment" />
+    <fragment
+        android:id="@+id/requestListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragment"
+        android:label="RequestListsFragment" >
+        <action
+            android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" />
+    </fragment>
 
 
 
