@@ -13,8 +13,7 @@ public class BookListViewModel extends ViewModel {
     private final BookListRepository repository = new BookListRepository();
     BookListLiveData liveData = null;
     public MutableLiveData<Book> selectedBook = new MutableLiveData<>();
-    public boolean requestSelected = false;
-    public boolean editSelected = false;
+    public boolean ownerList = true;
 
     public LiveData<List<Book>> getBookByIsbnLiveData(String isbn) {
         liveData = repository.getBookByIsbnLiveData(isbn);
@@ -23,11 +22,13 @@ public class BookListViewModel extends ViewModel {
 
     public LiveData<List<Book>> getBookByOwnerLiveData(String owner) {
         liveData = repository.getBookByOwnerLiveData(owner);
+        ownerList = true;
         return liveData;
     }
 
     public LiveData<List<Book>> getAllBooksLiveData() {
         liveData = repository.getAllBooksLiveData();
+        ownerList = false;
         return liveData;
     }
 

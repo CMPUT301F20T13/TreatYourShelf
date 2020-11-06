@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 
-
+/**
+ * BookDetailsStab holds and displays the description of the book
+ */
 public class BookDetailsStab extends Fragment {
 
     public BookDetailsStab() {
@@ -23,9 +25,9 @@ public class BookDetailsStab extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_details_stab, container, false);
         TextView description = view.findViewById(R.id.book_description);
 
-
-        if (getArguments() != null) {
-            String descString = getArguments().getString("description");
+        Bundle bundle = this.getArguments();
+        if (bundle!= null) {
+            String descString = bundle.getString("description");
             description.setText(descString);
         }
 

@@ -11,10 +11,11 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
-    private String Description;
+    private String description;
     private String imageUrl;
     private String owner;
     private String borrower;
+    private String status;
 
     @Ignore
     public Book() {
@@ -50,16 +51,14 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public void setAuthor(String author) { this.author = author; }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getImageUrl() {
@@ -85,5 +84,10 @@ public class Book {
     public void setBorrower(String borrower) { this.borrower = borrower; }
 
     public String getBorrower() { return borrower; }
+
+    public void setStatus(String status) { this.status = status; }
+
+    public String getStatus() { return status; }
+
 
 }

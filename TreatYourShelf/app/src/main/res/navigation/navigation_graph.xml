@@ -19,11 +19,14 @@
         android:id="@+id/profileFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
         android:label="ProfileFragment" />
-
     <fragment
         android:id="@+id/bookDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragment"
         android:label="BookDetailsFragment" />
+    <fragment
+        android:id="@+id/requestDetailsFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragment"
+        android:label="RequestDetailsFragment" />
 
 
 

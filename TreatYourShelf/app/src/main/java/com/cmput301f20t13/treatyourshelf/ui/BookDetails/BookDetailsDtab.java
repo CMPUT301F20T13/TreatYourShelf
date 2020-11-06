@@ -13,7 +13,10 @@ import com.cmput301f20t13.treatyourshelf.R;
 
 import org.w3c.dom.Text;
 
-
+/**
+ * BookDetailsDtab holds and displays the details of the book which include:
+ * isbn, the book owner, and the current borrower of the book
+ */
 public class BookDetailsDtab extends Fragment {
 
     public BookDetailsDtab() {
@@ -27,10 +30,11 @@ public class BookDetailsDtab extends Fragment {
         TextView owner = view.findViewById(R.id.book_owner);
         TextView currentBorrower = view.findViewById(R.id.book_borrower);
 
-        if (getArguments() != null) {
-            String isbnString = getArguments().getString("isbn");
-            String ownerString = getArguments().getString("owner");
-            String currentBorrowerString = getArguments().getString("borrower");
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            String isbnString = bundle.getString("isbn");
+            String ownerString = bundle.getString("owner");
+            String currentBorrowerString = bundle.getString("borrower");
 
             isbn.setText(isbnString);
             owner.setText(ownerString);

@@ -24,16 +24,8 @@ public class BookDetailsViewModel extends AndroidViewModel {
         bookList = bookRepository.getBookList();
     }
 
-    public void insert(Book book){
-        bookRepository.insert(book);
-    }
-
-    public void editBook() {
-        /*TODO - calls the add book fragment with filled in edit texts*/
-    }
-
     public void requestBook() {
-        /*TODO - adds to requested book list */
+        /*TODO - adds to requesters requested book list, notifies user of request,  */
 
     }
 }

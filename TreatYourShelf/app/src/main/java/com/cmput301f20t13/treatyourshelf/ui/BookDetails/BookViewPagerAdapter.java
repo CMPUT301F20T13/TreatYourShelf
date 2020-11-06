@@ -9,17 +9,28 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * BookViewPagerAdapter sets the fragments in book details onto the tab layout
+ */
 public class BookViewPagerAdapter extends FragmentPagerAdapter{
-
-
         private List<Fragment> fragments = new ArrayList<>();
         private List<String> fragmentTitle = new ArrayList<>();
 
-        public BookViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    /**
+     * Creates the adapter
+     * @param fm the fragment manager
+     * @param behavior behavior of the adapter
+     */
+    public BookViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
         }
 
-        public void addFragment(Fragment fragment, String title){
+    /**
+     * Adds the fragment and title to the lists
+     * @param fragment fragment to manage
+     * @param title title of the tab
+     */
+    public void addFragment(Fragment fragment, String title){
             fragments.add(fragment);
             fragmentTitle.add(title);
             notifyDataSetChanged();

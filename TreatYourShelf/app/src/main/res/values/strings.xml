@@ -10,4 +10,14 @@
     <string name="image">Image</string>
     <string name="request_book">REQUEST BOOK</string>
     <string name="edit_button">edit_button</string>
+    <string name="available_book">Available</string>
+    <string name="unavailable_book">Unavailable</string>
+    <string name="author">Author</string>
+    <string name="title">Title</string>
+    <string name="isbn_header">ISBN</string>
+    <string name="owner_header">Owner</string>
+    <string name="requested_by">Requested By:</string>
+    <string name="book_image">book_image</string>
+    <string name="accept">ACCEPT</string>
+    <string name="decline">DECLINE</string>
 </resources>
