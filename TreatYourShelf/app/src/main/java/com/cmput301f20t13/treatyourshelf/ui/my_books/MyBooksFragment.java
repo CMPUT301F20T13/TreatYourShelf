@@ -24,6 +24,7 @@ import java.util.List;
 public class MyBooksFragment extends Fragment {
     private MyBookListAdapter myBookListAdapter;
     private MyBookViewModel myBookViewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,23 +36,12 @@ public class MyBooksFragment extends Fragment {
         myBookListAdapter.setOnClick(new MyBookListAdapter.OnItemClicked() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(getActivity(),"Do You Smell Burnt Toast?",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Do You Smell Burnt Toast?", Toast.LENGTH_SHORT).show();
             }
         });
 
         myBookViewModel = new ViewModelProvider(this).get(MyBookViewModel.class);
 
-        myBookViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
-            @Override
-            public void onChanged(List<Book> books) {
-                if (books.isEmpty()) {
-                    // Initial list will be empty due to no data stored in the app, therefore we insert data into the database
-                    setInitialData();
-                }
-
-                myBookListAdapter.setBookList(books);
-            }
-        });
 
         return view;
     }
