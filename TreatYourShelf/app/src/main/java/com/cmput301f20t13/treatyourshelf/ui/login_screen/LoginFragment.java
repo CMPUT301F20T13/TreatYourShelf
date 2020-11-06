@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
@@ -69,6 +70,7 @@ public class LoginFragment extends Fragment {
         Button login_btn = (Button) view.findViewById(R.id.login_btn);
         email_layout = (TextInputLayout) view.findViewById(R.id.email_layout);
         password_layout = (TextInputLayout) view.findViewById(R.id.password_layout);
+        TextView goto_signup_tv = (TextView) view.findViewById(R.id.goto_signup_tv);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +86,14 @@ public class LoginFragment extends Fragment {
                 }
 
 
+            }
+        });
+
+        goto_signup_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Navigate to Signup", Toast.LENGTH_SHORT).show();
+                navigateToSignup();
             }
         });
 
@@ -140,4 +150,10 @@ public class LoginFragment extends Fragment {
         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.bookListFragment);
     }
 
+    /**
+     * Navigates to the Signup screen
+     */
+    public void navigateToSignup() {
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.signUpFragment);
+    }
 }

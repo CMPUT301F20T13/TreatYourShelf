@@ -123,7 +123,7 @@ public class SignUpFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getContext(), "Sign up failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Email address is already taken.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
