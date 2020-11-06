@@ -3,6 +3,7 @@ package com.cmput301f20t13.treatyourshelf;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -28,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        fab.setOnClickListener(view -> {
+                    switch (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId()) {
+                        case R.id.bookListFragment: {
+                            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
+                        }
+                    }
+
+                }
+        );
         bottomAppBar.setNavigationOnClickListener(view -> {
 
             BottomSheetNavigationMenu bottomSheetNavigationMenu = new BottomSheetNavigationMenu();
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.cameraXFragment: {
                     // Want to remove the bottom app bar from view So the camera is full screen
                     fab.hide();
+                    bottomAppBar.setVisibility(View.INVISIBLE);
                     bottomAppBar.performHide();
 
                     break;
@@ -52,7 +64,15 @@ public class MainActivity extends AppCompatActivity {
                     fab.hide();
                     break;
                 }
+                case R.id.bookListFragment: {
+                    fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_add_24));
+                    bottomAppBar.setVisibility(View.VISIBLE);
+                    bottomAppBar.performShow();
+                    fab.show();
+                    break;
+                }
                 default: {
+                    fab.setImageDrawable(ContextCompat.getDrawable(this, android.R.color.transparent));
                     bottomAppBar.setVisibility(View.VISIBLE);
                     bottomAppBar.performShow();
                     fab.show();

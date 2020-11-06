@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 
@@ -115,8 +116,13 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 //                    SparseArray<Barcode> barcodes = detector.detect(frame);
 //                    Barcode thisCode = barcodes.valueAt(0);
 //                    System.out.println(thisCode.rawValue);
+            BarcodeScannerOptions options =
+                    new BarcodeScannerOptions.Builder()
+                            .setBarcodeFormats(
+                                    Barcode.FORMAT_EAN_13)
+                            .build();
+            BarcodeScanner scanner = BarcodeScanning.getClient(options);
 
-            BarcodeScanner scanner = BarcodeScanning.getClient();
 
             Task<List<Barcode>> result = scanner.process(image)
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
