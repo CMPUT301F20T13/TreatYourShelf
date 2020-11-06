@@ -31,7 +31,7 @@ public class AllBooksFragment extends Fragment {
 
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         ArrayList<Book> bookArray = new ArrayList<>();
-        bookListAdapter = new BookListAdapter(bookArray, bookListViewModel);
+        bookListAdapter = new BookListAdapter(bookArray);
 
         bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
 

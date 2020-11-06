@@ -1,10 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.ui.camera;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,13 +12,11 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Size;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -33,30 +28,19 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
-import androidx.camera.core.impl.ImageAnalysisConfig;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
-import androidx.constraintlayout.solver.widgets.Rectangle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.R;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
-import java.net.ConnectException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.zip.Inflater;
 
 import static android.content.ContentValues.TAG;
 
@@ -78,7 +62,7 @@ public class CameraXFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.camera_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         ImageButton closeCameraBt = view.findViewById(R.id.close_camera_bt);
         ImageButton toggleCameraFlashBt = view.findViewById(R.id.camera_flash_bt);
