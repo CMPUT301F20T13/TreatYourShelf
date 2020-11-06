@@ -37,7 +37,7 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
         Button viewBookDetailsBt = view.findViewById(R.id.view_details_bt);
         viewBookDetailsBt.setOnClickListener(view1 -> {
             // Want to navigate to Book Details Screen
-            NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment().setISBN(0);
+            NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment().setISBN("");
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
 
