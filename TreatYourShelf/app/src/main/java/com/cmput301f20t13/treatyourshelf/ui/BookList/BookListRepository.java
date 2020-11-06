@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Query;
 public class BookListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    public BookListLiveData getBookByIsbnLiveData(String isbn) {
+    public  BookListLiveData getBookByIsbnLiveData(String isbn) {
         Query query = firebaseFirestore.collection("books").whereEqualTo("isbn", isbn);
         return new BookListLiveData(query);
     }

@@ -4,8 +4,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class Book {
+public class Book implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
@@ -21,7 +23,7 @@ public class Book {
     public Book() {
         this.title = "default title";
         this.author = "default author";
-        this.author = "default isbn";
+        this.isbn = "default isbn";
     }
 
     public Book(String title, String author, String isbn) {
@@ -29,7 +31,6 @@ public class Book {
         this.author = author;
         this.isbn = isbn;
     }
-
 
     public int getId() {
         return id;
@@ -88,6 +89,5 @@ public class Book {
     public void setStatus(String status) { this.status = status; }
 
     public String getStatus() { return status; }
-
 
 }
