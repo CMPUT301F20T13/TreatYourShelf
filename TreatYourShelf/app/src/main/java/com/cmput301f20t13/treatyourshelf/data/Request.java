@@ -2,15 +2,21 @@ package com.cmput301f20t13.treatyourshelf.data;
 
 public class Request {
 
-    private String username;
+    private String requester;
+    private String owner;
     private String bookId;
     private String status;
+    private String isbn;
 
-    public String getUsername() {
-        return username;
+    public String getRequester() {
+        return requester;
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setRequester(String requester) { this.requester = requester; }
+
+    public String getOwner() { return owner; }
+
+    public void setOwner(String owner) { this.owner = owner; }
 
     public String getBookId() { return bookId; }
 
@@ -23,4 +29,8 @@ public class Request {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getIsbn() { return isbn; }
+
+    public void setIsbn(String isbn) { this.isbn = isbn; }
 }

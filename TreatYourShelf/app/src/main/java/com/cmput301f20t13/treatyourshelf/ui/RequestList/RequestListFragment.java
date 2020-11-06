@@ -37,8 +37,7 @@ public class RequestListFragment extends Fragment {
         ArrayList<Request> requestArray = new ArrayList<>();
         requestListAdapter = new RequestListAdapter(requestArray, requestListViewModel);
 
-/*        String bookId = requestListViewModel.getSelected().getBookId();
-        requestListViewModel.getRequestByIdLiveData().observe(getViewLifecycleOwner(), Observable -> {});*/
+        requestListViewModel.getRequestByIsbnLiveData("2234567891011").observe(getViewLifecycleOwner(), Observable -> {});
 
         requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
             if (requestList != null ) {

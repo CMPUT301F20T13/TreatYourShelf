@@ -7,12 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
+import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListAdapter;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 import com.google.android.material.card.MaterialCardView;
@@ -38,10 +40,13 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RequestListAdapter.MyViewHolder holder, int position) {
-        holder.username.setText(requestList.get(position).getUsername());
+        holder.requester.setText(requestList.get(position).getRequester());
         holder.requestItem.setOnClickListener(v -> {
-            requestListViewModel.select(requestList.get(position));
-            Navigation.findNavController(v).navigate(R.id.action_requestListFragment_to_requestDetailsFragment);
+            NavDirections action =
+                    RequestListFragmentDirections.actionRequestListFragmentToRequestDetailsFragment()
+                            .setISBN(requestList.get(position).getIsbn())
+                            .setREQUESTER(requestList.get(position).getRequester());
+            Navigation.findNavController(v).navigate(action);
         });
     }
 
@@ -61,7 +66,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView username;
+        private final TextView requester;
         private final MaterialCardView requestItem;
         private final ImageView profileImage;
 
@@ -69,7 +74,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
             super(itemView);
 
-            username = itemView.findViewById(R.id.profile_username);
+            requester = itemView.findViewById(R.id.profile_username);
             requestItem = itemView.findViewById(R.id.request_list_item_cardview);
             profileImage = itemView.findViewById(R.id.profile_image);
         }

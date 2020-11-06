@@ -53,9 +53,11 @@ public class RequestListLiveData extends
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     Request itemToAdd = new Request();
                     Map<String, Object> requestDetails = document.getData();
-                    itemToAdd.setUsername((String) requestDetails.getOrDefault("username", "default username"));
+                    itemToAdd.setRequester((String) requestDetails.getOrDefault("requester", "default requester"));
                     itemToAdd.setBookId((String) requestDetails.getOrDefault("bookId", "12345"));
-                    itemToAdd.setBookId((String) requestDetails.getOrDefault("status", "Undetermined"));
+                    itemToAdd.setStatus((String) requestDetails.getOrDefault("status", "Requested"));
+                    itemToAdd.setOwner((String) requestDetails.getOrDefault("owner", "default owner"));
+                    itemToAdd.setIsbn((String) requestDetails.getOrDefault("isbn", "12345678910"));
                     requestListTemp.add(itemToAdd);
                 }
                 requestList.setValue(requestListTemp);

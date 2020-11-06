@@ -15,19 +15,23 @@ public class RequestListViewModel extends ViewModel {
 
     private final RequestListRepository repository = new RequestListRepository();
     RequestListLiveData liveData = null;
-    public MutableLiveData<Request> selectedRequest = new MutableLiveData<>();
 
     public LiveData<List<Request>> getRequestByIdLiveData(String bookId) {
         liveData = repository.getRequestByIdLiveData(bookId);
         return liveData;
     }
 
+    public LiveData<List<Request>> getRequestByIsbnLiveData(String isbn) {
+        liveData = repository.getRequestByIsbnLiveData(isbn);
+        return liveData;
+    }
 
     public LiveData<List<Request>> getRequestList() {
         return liveData.requestList;
     }
 
-    public void select(Request request){selectedRequest.setValue(request);}
+    public void updateStatusByIsbn(String requester, String isbn, String status){
+        repository.updateStatusByIsbn(requester, isbn, status);
+    }
 
-    public LiveData<Request> getSelected() {return selectedRequest;}
 }
