@@ -152,6 +152,7 @@ public class BookDetailsFragment extends Fragment {
      */
     public void setSumFragBundle(Book book, Fragment summaryFragment) {
         Bundle descBundle = new Bundle();
+       // System.out.println(book.getDescription());
         descBundle.putString("description", book.getDescription());
         summaryFragment.setArguments(descBundle);
     }
