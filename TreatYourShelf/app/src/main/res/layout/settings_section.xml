@@ -29,18 +29,19 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/settings_section_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:ems="10"/>
 
     <ImageView
         android:id="@+id/settings_section_arryw"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/chevron_arrow" />
+        app:srcCompat="@drawable/ic_round_chevron_right_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
