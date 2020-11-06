@@ -1,6 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.ui.camera;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,10 +22,13 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.camera.core.Camera;
+import androidx.camera.core.CameraControl;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
@@ -36,6 +40,7 @@ import androidx.constraintlayout.solver.widgets.Rectangle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.google.android.gms.vision.Frame;
@@ -59,9 +64,11 @@ public class CameraXFragment extends Fragment {
 
     private ImageCapture imageCapture;
     private File outputDirectory;
+    private CameraControl cameraControl;
     private ExecutorService cameraExecutor;
     private String[] permissions;
     private RectF rectF;
+    private boolean cameraFlashToggled = false;
 
     public CameraXFragment() {
         permissions = new String[]{Manifest.permission.CAMERA};
@@ -73,7 +80,24 @@ public class CameraXFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
 
-        //
+        ImageButton closeCameraBt = view.findViewById(R.id.close_camera_bt);
+        ImageButton toggleCameraFlashBt = view.findViewById(R.id.camera_flash_bt);
+        closeCameraBt.setOnClickListener(view1 -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+        });
+        toggleCameraFlashBt.setOnClickListener(view1 -> {
+
+            if (!cameraFlashToggled) {
+                // Camera Flash is On, want to turn off
+                cameraFlashToggled = true;
+                toggleCameraFlashBt.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_flash_off_24));
+                cameraControl.enableTorch(false);
+            } else {
+                cameraFlashToggled = false;
+                toggleCameraFlashBt.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_flash_on_24));
+                cameraControl.enableTorch(true);
+            }
+        });
 
 
         return view;
@@ -89,6 +113,41 @@ public class CameraXFragment extends Fragment {
         }
         return true;
 
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SurfaceView overlay = view.findViewById(R.id.overlay);
+
+        overlay.setZOrderMediaOverlay(true);
+        overlay.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        overlay.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+                rectF = drawOverlay(overlay.getHolder(), 74, 8);
+
+            }
+
+            @Override
+            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+
+            }
+        });
+
+        if (allPermissionsGranted()) {
+            startCameraPreview();
+        } else {
+            requireActivity().requestPermissions(permissions, 11);
+        }
+        cameraExecutor = Executors.newSingleThreadExecutor();
     }
 
     private void startCameraPreview() {
@@ -117,6 +176,7 @@ public class CameraXFragment extends Fragment {
                             barcode.getBoundingBox();
 //                            System.out.println(barcode.getBoundingBox());
 //                            System.out.println(barcode.getRawValue());
+                            
 
                             cameraProvider.unbindAll();
                             Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
@@ -124,6 +184,11 @@ public class CameraXFragment extends Fragment {
                             //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
                             BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults();
                             bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
+                            getChildFragmentManager().executePendingTransactions();
+                            Objects.requireNonNull(bottomSheetScannedISBNResults.getDialog()).setOnDismissListener(dialogInterface -> {
+                                System.out.println("WE should have been dismissed");
+                                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
+                            });
                         }
 
                     }, 74, 8, requireContext()));
@@ -131,7 +196,8 @@ public class CameraXFragment extends Fragment {
 
                     try {
                         cameraProvider.unbindAll();
-                        cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
+                        Camera camera = cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
+                        cameraControl = camera.getCameraControl();
 
 
                     } catch (Exception e) {
@@ -145,40 +211,8 @@ public class CameraXFragment extends Fragment {
         }, ContextCompat.getMainExecutor(requireContext()));
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        SurfaceView overlay = view.findViewById(R.id.overlay);
-
-        overlay.setZOrderMediaOverlay(true);
-        overlay.getHolder().setFormat(PixelFormat.TRANSPARENT);
-        overlay.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-                rectF = drawOverlay(overlay.getHolder(), 74, 8);
-            }
-
-            @Override
-            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
-            }
-        });
-
-        if (allPermissionsGranted()) {
-            startCameraPreview();
-        } else {
-            requireActivity().requestPermissions(permissions, 11);
-        }
-        cameraExecutor = Executors.newSingleThreadExecutor();
-    }
-
-
     private void stopCameraPreview() {
+
         cameraExecutor.shutdown();
     }
 
@@ -188,7 +222,7 @@ public class CameraXFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cameraExecutor.shutdown();
+        stopCameraPreview();
     }
 
     @Override
