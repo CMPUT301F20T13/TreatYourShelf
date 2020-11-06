@@ -57,16 +57,16 @@ public class SearchFragment extends Fragment {
         bookRv.setAdapter(searchListAdapter);
         searchListViewModel = new ViewModelProvider(this).get(BookListViewModel.class);
 
-        searchListViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
-            @Override
-            public void onChanged(List<Book> books) {
-                if (books.isEmpty()) {
-                    // Initial list will be empty due to no data stored in the app, therefore we insert data into the database
-                }
-
-                searchListAdapter.setBookList(books);
-            }
-        });
+//        searchListViewModel.bookList.observe(getViewLifecycleOwner(), new Observer<List<Book>>() {
+//            @Override
+//            public void onChanged(List<Book> books) {
+//                if (books.isEmpty()) {
+//                    // Initial list will be empty due to no data stored in the app, therefore we insert data into the database
+//                }
+//
+//                searchListAdapter.setBookList(books);
+//            }
+//        });
 
         return view;
     }

@@ -20,13 +20,14 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 /**
  * Login Fragment, allows the user to log in
  * using there email address and a password.
  * Uses firebase authentication
  */
-public class login_fragment extends Fragment {
+public class LoginFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private final String TAG = "LOGIN_FRAGMENT";
@@ -43,21 +44,20 @@ public class login_fragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseApp.initializeApp(getContext());
-
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             navigateToNextScreen();
         }
     }
 
     /**
      * This creates the fragment view.
-     * @param inflater the view inflater used to create the view
-     * @param container the viewGroup
+     *
+     * @param inflater           the view inflater used to create the view
+     * @param container          the viewGroup
      * @param savedInstanceState a bundle of the current state
-     * @return      returns the view
+     * @return returns the view
      */
     @Nullable
     @Override
@@ -77,7 +77,13 @@ public class login_fragment extends Fragment {
                 String email, password;
                 email = email_layout.getEditText().getText().toString();
                 password = password_layout.getEditText().getText().toString();
-                checkValid(email, password);
+                if (email.isEmpty() || password.isEmpty()) {
+                    setError(true, "Please fill in the required fields");
+                } else {
+                    checkValid(email, password);
+                }
+
+
             }
         });
 
@@ -86,24 +92,26 @@ public class login_fragment extends Fragment {
 
     /**
      * Sets the error option on the material textviews
+     *
      * @param errorExists If there is an error
      */
-    public void setError(boolean errorExists){
-        if(!errorExists){
+    public void setError(boolean errorExists, String errorString) {
+        if (!errorExists) {
             email_layout.setError(null);
             password_layout.setError(null);
-        }else{
-            email_layout.setError("Email and Password does not match preexisting user.");
-            password_layout.setError("Email and Password does not match preexisting user.");
+        } else {
+            email_layout.setError(errorString);
+            password_layout.setError(errorString);
         }
     }
 
     /**
      * Checks if the user email and password match a user on firebase.
-     * @param email the email provided.
+     *
+     * @param email    the email provided.
      * @param password the password provided.
      */
-    public void checkValid(String email, String password){
+    public void checkValid(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -113,13 +121,13 @@ public class login_fragment extends Fragment {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getContext(), "Login in successful.", Toast.LENGTH_SHORT).show();
-                            setError(false);
+                            setError(false, "");
                             navigateToNextScreen();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Login in failed.", Toast.LENGTH_SHORT).show();
-                            setError(true);
+                            setError(true, "Email and Password does not match preexisting user.");
                         }
                     }
                 });
@@ -128,8 +136,8 @@ public class login_fragment extends Fragment {
     /**
      * Navigates to the next screen
      */
-    public void navigateToNextScreen(){
-
+    public void navigateToNextScreen() {
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.bookListFragment);
     }
 
 }

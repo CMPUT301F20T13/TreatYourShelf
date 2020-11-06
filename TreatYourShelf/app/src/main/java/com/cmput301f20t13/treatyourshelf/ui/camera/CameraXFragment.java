@@ -86,16 +86,16 @@ public class CameraXFragment extends Fragment {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
         });
         toggleCameraFlashBt.setOnClickListener(view1 -> {
-
-            if (!cameraFlashToggled) {
+            System.out.println("Clicking");
+            if (cameraFlashToggled) {
                 // Camera Flash is On, want to turn off
-                cameraFlashToggled = true;
-                toggleCameraFlashBt.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_flash_off_24));
-                cameraControl.enableTorch(false);
-            } else {
                 cameraFlashToggled = false;
+                toggleCameraFlashBt.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_flash_off_24));
+                cameraControl.enableTorch(cameraFlashToggled);
+            } else {
+                cameraFlashToggled = true;
                 toggleCameraFlashBt.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_flash_on_24));
-                cameraControl.enableTorch(true);
+                cameraControl.enableTorch(cameraFlashToggled);
             }
         });
 
@@ -179,7 +179,7 @@ public class CameraXFragment extends Fragment {
 
 
                             cameraProvider.unbindAll();
-                            Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
                             //TODO: Start barcode loading animation
                             //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
                             BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults();
@@ -188,7 +188,7 @@ public class CameraXFragment extends Fragment {
                             bottomSheetScannedISBNResults.setDissmissListener(() -> {
                                 //Dialog got dismissed
                                 cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
-
+                                cameraControl.enableTorch(cameraFlashToggled);
 
                             });
                         }
