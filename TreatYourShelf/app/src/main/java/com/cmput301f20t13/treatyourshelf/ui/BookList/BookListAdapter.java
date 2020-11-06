@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +19,11 @@ import java.util.List;
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
 
     private List<Book> bookList;
-    private BookListViewModel bookListViewModel;
-    
-    public BookListAdapter(List<Book> bookList, BookListViewModel bookListViewModel) {
+
+
+    public BookListAdapter(List<Book> bookList) {
         this.bookList = bookList;
-        this.bookListViewModel = bookListViewModel;
+
     }
 
     @NonNull
@@ -37,8 +38,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         holder.title.setText(bookList.get(position).getTitle());
         holder.author.setText(bookList.get(position).getAuthor());
         holder.bookItem.setOnClickListener(v -> {
-            bookListViewModel.select(bookList.get(position));
-            Navigation.findNavController(v).navigate(R.id.action_bookListFragment_to_bookDetailsFragment);
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(bookList.get(position).getIsbn());
+            Navigation.findNavController(v).navigate(action);
         });
     }
 
@@ -47,7 +48,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         return bookList.size();
     }
 
-    public void clear(){
+    public void clear() {
         bookList.clear();
     }
 

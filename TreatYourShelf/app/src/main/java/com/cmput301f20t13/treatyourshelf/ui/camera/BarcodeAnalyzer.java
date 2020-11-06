@@ -117,6 +117,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 //                    System.out.println(thisCode.rawValue);
 
             BarcodeScanner scanner = BarcodeScanning.getClient();
+
             Task<List<Barcode>> result = scanner.process(image)
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                         @Override

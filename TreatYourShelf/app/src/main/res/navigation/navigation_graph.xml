@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nagivation_graph"
-    app:startDestination="@id/bookListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nagivation_graph"
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragment"
-        android:label="BookListFragment" >
+        android:label="BookListFragment">
         <action
             android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
             app:destination="@id/bookDetailsFragment" />
@@ -14,7 +15,17 @@
     <fragment
         android:id="@+id/cameraXFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
-        android:label="CameraXFragment" />
+        android:label="CameraXFragment">
+        <action
+            android:id="@+id/action_cameraXFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment">
+
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.search_page.SearchFragment"
+        android:label="SearchFragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
@@ -22,7 +33,24 @@
     <fragment
         android:id="@+id/bookDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragment"
-        android:label="BookDetailsFragment" />
+        android:label="BookDetailsFragment">
+        <argument
+            android:name="ISBN"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.login_screen.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.signup_screen.SignUpFragment"
+        android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.onboarding.OnBoardingFragment"
+        android:label="OnBoardingFragment" />
     <fragment
         android:id="@+id/requestDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragment"
@@ -35,7 +63,6 @@
             android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
             app:destination="@id/requestDetailsFragment" />
     </fragment>
-
 
 
 </navigation>
