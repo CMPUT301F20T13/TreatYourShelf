@@ -3,6 +3,7 @@ package com.cmput301f20t13.treatyourshelf.ui.BookDetails;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,9 @@ public class BookDetailsFragment extends Fragment {
 
     /**
      * Creates the fragment view
-     * @param inflater inflates the view in the fragment
-     * @param container the viewgroup
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
      * @param savedInstanceState a bundle
      * @return returns the view
      */
@@ -51,6 +53,8 @@ public class BookDetailsFragment extends Fragment {
         TextView author = view.findViewById(R.id.book_author);
         TextView status = view.findViewById(R.id.book_status);
 
+        String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
+        System.out.println("The ISBN is" + Isbn);
         /*Tab Layout that includes a Summary tab and Details Tab*/
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager viewPager = view.findViewById(R.id.book_details_view_pager);
@@ -62,14 +66,25 @@ public class BookDetailsFragment extends Fragment {
         /*View Models - where the fragment retrieves its data from*/
         bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
-        bookListViewModel.getSelected().observe(getViewLifecycleOwner(), book ->{
-            title.setText(book.getTitle());
-            author.setText(book.getAuthor());
-            status.setText(book.getStatus());
-            changeStatusColor(status, book.getStatus());
-            setSumFragBundle(book, summaryFragment);
-            setDetFragBundle(book, detailsFragment);
+        bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
+
+        bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
+            if (!bookList.isEmpty()) {
+
+                Book book = bookList.get(0);
+                System.out.println(book.getTitle());
+                title.setText(book.getTitle());
+                author.setText(book.getAuthor());
+                status.setText(book.getStatus());
+                changeStatusColor(status, book.getStatus());
+                setSumFragBundle(book, summaryFragment);
+                setDetFragBundle(book, detailsFragment);
+            } else {
+                Log.d("TAG", "waiting for info");
+            }
+        });
+
 
         /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
         BookViewPagerAdapter viewPagerAdapter = new BookViewPagerAdapter(getChildFragmentManager(), 0);
@@ -78,7 +93,9 @@ public class BookDetailsFragment extends Fragment {
         viewPager.setAdapter(viewPagerAdapter);
 
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
-        if (!bookListViewModel.ownerList){requestButton.setVisibility(View.VISIBLE);}
+        if (!bookListViewModel.ownerList) {
+            requestButton.setVisibility(View.VISIBLE);
+        }
         requestButton.setOnClickListener(v -> new AlertDialog.Builder(getContext())
                 .setMessage("Would you like to request this book?")
                 .setPositiveButton("YES", (dialog, id) -> {
@@ -92,7 +109,9 @@ public class BookDetailsFragment extends Fragment {
 
 
         ImageButton editButton = view.findViewById(R.id.book_edit_button);
-        if (bookListViewModel.ownerList){editButton.setVisibility(View.VISIBLE);}
+        if (bookListViewModel.ownerList) {
+            editButton.setVisibility(View.VISIBLE);
+        }
         editButton.setOnClickListener(v -> {
             // Not implemented yet
             /*TODO - call edit book fragment*/
@@ -104,11 +123,12 @@ public class BookDetailsFragment extends Fragment {
 
     /**
      * Changes the color of the status based on the text
+     *
      * @param status the status of the book
-     * @param book candidate book
+     * @param book   candidate book
      */
-    public void changeStatusColor(TextView status, String book){
-        switch (book){
+    public void changeStatusColor(TextView status, String book) {
+        switch (book) {
             /*Changes the color of the status based on the text*/
             case "Available":
             case "Accepted":
@@ -126,10 +146,11 @@ public class BookDetailsFragment extends Fragment {
 
     /**
      * Sets the arguments on the summary fragment
-     * @param book candidate book
+     *
+     * @param book            candidate book
      * @param summaryFragment fragment that contains the description of the book
      */
-    public void setSumFragBundle(Book book, Fragment summaryFragment){
+    public void setSumFragBundle(Book book, Fragment summaryFragment) {
         Bundle descBundle = new Bundle();
         descBundle.putString("description", book.getDescription());
         summaryFragment.setArguments(descBundle);
@@ -138,10 +159,11 @@ public class BookDetailsFragment extends Fragment {
 
     /**
      * Sets the argument son the details fragment
-     * @param book candidate book
+     *
+     * @param book            candidate book
      * @param detailsFragment fragment that contains the isbn, owner, and borrower of book
      */
-    public void setDetFragBundle(Book book, Fragment detailsFragment){
+    public void setDetFragBundle(Book book, Fragment detailsFragment) {
         Bundle detailBundle = new Bundle();
         detailBundle.putString("isbn", book.getIsbn());
         detailBundle.putString("owner", book.getOwner());
