@@ -1,17 +1,21 @@
 package com.cmput301f20t13.treatyourshelf;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,13 +23,45 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this.getBaseContext());
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
+        FloatingActionButton fab = findViewById(R.id.fab);
         bottomAppBar.setNavigationOnClickListener(view -> {
-            Toast.makeText(this, "Clicked on menu", Toast.LENGTH_SHORT).show();
+
+            BottomSheetNavigationMenu bottomSheetNavigationMenu = new BottomSheetNavigationMenu();
+            bottomSheetNavigationMenu.show(getSupportFragmentManager(), null);
         });
 
+
+        Navigation.findNavController(this, R.id.nav_host_fragment).addOnDestinationChangedListener((controller, destination, arguments) -> {
+            switch (destination.getId()) {
+
+                case R.id.cameraXFragment: {
+                    // Want to remove the bottom app bar from view So the camera is full screen
+                    fab.hide();
+                    bottomAppBar.performHide();
+
+                    break;
+                }
+                case R.id.loginFragment: {
+                    // Want to remove the bottom app bar from view So the camera is full screen
+                    bottomAppBar.performHide();
+                    bottomAppBar.setVisibility(View.INVISIBLE);
+                    fab.hide();
+                    break;
+                }
+                default: {
+                    bottomAppBar.setVisibility(View.VISIBLE);
+                    bottomAppBar.performShow();
+                    fab.show();
+
+                    break;
+                }
+            }
+        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.bottom_app_bar_books) {
+        if (item.getItemId() == R.id.bottom_app_search) {
 
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
         }

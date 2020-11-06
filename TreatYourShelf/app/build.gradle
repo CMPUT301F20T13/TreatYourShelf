@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -33,11 +34,16 @@ android {
 
 dependencies {
 
+    // Firebase SDKs
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.firebase:firebase-firestore'
+
     def nav_version = "2.3.0"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-
 
     implementation 'com.google.android.material:material:1.2.1'
     implementation "androidx.room:room-runtime:2.2.5"

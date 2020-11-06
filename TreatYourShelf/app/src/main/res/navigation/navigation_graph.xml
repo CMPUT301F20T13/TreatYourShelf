@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nagivation_graph"
-    app:startDestination="@id/bookListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nagivation_graph"
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
-        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.BookListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragment"
         android:label="BookListFragment" />
     <fragment
         android:id="@+id/cameraXFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragment"
         android:label="CameraXFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.search_page.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.book_details.BookDetailsFragment"
+        android:label="BookDetailsFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.login_screen.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.signup_screen.SignUpFragment"
+        android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.onboarding.OnBoardingFragment"
+        android:label="OnBoardingFragment" />
 </navigation>
