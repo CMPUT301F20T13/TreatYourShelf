@@ -176,7 +176,7 @@ public class CameraXFragment extends Fragment {
                             barcode.getBoundingBox();
 //                            System.out.println(barcode.getBoundingBox());
 //                            System.out.println(barcode.getRawValue());
-                            
+
 
                             cameraProvider.unbindAll();
                             Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
@@ -185,9 +185,11 @@ public class CameraXFragment extends Fragment {
                             BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults();
                             bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
                             getChildFragmentManager().executePendingTransactions();
-                            Objects.requireNonNull(bottomSheetScannedISBNResults.getDialog()).setOnDismissListener(dialogInterface -> {
-                                System.out.println("WE should have been dismissed");
+                            bottomSheetScannedISBNResults.setDissmissListener(() -> {
+                                //Dialog got dismissed
                                 cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
+
+
                             });
                         }
 

@@ -1,5 +1,6 @@
 package com.cmput301f20t13.treatyourshelf.ui.camera;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import java.util.List;
 
 public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
 
+    private OnDialogDismissedListener onDismissListener;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,5 +36,18 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
         return view;
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        onDismissListener.onDialogDismissed();
+    }
+
+    public interface OnDialogDismissedListener {
+        void onDialogDismissed();
+    }
+
+    public void setDissmissListener(OnDialogDismissedListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
 
 }
