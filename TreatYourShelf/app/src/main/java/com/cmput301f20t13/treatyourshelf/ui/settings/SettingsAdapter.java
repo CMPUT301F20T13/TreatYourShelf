@@ -1,5 +1,6 @@
 package com.cmput301f20t13.treatyourshelf.ui.settings;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,51 +8,67 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
-import com.cmput301f20t13.treatyourshelf.data.SettingsCategory;
+import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItem;
 
 import java.util.List;
 
-public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.CategoryViewHolder> {
+public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyViewHolder> {
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        private ImageView icon;
-        private TextView title;
-        public CategoryViewHolder(@NonNull View itemView) {
-            super(itemView);
-            icon = itemView.findViewById(R.id.settings_section_icon);
-            title = itemView.findViewById(R.id.settings_section_title);
-        }
+    private List<SettingsItem> settingsItemList;
+    private Context context;
+    private OnSettingsItemClick onSettingsItemClick;
+
+    public interface OnSettingsItemClick {
+        public void onClick(SettingsItem settingsItem);
     }
 
-    private List<SettingsCategory> categories;
-
-    public SettingsAdapter(List<SettingsCategory> list) {
-        categories = list;
+    public SettingsAdapter(List<SettingsItem> settingsItemList, Context context, OnSettingsItemClick onSettingsItemClick) {
+        this.settingsItemList = settingsItemList;
+        this.context = context;
+        this.onSettingsItemClick = onSettingsItemClick;
     }
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.settings_section, parent, false);
-        return new CategoryViewHolder(view);
+    public SettingsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.settings_list_item, parent, false);
+        return new SettingsAdapter.MyViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        // holder.icon.setImageDrawable();
-        holder.title.setText(categories.get(position).getTitle());
+    public void onBindViewHolder(@NonNull SettingsAdapter.MyViewHolder holder, int position) {
+        holder.settingsDescription.setText(settingsItemList.get(position).getSettingDescription());
+        holder.settingsIcon.setImageDrawable(ContextCompat.getDrawable(context, settingsItemList.get(position).getIcon()));
+        holder.itemView.setOnClickListener(view -> onSettingsItemClick.onClick(settingsItemList.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return settingsItemList.size();
     }
 
-    public void setCategoryList(List<SettingsCategory> list) {
-        categories = list;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView settingsDescription;
+        private ImageView settingsIcon;
+
+        public MyViewHolder(@NonNull View itemView) {
+
+            super(itemView);
+
+            settingsIcon = itemView.findViewById(R.id.settingsIcon);
+            settingsDescription = itemView.findViewById(R.id.settingDescription);
+
+        }
+    }
+
+    public void setSettingsItemList(List<SettingsItem> settingsItemList) {
+        this.settingsItemList = settingsItemList;
         notifyDataSetChanged();
     }
 
