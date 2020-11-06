@@ -56,7 +56,11 @@ public class BookListLiveData extends
                         Map<String, Object> bookDetails = document.getData();
                         itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
                         itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
+                        itemToAdd.setDescription((String) bookDetails.getOrDefault("description", "default description"));
                         itemToAdd.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
+                        itemToAdd.setOwner((String) bookDetails.getOrDefault("owner", "default owner"));
+                        itemToAdd.setBorrower((String) bookDetails.getOrDefault("borrower", "default borrower"));
+                        itemToAdd.setStatus((String) bookDetails.getOrDefault("status", "Available"));
                         bookListTemp.add(itemToAdd);
                 }
                 bookList.setValue(bookListTemp);

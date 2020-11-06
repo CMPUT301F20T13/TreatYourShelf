@@ -6,19 +6,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
 
     private List<Book> bookList;
-    
+
+
     public BookListAdapter(List<Book> bookList) {
         this.bookList = bookList;
+
     }
 
     @NonNull
@@ -32,6 +37,10 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     public void onBindViewHolder(@NonNull BookListAdapter.MyViewHolder holder, int position) {
         holder.title.setText(bookList.get(position).getTitle());
         holder.author.setText(bookList.get(position).getAuthor());
+        holder.bookItem.setOnClickListener(v -> {
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(bookList.get(position).getIsbn());
+            Navigation.findNavController(v).navigate(action);
+        });
     }
 
     @Override
@@ -39,7 +48,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         return bookList.size();
     }
 
-    public void clear(){
+    public void clear() {
         bookList.clear();
     }
 
@@ -52,6 +61,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
 
         private final TextView title;
         private final TextView author;
+        private final MaterialCardView bookItem;
 
         public MyViewHolder(@NonNull View itemView) {
 
@@ -59,6 +69,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
 
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
+            bookItem = itemView.findViewById(R.id.book_list_item_cardview);
         }
     }
 }

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +34,14 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.bottomsheet_barcode_scanning_results, container, false);
 
         ImageView closeBottomSheet = view.findViewById(R.id.close_bottomsheet);
+        Button viewBookDetailsBt = view.findViewById(R.id.view_details_bt);
+        viewBookDetailsBt.setOnClickListener(view1 -> {
+            // Want to navigate to Book Details Screen
+            NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment().setISBN("");
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            dismiss();
+
+        });
         closeBottomSheet.setOnClickListener(view1 -> dismiss());
         return view;
     }

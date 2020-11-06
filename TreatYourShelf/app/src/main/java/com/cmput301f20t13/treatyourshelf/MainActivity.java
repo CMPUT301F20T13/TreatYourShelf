@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
+import com.cmput301f20t13.treatyourshelf.ui.settings.BottomSheetSettingsMenu;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
@@ -73,9 +74,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.bottom_app_search) {
+        switch (item.getItemId()) {
+            case R.id.bottom_app_search: {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
+                break;
+            }
+            case R.id.app_settings: {
+                BottomSheetSettingsMenu bottomSheetSettingsMenu = new BottomSheetSettingsMenu();
+                bottomSheetSettingsMenu.show(getSupportFragmentManager(), null);
+            }
 
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
         }
         return true;
 
