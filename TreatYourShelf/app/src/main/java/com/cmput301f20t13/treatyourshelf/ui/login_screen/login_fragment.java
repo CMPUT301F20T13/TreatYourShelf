@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 /**
  * Login Fragment, allows the user to log in
  * using there email address and a password.
- * Uses firebase authentication.
+ * Uses firebase authentication
  */
 public class login_fragment extends Fragment {
 
