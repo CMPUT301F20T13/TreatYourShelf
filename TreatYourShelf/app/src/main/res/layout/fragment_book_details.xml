@@ -56,7 +56,7 @@
                 android:id="@+id/book_details_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#FFFFFF"
+
                 app:shapeAppearanceOverlay="@style/CustomShapeAppearanceBookDetailCardView"
 
                 android:checkable="false"

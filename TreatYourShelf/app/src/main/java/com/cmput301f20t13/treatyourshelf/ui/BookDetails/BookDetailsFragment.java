@@ -128,18 +128,22 @@ public class BookDetailsFragment extends Fragment {
      * @param book   candidate book
      */
     public void changeStatusColor(TextView status, String book) {
-        switch (book) {
-            /*Changes the color of the status based on the text*/
-            case "Available":
-            case "Accepted":
-                status.setTextColor(0xFF00FF00); /*Green Color*/
-                break;
-            case "Requested":
-                status.setTextColor(0xFF0000FF); /*Blue Color*/
-                break;
-            case "Borrowed":
-                status.setTextColor(0xFFFF0000); /*Red Color*/
-                break;
+        if (book != null) {
+
+
+            switch (book) {
+                /*Changes the color of the status based on the text*/
+                case "Available":
+                case "Accepted":
+                    status.setTextColor(0xFF00FF00); /*Green Color*/
+                    break;
+                case "Requested":
+                    status.setTextColor(0xFF0000FF); /*Blue Color*/
+                    break;
+                case "Borrowed":
+                    status.setTextColor(0xFFFF0000); /*Red Color*/
+                    break;
+            }
         }
     }
 
