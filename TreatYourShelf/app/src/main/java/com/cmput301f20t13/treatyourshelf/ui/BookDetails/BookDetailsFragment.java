@@ -108,14 +108,14 @@ public class BookDetailsFragment extends Fragment {
                 .show());
 
 
-        ImageButton editButton = view.findViewById(R.id.book_edit_button);
-        if (bookListViewModel.ownerList) {
-            editButton.setVisibility(View.VISIBLE);
-        }
-        editButton.setOnClickListener(v -> {
-            // Not implemented yet
-            /*TODO - call edit book fragment*/
-        });
+        //ImageButton editButton = view.findViewById(R.id.book_edit_button);
+//        if (bookListViewModel.ownerList) {
+//            editButton.setVisibility(View.VISIBLE);
+//        }
+//        editButton.setOnClickListener(v -> {
+//            // Not implemented yet
+//            /*TODO - call edit book fragment*/
+//        });
 
         return view;
     }
@@ -156,7 +156,6 @@ public class BookDetailsFragment extends Fragment {
      */
     public void setSumFragBundle(Book book, Fragment summaryFragment) {
         Bundle descBundle = new Bundle();
-       // System.out.println(book.getDescription());
         descBundle.putString("description", book.getDescription());
         summaryFragment.setArguments(descBundle);
     }
