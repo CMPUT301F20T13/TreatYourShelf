@@ -21,9 +21,20 @@ import com.cmput301f20t13.treatyourshelf.data.Request;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 
-
+/**
+ * RequestDetailsFragment displays the request details for a specific book
+ * The owner can decide to accept or decline the request
+ */
 public class RequestDetailsFragment extends Fragment {
 
+    /**
+     * Creates the fragment view
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
+     * @param savedInstanceState a bundle
+     * @return returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

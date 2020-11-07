@@ -123,8 +123,7 @@ public class BookDetailsFragment extends Fragment {
 
         Button viewRequestsButton = view.findViewById(R.id.view_request_button);
         viewRequestsButton.setOnClickListener(v -> {
-            /*TODO - changed hardcoded isbn*/
-            NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToRequestListFragment().setISBN("2234567891011");
+            NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToRequestListFragment().setISBN(Isbn);
             Navigation.findNavController(v).navigate(action);
         });
 
