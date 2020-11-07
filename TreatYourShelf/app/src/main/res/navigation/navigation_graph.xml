@@ -79,6 +79,10 @@
             android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
             app:destination="@id/requestDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addBookFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"
+        android:label="AddBookFragment" />
 
 
 </navigation>

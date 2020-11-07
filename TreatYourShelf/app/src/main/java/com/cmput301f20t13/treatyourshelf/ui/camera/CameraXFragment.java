@@ -159,14 +159,17 @@ public class CameraXFragment extends Fragment {
                             barcode.getRawValue();
                             barcode.getBoundingBox();
 //                            System.out.println(barcode.getBoundingBox());
-//                            System.out.println(barcode.getRawValue());
+//                            System.out.println(barcode.getRawValue())
 
+                            System.out.print(barcode.getRawValue());
+                            System.out.print(barcode.getDisplayValue());
+                            System.out.print(barcode.getRawBytes().toString());
 
                             cameraProvider.unbindAll();
                             //Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
                             //TODO: Start barcode loading animation
                             //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
-                            BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults();
+                            BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults(barcode.getDisplayValue());
                             bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
                             getChildFragmentManager().executePendingTransactions();
                             bottomSheetScannedISBNResults.setDissmissListener(() -> {

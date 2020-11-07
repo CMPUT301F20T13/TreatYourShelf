@@ -32,15 +32,16 @@ public class AllBooksFragment extends Fragment {
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         ArrayList<Book> bookArray = new ArrayList<>();
         bookListAdapter = new BookListAdapter(bookArray);
-
+        RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
+        bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
         bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
 
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (bookList != null ) {
                 bookListAdapter.clear();
                 bookListAdapter.setBookList(bookList);
-                RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
-                bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
                 bookRv.setAdapter(bookListAdapter);
                 progressBar.setVisibility(View.GONE);
             }
