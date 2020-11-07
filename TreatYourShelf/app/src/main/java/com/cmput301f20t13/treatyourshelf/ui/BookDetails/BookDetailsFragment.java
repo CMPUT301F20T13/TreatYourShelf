@@ -62,7 +62,7 @@ public class BookDetailsFragment extends Fragment {
         /*Fragments within the Tab Layout*/
         BookDetailsDtab detailsFragment = new BookDetailsDtab();
         BookDetailsStab summaryFragment = new BookDetailsStab();
-
+        BookViewPagerAdapter viewPagerAdapter = new BookViewPagerAdapter(getChildFragmentManager(), 0);
         /*View Models - where the fragment retrieves its data from*/
         bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
@@ -80,6 +80,9 @@ public class BookDetailsFragment extends Fragment {
                 changeStatusColor(status, book.getStatus());
                 setSumFragBundle(book, summaryFragment);
                 setDetFragBundle(book, detailsFragment);
+                viewPagerAdapter.addFragment(summaryFragment, "summary");
+                viewPagerAdapter.addFragment(detailsFragment, "details");
+                viewPager.setAdapter(viewPagerAdapter);
             } else {
                 Log.d("TAG", "waiting for info");
             }
@@ -87,10 +90,8 @@ public class BookDetailsFragment extends Fragment {
 
 
         /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
-        BookViewPagerAdapter viewPagerAdapter = new BookViewPagerAdapter(getChildFragmentManager(), 0);
-        viewPagerAdapter.addFragment(summaryFragment, "summary");
-        viewPagerAdapter.addFragment(detailsFragment, "details");
-        viewPager.setAdapter(viewPagerAdapter);
+
+
 
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
         if (!bookListViewModel.ownerList) {
