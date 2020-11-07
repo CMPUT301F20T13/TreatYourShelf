@@ -52,11 +52,13 @@ public class BookDetailsFragment extends Fragment {
         TextView title = view.findViewById(R.id.book_title);
         TextView author = view.findViewById(R.id.book_author);
         TextView status = view.findViewById(R.id.book_status);
-        TextView description = view.findViewById(R.id.book_description);
+
         String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
         System.out.println("The ISBN is" + Isbn);
         /*Tab Layout that includes a Summary tab and Details Tab*/
-
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager viewPager = view.findViewById(R.id.book_details_view_pager);
+        tabLayout.setupWithViewPager(viewPager);
         /*Fragments within the Tab Layout*/
         BookDetailsDtab detailsFragment = new BookDetailsDtab();
         BookDetailsStab summaryFragment = new BookDetailsStab();
@@ -75,9 +77,12 @@ public class BookDetailsFragment extends Fragment {
                 title.setText(book.getTitle());
                 author.setText(book.getAuthor());
                 status.setText(book.getStatus());
-                description.setText(book.getDescription());
                 changeStatusColor(status, book.getStatus());
-
+                setSumFragBundle(book, summaryFragment);
+                setDetFragBundle(book, detailsFragment);
+                viewPagerAdapter.addFragment(summaryFragment, "summary");
+                viewPagerAdapter.addFragment(detailsFragment, "details");
+                viewPager.setAdapter(viewPagerAdapter);
             } else {
                 Log.d("TAG", "waiting for info");
             }
@@ -85,6 +90,7 @@ public class BookDetailsFragment extends Fragment {
 
 
         /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
+
 
 
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
@@ -151,7 +157,6 @@ public class BookDetailsFragment extends Fragment {
      */
     public void setSumFragBundle(Book book, Fragment summaryFragment) {
         Bundle descBundle = new Bundle();
-        // System.out.println(book.getDescription());
         descBundle.putString("description", book.getDescription());
         summaryFragment.setArguments(descBundle);
     }
