@@ -28,7 +28,6 @@ public class BookDetailsStab extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle!= null) {
             String descString = bundle.getString("description");
-            System.out.println(descString);
             description.setText(descString);
         }
 

@@ -4,10 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bottom_app_bar_books"
-        android:icon="@drawable/ic_baseline_book_24"
-        android:title="Books"
+        android:id="@+id/bottom_app_search"
+        android:icon="@drawable/ic_round_search_24"
+        android:title="Search"
         app:showAsAction="ifRoom"/>
 
+    <item
+
+        android:id="@+id/app_settings"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="Settings"
+        app:showAsAction="always" />
 
 </menu>

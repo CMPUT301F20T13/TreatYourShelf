@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_navigation_menu"
+        app:navigationIcon="@drawable/ic_round_menu_24"
         app:hideOnScroll="true"
         app:fabAlignmentMode="center"
         app:fabCradleRoundedCornerRadius="32dp"
