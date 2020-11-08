@@ -31,11 +31,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * BottomSheet which shows Barcode Scanning Book Result. Still need to add in Visual Indicator when book does not exist.
+ */
 public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
     private String isbn;
     private BookDetailsViewModel bookDetailsViewModel;
     private OnDialogDismissedListener onDismissListener;
 
+    /**
+     *  Constructor for bottom sheet
+     * @param isbn the isbn of the book scanned
+     */
     BottomSheetScannedISBNResults(String isbn) {
         this.isbn = isbn;
     }
@@ -93,6 +101,9 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
         onDismissListener.onDialogDismissed();
     }
 
+    /**
+     * Interface for when dialog is dismissed
+     */
     public interface OnDialogDismissedListener {
         void onDialogDismissed();
     }

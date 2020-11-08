@@ -18,6 +18,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * BottomSheet which composes the navigation menu
+ */
 public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
 
 
@@ -41,6 +45,10 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
         return view;
     }
 
+    /**
+     * Sets up the navigation elements
+     * @return the list of navigation items to pass to adapter
+     */
     private List<NavigationItem> setUpNavigationList() {
         List<NavigationItem> navigationItems = new ArrayList<>();
 
