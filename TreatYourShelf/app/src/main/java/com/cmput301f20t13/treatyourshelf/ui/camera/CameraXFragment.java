@@ -44,6 +44,9 @@ import java.util.concurrent.Executors;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * Fragment that allows user to scan ISBN numbers of books.
+ */
 public class CameraXFragment extends Fragment {
 
     private ImageCapture imageCapture;
@@ -54,6 +57,9 @@ public class CameraXFragment extends Fragment {
     private RectF rectF;
     private boolean cameraFlashToggled = false;
 
+    /**
+     * Constructor for BarcodeScanning Fragment, sets permissions string array to Camera.
+     */
     public CameraXFragment() {
         permissions = new String[]{Manifest.permission.CAMERA};
     }
@@ -87,6 +93,11 @@ public class CameraXFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Check if permissions to use camera were accepted
+     *
+     * @return boolean indicating whether permissions were accepted or not
+     */
     private Boolean allPermissionsGranted() {
 
 
@@ -134,6 +145,9 @@ public class CameraXFragment extends Fragment {
         cameraExecutor = Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Starts Camera Preview
+     */
     private void startCameraPreview() {
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
 
@@ -200,12 +214,12 @@ public class CameraXFragment extends Fragment {
         }, ContextCompat.getMainExecutor(requireContext()));
     }
 
+    /**
+     * Stops Camera Preview
+     */
     private void stopCameraPreview() {
 
         cameraExecutor.shutdown();
-    }
-
-    private void takePhoto() {
     }
 
     @Override
@@ -213,6 +227,7 @@ public class CameraXFragment extends Fragment {
         super.onDestroy();
         stopCameraPreview();
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -229,6 +244,13 @@ public class CameraXFragment extends Fragment {
         }
     }
 
+    /**
+     * Draws the overlay over the surfaceholder to give a visual indicator for the field of scanning for the barcode
+     * @param surfaceHolder the surfaceholder to draw the overlay on.
+     * @param heightCropPercent The height percentage to crop the fullscreen in order to draw the overlay
+     * @param widthCropPercent The width percentage to crop the fullscreen in order to draw the overlay
+     * @return the rectangle used for the barcode scanning voerlay.
+     */
     private RectF drawOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
                               int widthCropPercent) {
         // Set paint colors and styles for rectangle outline, background and fill

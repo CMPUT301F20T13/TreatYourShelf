@@ -18,6 +18,9 @@ import com.cmput301f20t13.treatyourshelf.R;
 
 import java.util.List;
 
+/**
+ * Recycler view adapter for Naviagtion items
+ */
 public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAdapter.MyViewHolder> {
 
     private List<NavigationItem> navigationItemList;
@@ -28,6 +31,13 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         public void onClick(NavigationItem navigationItem);
     }
 
+    /**
+     * Constructor for item adapter
+     *
+     * @param navigationItemList    navigation item list
+     * @param context               the context needed to get icons.
+     * @param onNavigationItemClick interface for item clicks
+     */
     public NavigationItemAdapter(List<NavigationItem> navigationItemList, Context context, OnNavigationItemClick onNavigationItemClick) {
         this.navigationItemList = navigationItemList;
         this.context = context;

@@ -23,6 +23,9 @@ import com.google.mlkit.vision.common.InputImage;
 
 import java.util.List;
 
+/**
+ * Class which analyzes each frame sent by the camera and determines if a barcode is there
+ */
 public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
     private Context context;
@@ -42,6 +45,10 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
         this.widthCropPercent = widthCropPercent;
     }
 
+    /**
+     * function which is called to analyze each picture
+     * @param imageProxy the image being analyzed
+     */
     @androidx.camera.core.ExperimentalGetImage
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
