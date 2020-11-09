@@ -26,6 +26,17 @@ public class RequestListViewModel extends ViewModel {
         return liveData;
     }
 
+    public LiveData<List<Request>> getRequestByOwnerLiveData(String owner){
+        liveData = repository.getRequestByOwnerLiveData(owner);
+        return liveData;
+    }
+
+    public LiveData<List<Request>> getRequestByIsbnOwnerLiveData(String isbn, String owner){
+        liveData = repository.getRequestByIsbnOwnerLiveData(isbn, owner);
+        return liveData;
+    }
+
+
     public LiveData<List<Request>> getRequestList() {
         return liveData.requestList;
     }

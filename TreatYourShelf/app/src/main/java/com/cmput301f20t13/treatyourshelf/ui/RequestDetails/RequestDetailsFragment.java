@@ -80,7 +80,7 @@ public class RequestDetailsFragment extends Fragment {
 
         Button acceptButton = view.findViewById(R.id.accept_button);
         acceptButton.setOnClickListener(v -> {
-            requestListViewModel.updateStatusByIsbn("requesterString", isbnString, "Accepted");
+            requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
 
             requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
                 if (requestList != null){
@@ -100,7 +100,7 @@ public class RequestDetailsFragment extends Fragment {
 
         Button declineButton = view.findViewById(R.id.decline_button);
         declineButton.setOnClickListener(v -> {requestListViewModel
-                .updateStatusByIsbn("requesterString", isbnString, "Declined");
+                .updateStatusByIsbn(requesterString, isbnString, "Declined");
         Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
         });
 

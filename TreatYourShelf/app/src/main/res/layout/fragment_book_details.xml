@@ -127,17 +127,19 @@
                         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
 
                         />
+
+                    <Button
+                        android:id="@+id/view_request_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_requests"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <Button
-                android:id="@+id/view_request_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/view_requests"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+
 
         </LinearLayout>
 

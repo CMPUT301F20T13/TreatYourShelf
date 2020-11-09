@@ -21,17 +21,30 @@ import java.util.Objects;
 
 public class RequestListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private final CollectionReference collectionRequests = firebaseFirestore.collection("Requests");
+    private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
 
     public RequestListLiveData getRequestByIdLiveData(String bookId) {
-        Query query = firebaseFirestore.collection("requests").whereEqualTo("id", bookId);
+        Query query = collectionRequests.whereEqualTo("id", bookId);
         return new RequestListLiveData(query);
     }
 
     public RequestListLiveData getRequestByIsbnLiveData(String isbn) {
-        Query query = firebaseFirestore.collection("requests").whereEqualTo("isbn", isbn);
+        Query query = collectionRequests.whereEqualTo("isbn", isbn);
         return new RequestListLiveData(query);
     }
+
+    public RequestListLiveData getRequestByOwnerLiveData(String owner) {
+        Query query = collectionRequests.whereEqualTo("owner", owner);
+        return new RequestListLiveData(query);
+    }
+
+    public RequestListLiveData getRequestByIsbnOwnerLiveData(String isbn, String owner) {
+        Query query = collectionRequests
+                .whereEqualTo("isbn", isbn)
+                .whereEqualTo("owner", owner);
+        return new RequestListLiveData(query);
+    }
+    
 
     public void updateStatusByIsbn(String requester, String isbn, String status){
         collectionRequests
@@ -47,5 +60,7 @@ public class RequestListRepository {
                     }
                 });
     }
+
+
 
 }
