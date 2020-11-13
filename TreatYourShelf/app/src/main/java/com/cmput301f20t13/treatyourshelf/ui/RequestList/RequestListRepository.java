@@ -44,7 +44,13 @@ public class RequestListRepository {
                 .whereEqualTo("owner", owner);
         return new RequestListLiveData(query);
     }
-    
+
+    public RequestListLiveData getRequestByIsbnRequesterLiveData(String isbn, String requester) {
+        Query query = collectionRequests
+                .whereEqualTo("isbn", isbn)
+                .whereEqualTo("requester", requester);
+        return new RequestListLiveData(query);
+    }
 
     public void updateStatusByIsbn(String requester, String isbn, String status){
         collectionRequests

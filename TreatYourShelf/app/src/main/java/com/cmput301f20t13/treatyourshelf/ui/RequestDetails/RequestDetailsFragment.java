@@ -1,12 +1,13 @@
 package com.cmput301f20t13.treatyourshelf.ui.RequestDetails;
 
 
-import android.app.AlertDialog;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,11 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
+
+import java.security.acl.Group;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 /**
  * RequestDetailsFragment displays the request details for a specific book
@@ -45,70 +51,72 @@ public class RequestDetailsFragment extends Fragment {
         TextView isbn = view.findViewById(R.id.book_isbn);
         TextView owner = view.findViewById(R.id.book_owner);
         TextView status = view.findViewById(R.id.book_request_status);
+        Button acceptButton = view.findViewById(R.id.accept_button);
+        Button declineButton = view.findViewById(R.id.decline_button);
+        LinearLayout requestButtons = view.findViewById(R.id.request_buttons);
         assert this.getArguments() != null;
         String isbnString = this.getArguments().getString("ISBN");
         String requesterString = this.getArguments().getString("REQUESTER");
+        String ownerString = this.getArguments().getString("OWNER");
 
         /*requestListViewModel sets the requester, isbn and owner*/
         RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity())
                 .get(RequestListViewModel.class);
-        requestListViewModel.getRequestByIsbnLiveData(isbnString)
+
+         RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity())
+                 .get(RequestDetailsViewModel.class);
+        requestDetailsViewModel.getRequestLiveData(isbnString, requesterString, ownerString)
                 .observe(getViewLifecycleOwner(), Observable -> {});
-        requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
-            if (requestList != null) {
-                Request request = requestList.get(0);
+        requestDetailsViewModel.getRequest().observe(getViewLifecycleOwner(), request -> {
+        if (request != null) {
                 requester.setText(request.getRequester());
                 isbn.setText(request.getIsbn());
                 owner.setText(request.getOwner());
                 status.setText(request.getStatus());
+                checkStatus(request.getStatus(), requestButtons);
+                title.setText(request.getTitle());
+                author.setText(request.getAuthor());
             }
         });
 
-        /*bookListViewModel sets the title and author*/
-        BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity())
-                .get(BookListViewModel.class);
-        bookListViewModel.getBookByIsbnLiveData(isbnString)
-                .observe(getViewLifecycleOwner(), Observable -> {});
-        bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
-            if (bookList != null) {
-                Book book = bookList.get(0);
-                title.setText(book.getTitle());
-                author.setText(book.getAuthor());
-            }
-        });
-
-
-        Button acceptButton = view.findViewById(R.id.accept_button);
+        /*Accept Button*/
         acceptButton.setOnClickListener(v -> {
-            requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
-
             requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
                 if (requestList != null){
                     for (Request request : requestList){
-                        if (request.getRequester().equals(requesterString)){
-                            continue;
-                        }
                         requestListViewModel
                                 .updateStatusByIsbn(request.getRequester(), request.getIsbn(), "Declined");
                     }
                 }
             });
-
+            requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
+            requestButtons.setVisibility(INVISIBLE);
         });
 
-
-        Button declineButton = view.findViewById(R.id.decline_button);
+        /*Decline Button*/
         declineButton.setOnClickListener(v -> {requestListViewModel
                 .updateStatusByIsbn(requesterString, isbnString, "Declined");
-        Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
+            requestButtons.setVisibility(INVISIBLE);
         });
-
 
 
         return view;
     }
 
+    /**
+     * Checks the request of the status and hides the request buttons
+     * @param status - status of the request
+     * @param requestButtons - the accept and decline buttons
+     */
+    public void checkStatus(String status, LinearLayout requestButtons){
+        if (status.equals("Requested")){
+            requestButtons.setVisibility(VISIBLE);
+        } else {
+            requestButtons.setVisibility(INVISIBLE);
+        }
+    }
 
 
 }

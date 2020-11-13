@@ -92,11 +92,6 @@ public class BookDetailsFragment extends Fragment {
             }
         });
 
-
-        /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
-
-
-
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
         if (!bookListViewModel.ownerList) {
             requestButton.setVisibility(View.VISIBLE);
@@ -124,7 +119,8 @@ public class BookDetailsFragment extends Fragment {
 
         Button viewRequestsButton = view.findViewById(R.id.view_request_button);
         viewRequestsButton.setOnClickListener(v -> {
-            NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToRequestListFragment().setISBN(Isbn);
+            NavDirections action = BookDetailsFragmentDirections
+                    .actionBookDetailsFragmentToRequestListFragment().setISBN(Isbn);
             Navigation.findNavController(v).navigate(action);
         });
 

@@ -36,6 +36,10 @@ public class RequestListViewModel extends ViewModel {
         return liveData;
     }
 
+    public LiveData<List<Request>> getRequestByIsbnRequesterLiveData(String isbn, String requester){
+        liveData = repository.getRequestByIsbnRequesterLiveData(isbn, requester);
+        return liveData;
+    }
 
     public LiveData<List<Request>> getRequestList() {
         return liveData.requestList;

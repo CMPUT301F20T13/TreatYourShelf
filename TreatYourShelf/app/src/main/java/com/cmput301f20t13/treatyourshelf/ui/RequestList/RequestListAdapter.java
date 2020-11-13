@@ -45,7 +45,8 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             NavDirections action =
                     RequestListFragmentDirections.actionRequestListFragmentToRequestDetailsFragment()
                             .setISBN(requestList.get(position).getIsbn())
-                            .setREQUESTER(requestList.get(position).getRequester());
+                            .setREQUESTER(requestList.get(position).getRequester())
+                            .setOWNER(requestList.get(position).getOwner());
             Navigation.findNavController(v).navigate(action);
         });
     }

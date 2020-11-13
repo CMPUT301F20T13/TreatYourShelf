@@ -66,6 +66,10 @@
             android:name="REQUESTER"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="OWNER"
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/requestListFragment"
