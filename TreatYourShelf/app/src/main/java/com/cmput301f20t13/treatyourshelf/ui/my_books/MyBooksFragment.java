@@ -46,12 +46,5 @@ public class MyBooksFragment extends Fragment {
         return view;
     }
 
-    private void setInitialData() {
-
-        Book book = new Book("How To Fail All Your Classes And Lose The Will To Live", "Charlie Chen", "223-4-56-789101-1");
-
-        myBookViewModel.insert(book);
-
-    }
 
 }

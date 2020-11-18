@@ -37,6 +37,7 @@ public class AddBookRepository {
         insertBook.put("isbn", book.getIsbn());
         insertBook.put("description", book.getDescription());
         insertBook.put("title", book.getTitle());
+        insertBook.put("owner", book.getOwner());
         firebaseFirestore.collection("books").document()
                 .set(book)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

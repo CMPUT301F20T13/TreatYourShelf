@@ -32,9 +32,13 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
+import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookViewModel;
+import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragmentArgs;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -49,6 +53,7 @@ import static android.content.ContentValues.TAG;
  */
 public class CameraXFragment extends Fragment {
 
+    private int serviceCode;
     private ImageCapture imageCapture;
     private File outputDirectory;
     private CameraControl cameraControl;
@@ -69,6 +74,10 @@ public class CameraXFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        Utils.hideKeyboardFrom(requireContext(), view);
+
+        serviceCode = CameraXFragmentArgs.fromBundle(getArguments()).getServiceCode();
+
 
         ImageButton closeCameraBt = view.findViewById(R.id.close_camera_bt);
         ImageButton toggleCameraFlashBt = view.findViewById(R.id.camera_flash_bt);
@@ -175,23 +184,28 @@ public class CameraXFragment extends Fragment {
 //                            System.out.println(barcode.getBoundingBox());
 //                            System.out.println(barcode.getRawValue())
 
-                            System.out.print(barcode.getRawValue());
-                            System.out.print(barcode.getDisplayValue());
-                            System.out.print(barcode.getRawBytes().toString());
+                            if (serviceCode == 0) {
 
-                            cameraProvider.unbindAll();
-                            //Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
-                            //TODO: Start barcode loading animation
-                            //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
-                            BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults(barcode.getDisplayValue());
-                            bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
-                            getChildFragmentManager().executePendingTransactions();
-                            bottomSheetScannedISBNResults.setDissmissListener(() -> {
-                                //Dialog got dismissed
-                                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
-                                cameraControl.enableTorch(cameraFlashToggled);
 
-                            });
+                                cameraProvider.unbindAll();
+                                //Toast.makeText(requireContext(), barcode.getRawValue(), Toast.LENGTH_SHORT).show();
+                                //TODO: Start barcode loading animation
+                                //TODO: Check firebase if result exists, if it dosen't, bind camera again, else open bottom sheet and display result
+                                BottomSheetScannedISBNResults bottomSheetScannedISBNResults = new BottomSheetScannedISBNResults(barcode.getRawValue());
+                                bottomSheetScannedISBNResults.show(getChildFragmentManager(), null);
+                                getChildFragmentManager().executePendingTransactions();
+                                bottomSheetScannedISBNResults.setDissmissListener(() -> {
+                                    //Dialog got dismissed
+                                    cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
+                                    cameraControl.enableTorch(cameraFlashToggled);
+
+                                });
+                            } else if (serviceCode == 1) {
+                                // Add set isbn value to shared viewModel
+                                AddBookViewModel addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
+                                addBookViewModel.setScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            }
                         }
 
                     }, 74, 8, requireContext()));
@@ -246,9 +260,10 @@ public class CameraXFragment extends Fragment {
 
     /**
      * Draws the overlay over the surfaceholder to give a visual indicator for the field of scanning for the barcode
-     * @param surfaceHolder the surfaceholder to draw the overlay on.
+     *
+     * @param surfaceHolder     the surfaceholder to draw the overlay on.
      * @param heightCropPercent The height percentage to crop the fullscreen in order to draw the overlay
-     * @param widthCropPercent The width percentage to crop the fullscreen in order to draw the overlay
+     * @param widthCropPercent  The width percentage to crop the fullscreen in order to draw the overlay
      * @return the rectangle used for the barcode scanning voerlay.
      */
     private RectF drawOverlay(SurfaceHolder surfaceHolder, int heightCropPercent,
