@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
@@ -66,8 +67,8 @@ public class ProfileFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Going to allow for editing of the username and email and picture
-                // TODO : Add functionality for editing the profile picture
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileEditFragment);
+                // dismiss();
             }
         });
         return view;

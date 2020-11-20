@@ -24,4 +24,5 @@
     <string name="book_image">book_image</string>
     <string name="accept">ACCEPT</string>
     <string name="decline">DECLINE</string>
+    <string name="username_header">Username:</string>
 </resources>

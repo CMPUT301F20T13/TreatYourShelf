@@ -89,8 +89,7 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
         }
 
         // Query for the username and email
-        ProfileRepository pr = new ProfileRepository();
-        ProfileLiveData pld = pr.getProfileByEmailLiveData(profileEmail);
+        ProfileLiveData pld = ProfileRepository.getProfileByEmailLiveData(profileEmail);
         pld.observe(getViewLifecycleOwner(), Observable -> {});
 
         // Retrieve the data and set the text
