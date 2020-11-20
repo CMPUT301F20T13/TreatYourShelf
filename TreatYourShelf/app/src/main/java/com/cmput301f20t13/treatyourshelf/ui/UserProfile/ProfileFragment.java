@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +50,8 @@ public class ProfileFragment extends Fragment {
                 username.setText(profile.getUsername());
                 email.setText(profile.getEmail());
                 phone.setText(profile.getPhoneNumber());
+                // Get the profile picture
+                Glide.with(view).load(profile.getProfileImageUrl()).into(image);
             }
             else {
                 Log.d("TAG", "waiting for info");

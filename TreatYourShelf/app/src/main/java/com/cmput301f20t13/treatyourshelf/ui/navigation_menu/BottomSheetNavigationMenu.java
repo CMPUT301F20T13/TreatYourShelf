@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Profile;
 import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileLiveData;
@@ -77,6 +79,7 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
         // Get the textviews
         TextView username = (TextView) view.findViewById(R.id.usernameTV);
         TextView email = (TextView) view.findViewById(R.id.emailTV);
+        ImageView image = (ImageView) view.findViewById(R.id.profile_image_bsnv);
 
         // Get currently logged in user email
         String profileEmail = "default email";
@@ -95,14 +98,14 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
             if (profile != null) {
                 username.setText(profile.getUsername());
                 email.setText(profile.getEmail());
+                // Set the profile picture
+                Glide.with(view).load(profile.getProfileImageUrl()).into(image);
             } else {
                 Log.d("TAG", "waiting for info");
             }
         });
 
-        Log.e("USER_OUTPUT", "user: " + username.getText().toString() + ", " + email.getText().toString());
-
-        // TODO : Set the profile picture here
+        // TODO : Finish adding the profile pictures to properly link to an actual png because so far it can't find the image
     }
 
 }

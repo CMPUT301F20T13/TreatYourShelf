@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cmput301f20t13.treatyourshelf.data.Profile;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -53,7 +55,9 @@ public class ProfileLiveData extends LiveData<Profile> implements EventListener<
                         profileTemp.setPassword((String) profileDetails.getOrDefault("password", "default password"));
                         profileTemp.setEmail((String) profileDetails.getOrDefault("email", "default email"));
                         profileTemp.setPhoneNumber((String) profileDetails.getOrDefault("phoneNumber", "default number"));
-                        // profileTemp.setProfileImage((ImageView) profileDetails.getOrDefault("profileImage", ""));
+                        // Get the profile URL
+                        DocumentReference profileRef = (DocumentReference) profileDetails.getOrDefault("profileImage", "");
+                        profileTemp.setProfileImageUrl(profileRef.toString());
                 }
                 profile.setValue(profileTemp);
             } else {

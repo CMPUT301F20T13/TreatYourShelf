@@ -7,7 +7,7 @@ public class Profile {
     private String password;
     private String email;
     private String phoneNumber;
-    private ImageView profileImage;
+    private String profileImageUrl;
 
     public Profile(String username, String password, String email, String phoneNumber) {
         this.username = username;
@@ -55,11 +55,11 @@ public class Profile {
         this.phoneNumber = phoneNumber;
     }
 
-    public ImageView getProfileImage() {
-        return profileImage;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setProfileImage(ImageView profileImage) {
-        this.profileImage = profileImage;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }
