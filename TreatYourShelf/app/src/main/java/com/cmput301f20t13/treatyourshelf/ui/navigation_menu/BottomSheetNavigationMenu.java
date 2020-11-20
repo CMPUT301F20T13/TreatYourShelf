@@ -1,29 +1,39 @@
 package com.cmput301f20t13.treatyourshelf.ui.navigation_menu;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.data.Profile;
+import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileLiveData;
+import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileRepository;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 
 /**
  * BottomSheet which composes the navigation menu
  */
 public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
-
 
     @Nullable
     @Override
@@ -38,6 +48,9 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
             dismiss();
         }));
         ConstraintLayout constraintLayout = view.findViewById(R.id.profile_container);
+
+        setUpProfilePreview(view);
+
         constraintLayout.setOnClickListener(view1 -> {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileFragment);
             dismiss();
@@ -58,7 +71,38 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
         NavigationItem navigationItem2 = new NavigationItem(R.id.cameraXFragment, R.drawable.ic_qrcode, "Barcode Scanner");
         navigationItems.add(navigationItem2);
         return navigationItems;
+    }
 
+    private void setUpProfilePreview(View view) {
+        // Get the textviews
+        TextView username = (TextView) view.findViewById(R.id.usernameTV);
+        TextView email = (TextView) view.findViewById(R.id.emailTV);
+
+        // Get currently logged in user email
+        String profileEmail = "default email";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            profileEmail = user.getEmail();
+        }
+
+        // Query for the username and email
+        ProfileRepository pr = new ProfileRepository();
+        ProfileLiveData pld = pr.getProfileByEmailLiveData(profileEmail);
+        pld.observe(getViewLifecycleOwner(), Observable -> {});
+
+        // Retrieve the data and set the text
+        pld.profile.observe(getViewLifecycleOwner(), profile -> {
+            if (profile != null) {
+                username.setText(profile.getUsername());
+                email.setText(profile.getEmail());
+            } else {
+                Log.d("TAG", "waiting for info");
+            }
+        });
+
+        Log.e("USER_OUTPUT", "user: " + username.getText().toString() + ", " + email.getText().toString());
+
+        // TODO : Set the profile picture here
     }
 
 }
