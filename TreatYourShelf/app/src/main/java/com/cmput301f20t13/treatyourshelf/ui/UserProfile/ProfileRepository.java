@@ -10,4 +10,10 @@ public class ProfileRepository {
         Query query = firebaseFirestore.collection("users").whereEqualTo("username", username);
         return new ProfileLiveData(query);
     }
+
+    public ProfileLiveData getProfileByEmailLiveData(String email) {
+        Query query = firebaseFirestore.collection("users").whereEqualTo("email", email);
+        return new ProfileLiveData(query);
+    }
+
 }

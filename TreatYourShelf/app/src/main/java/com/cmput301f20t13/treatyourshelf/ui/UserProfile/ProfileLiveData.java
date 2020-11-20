@@ -19,9 +19,8 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
-public class ProfileLiveData extends
-        LiveData<Profile> implements
-        EventListener<QuerySnapshot> {
+public class ProfileLiveData extends LiveData<Profile> implements EventListener<QuerySnapshot> {
+
     private final Query query;
     public MutableLiveData<Profile> profile = new MutableLiveData<>();
 
@@ -50,9 +49,10 @@ public class ProfileLiveData extends
                 Profile profileTemp = new Profile();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Map<String, Object> profileDetails = document.getData();
-                        profileTemp.setUsername((String) profileDetails.getOrDefault("username", "default title"));
-                        profileTemp.setPassword((String) profileDetails.getOrDefault("password", "default author"));
-                        profileTemp.setEmail((String) profileDetails.getOrDefault("email", "default isbn"));
+                        profileTemp.setUsername((String) profileDetails.getOrDefault("username", "default username"));
+                        profileTemp.setPassword((String) profileDetails.getOrDefault("password", "default password"));
+                        profileTemp.setEmail((String) profileDetails.getOrDefault("email", "default email"));
+                        profileTemp.setPhoneNumber((String) profileDetails.getOrDefault("phoneNumber", "default number"));
                         // profileTemp.setProfileImage((ImageView) profileDetails.getOrDefault("profileImage", ""));
                 }
                 profile.setValue(profileTemp);

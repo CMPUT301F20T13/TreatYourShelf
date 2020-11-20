@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class ProfileFragment extends Fragment {
@@ -32,11 +34,15 @@ public class ProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.profile_email);
         TextView phone = view.findViewById(R.id.profile_phone);
 
-        String profileUsername = "user1"; // TODO: profileUsername should be set with intent of fragment
+        String profileEmail = "user1@gmail.com";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            profileEmail = user.getEmail();
+        }
 
         ProfileViewModel profileViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ProfileViewModel.class);
 
-        profileViewModel.getProfileByUsernameLiveData(profileUsername).observe(getViewLifecycleOwner(), Observable -> {});
+        profileViewModel.getProfileByEmailLiveData(profileEmail).observe(getViewLifecycleOwner(), Observable -> {});
 
         profileViewModel.getProfile().observe(getViewLifecycleOwner(), profile -> {
             if (profile != null ) {
@@ -50,11 +56,8 @@ public class ProfileFragment extends Fragment {
         });
 
         Button editButton = view.findViewById(R.id.profile_edit_button);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Not implemented yet
-            }
+        editButton.setOnClickListener(v -> {
+            // Not implemented yet
         });
         return view;
     }

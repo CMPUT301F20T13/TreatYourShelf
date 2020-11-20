@@ -15,6 +15,10 @@ public class ProfileViewModel extends ViewModel {
         return liveData;
     }
 
+    public LiveData<Profile> getProfileByEmailLiveData(String email) {
+        liveData = repository.getProfileByEmailLiveData(email);
+        return liveData;
+    }
 
     public LiveData<Profile> getProfile() {
         return liveData.profile;
