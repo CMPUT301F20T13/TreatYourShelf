@@ -19,7 +19,7 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 
 import java.util.ArrayList;
 
-public class AllBooksFragment extends Fragment {
+public class OwnedBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
 
     @Nullable
@@ -28,6 +28,7 @@ public class AllBooksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
+        String owner = "user1"; // TODO: set owner with intent of fragment
 
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         ArrayList<Book> bookArray = new ArrayList<>();
@@ -35,7 +36,7 @@ public class AllBooksFragment extends Fragment {
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
         bookListViewModel.clearLiveData();
-        bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
+        bookListViewModel.getBookByOwnerLiveData(owner).observe(getViewLifecycleOwner(), Observable -> {});
 
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (bookList != null ) {
