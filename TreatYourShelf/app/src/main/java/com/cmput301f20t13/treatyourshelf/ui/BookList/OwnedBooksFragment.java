@@ -26,14 +26,19 @@ import java.util.List;
 
 public class OwnedBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
+    // chipGroup is an easy way to store all the chips ids
     private ChipGroup chipGroup;
-    private ArrayList<Book> unfilteredBookList;
+    // unfilteredBookList stores all the owners books so they can be filtered later
+    private final ArrayList<Book> unfilteredBookList = new ArrayList<>();
+    // HashMap to map chip ids to string that represents the status that the chip filters
     private final HashMap<Integer, String> filterIdToName = new HashMap<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
+
+        // Make loading circle visible
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -53,22 +58,25 @@ public class OwnedBooksFragment extends Fragment {
 
         String owner = "user1"; // TODO: set owner with intent of fragment
 
-        //
-        BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
-        ArrayList<Book> bookArray = new ArrayList<>();
-        bookListAdapter = new BookListAdapter(bookArray);
+        // Set up recycler view object
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Initialize BookListAdapter
+        bookListAdapter = new BookListAdapter(new ArrayList<>());
+
+        // Set up BookListViewModel and live data
+        BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.clearLiveData();
         bookListViewModel.getBookByOwnerLiveData(owner).observe(getViewLifecycleOwner(), Observable -> {});
-
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (bookList != null ) {
-                bookListAdapter.clear();
-                bookListAdapter.setBookList(bookList);
-                unfilteredBookList = new ArrayList<>();
+                // Reset adapter by setting it with a new list
+                bookListAdapter.setBookList(new ArrayList<>());
+                // Clear unfilteredBookList and set it to bookList
+                unfilteredBookList.clear();
                 setUnfilteredBookList(bookList);
-                registerFilterChanged();
+                // Set the adapter for the RecyclerView and make loading circle gone
                 bookRv.setAdapter(bookListAdapter);
                 progressBar.setVisibility(View.GONE);
             }
@@ -77,6 +85,7 @@ public class OwnedBooksFragment extends Fragment {
             }
         });
 
+        // Add onCheckedChangeListener for each of the chips. I wish I knew a cleaner way to do this
         availableChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -105,22 +114,36 @@ public class OwnedBooksFragment extends Fragment {
         return view;
     }
 
+    /**
+     * setUnfilteredBookList will set unfilteredBookList to a list of books and register change
+     * @param bookList
+     */
     private void setUnfilteredBookList(List<Book> bookList){
         unfilteredBookList.addAll(bookList);
+        registerFilterChanged();
     }
+
+    /**
+     * registerFilterChanged
+     * called when the filters have been changed or unfilteredBookList changes
+     */
     private void registerFilterChanged(){
-        /* Only keep books in list that have status in checkedFilters */
+        // Only keep books in list that have status in checkedFilters
         List<Book> found = new ArrayList<>();
+        // Get the ids of all the chips
         List<Integer> checkedChipIds = chipGroup.getCheckedChipIds();
+        // Array to store strings that represent which filters are selected
         ArrayList<String> checkedFilters = new ArrayList<>();
         for (Integer id : checkedChipIds){
             checkedFilters.add(filterIdToName.get(id));
         }
+        // Go through unfilteredBookList and keep ones that match checked filters
         for (Book book : unfilteredBookList){
             if (checkedFilters.contains(book.getStatus())){
                 found.add(book);
             }
         }
+        // clear and set book list for adapter
         bookListAdapter.clear();
         bookListAdapter.setBookList(found);
     }
