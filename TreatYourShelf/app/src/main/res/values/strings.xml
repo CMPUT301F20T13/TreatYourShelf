@@ -24,4 +24,8 @@
     <string name="book_image">book_image</string>
     <string name="accept">ACCEPT</string>
     <string name="decline">DECLINE</string>
+    <string name="available">available</string>
+    <string name="requested">requested</string>
+    <string name="accepted">accepted</string>
+    <string name="borrowed">borrowed</string>
 </resources>

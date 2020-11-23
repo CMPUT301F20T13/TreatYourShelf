@@ -39,4 +39,6 @@ public class BookListViewModel extends ViewModel {
     public void select(Book book){selectedBook.setValue(book);}
 
     public LiveData<Book> getSelected() {return selectedBook;}
+
+    public void clearLiveData() { liveData = null; }
 }
