@@ -18,9 +18,11 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
+    private ArrayList<Book> unfilteredBookList;
 
     @Nullable
     @Override
@@ -39,10 +41,10 @@ public class AllBooksFragment extends Fragment {
 
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (bookList != null ) {
+                unfilteredBookList = new ArrayList<>();
+                setUnfilteredBookList(bookList);
                 bookListAdapter.clear();
-                bookListAdapter.setBookList(bookList);
-
-
+                bookListAdapter.setBookList(unfilteredBookList);
                 bookRv.setAdapter(bookListAdapter);
                 progressBar.setVisibility(View.GONE);
             }
@@ -52,5 +54,9 @@ public class AllBooksFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setUnfilteredBookList(List<Book> bookList){
+        unfilteredBookList.addAll(bookList);
     }
 }
