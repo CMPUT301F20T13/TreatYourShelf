@@ -27,6 +27,14 @@
             android:defaultValue="0" />
     </fragment>
     <fragment
+        android:id="@+id/ownedBooksFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookList.OwnedBooksFragment"
+        android:label="OwnedBooksFragment">
+        <action
+            android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.search_page.SearchFragment"
         android:label="SearchFragment" />

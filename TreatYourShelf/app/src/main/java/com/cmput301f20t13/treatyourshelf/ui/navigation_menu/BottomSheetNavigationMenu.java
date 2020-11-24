@@ -53,10 +53,14 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
         List<NavigationItem> navigationItems = new ArrayList<>();
 
         NavigationItem navigationItem = new NavigationItem(R.id.bookListFragment, R.drawable.ic_book_clock, "All Books");
-
         navigationItems.add(navigationItem);
+
         NavigationItem navigationItem2 = new NavigationItem(R.id.cameraXFragment, R.drawable.ic_qrcode, "Barcode Scanner");
         navigationItems.add(navigationItem2);
+
+        NavigationItem navigationItem3 = new NavigationItem(R.id.ownedBooksFragment, R.drawable.ic_baseline_book_24, "My Owned Books");
+        navigationItems.add(navigationItem3);
+
         return navigationItems;
 
     }
