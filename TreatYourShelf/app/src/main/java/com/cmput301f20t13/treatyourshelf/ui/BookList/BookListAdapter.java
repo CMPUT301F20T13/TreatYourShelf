@@ -57,6 +57,10 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         notifyDataSetChanged();
     }
 
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title;
