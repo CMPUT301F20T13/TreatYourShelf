@@ -37,6 +37,7 @@ public class AddBookRepository {
         insertBook.put("isbn", book.getIsbn());
         insertBook.put("description", book.getDescription());
         insertBook.put("title", book.getTitle());
+        insertBook.put("imageUrls", book.getImageUrls());
         insertBook.put("owner", book.getOwner());
         firebaseFirestore.collection("books").document()
                 .set(book)
@@ -60,8 +61,8 @@ public class AddBookRepository {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                 DocumentReference dRef = firebaseFirestore.collection("books").document(document.getId());
-                                 dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                DocumentReference dRef = firebaseFirestore.collection("books").document(document.getId());
+                                dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 

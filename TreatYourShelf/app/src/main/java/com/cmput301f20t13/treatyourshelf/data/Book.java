@@ -2,9 +2,9 @@ package com.cmput301f20t13.treatyourshelf.data;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Book implements Serializable {
@@ -14,7 +14,7 @@ public class Book implements Serializable {
     private String author;
     private String isbn;
     private String description;
-    private String imageUrl;
+    private List<String> imageUrls;
     private String owner;
     private String borrower;
     private String status;
@@ -26,13 +26,14 @@ public class Book implements Serializable {
         this.isbn = "default isbn";
     }
 
-    public Book(String title, String author, String isbn, String description, String owner) {
+    public Book(String title, String author, String isbn, String description, String owner, List<String> imageUrls) {
 
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.description = description;
         this.owner = owner;
+        this.imageUrls = imageUrls;
     }
 
 
@@ -60,12 +61,12 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrls(List<String> imageUrl) {
+        this.imageUrls = imageUrl;
     }
 
     public String getIsbn() {

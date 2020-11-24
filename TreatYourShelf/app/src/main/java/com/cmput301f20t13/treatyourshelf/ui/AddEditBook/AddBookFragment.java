@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
@@ -23,6 +26,8 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 public class AddBookFragment extends Fragment {
 
@@ -41,6 +46,17 @@ public class AddBookFragment extends Fragment {
         Button saveBt = view.findViewById(R.id.add_book_save_button);
         ImageButton scanIsbnBt = view.findViewById(R.id.add_book_scan_isbn_button);
         ImageButton closeBt = view.findViewById(R.id.close_fragmentBt);
+        RecyclerView selectedImagesRv = view.findViewById(R.id.selected_images_rv);
+
+        selectedImagesRv.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        SelectedImagesAdapter selectedImagesAdapter = new SelectedImagesAdapter(requireContext(), new ArrayList<>());
+        selectedImagesAdapter.setOnClick(new SelectedImagesAdapter.OnItemClicked() {
+            @Override
+            public void onItemClick(int position) {
+                // Clicked on Selected Image
+            }
+        });
+        selectedImagesRv.setAdapter(selectedImagesAdapter);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
@@ -63,21 +79,12 @@ public class AddBookFragment extends Fragment {
 
         });
         addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
-
-
-        addBookViewModel.getBookBYIsbn("223-4-56-789101-1").observe(getViewLifecycleOwner(), Observable -> {
-        });
-
         addBookViewModel.scannedIsbn.observe(getViewLifecycleOwner(), isbnEt::setText);
-
-        addBookViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
-            if (book != null) {
-//                txtAuthor.setText(book.getAuthor());
-//                txtTitle.setText(book.getTitle());
-//                txtIsbn.setText(book.getIsbn());
-//                txtDesc.setText(book.getDescription());
-            } else {
-                Log.d("TAG", "waiting for info");
+        addBookViewModel.selectedImages.observe(getViewLifecycleOwner(), selectedImages ->
+        {
+            if(!selectedImages.isEmpty()) {
+                selectedImagesAdapter.refreshImages(selectedImages);
+                selectedImagesRv.smoothScrollToPosition(selectedImages.size() - 1);
             }
         });
 
@@ -89,9 +96,11 @@ public class AddBookFragment extends Fragment {
         saveBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString());
+                Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null
+                );
                 addBookViewModel.addBook(book);
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+
 
             }
         });
@@ -136,7 +145,7 @@ public class AddBookFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        addBookViewModel.clearScannedIsbn();
+        addBookViewModel.clearState();
         super.onDestroyView();
     }
 

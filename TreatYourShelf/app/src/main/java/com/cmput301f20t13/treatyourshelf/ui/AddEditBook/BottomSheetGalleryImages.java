@@ -2,26 +2,28 @@ package com.cmput301f20t13.treatyourshelf.ui.AddEditBook;
 
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.GridView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 public class BottomSheetGalleryImages extends BottomSheetDialogFragment {
 
@@ -32,8 +34,8 @@ public class BottomSheetGalleryImages extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottomsheet_gallery_images, container, false);
         addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
-
-
+        ImageButton closeBottomSheet = view.findViewById(R.id.close_bottomsheet);
+        Button selectImageBt = view.findViewById(R.id.select_image_bt);
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -50,15 +52,36 @@ public class BottomSheetGalleryImages extends BottomSheetDialogFragment {
         }
 
 
-        GridView gridView = view.findViewById(R.id.gallery_gv);
+        RecyclerView galleryView = view.findViewById(R.id.gallery_rv);
+        galleryView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         galleryViewAdapter = new GalleryViewAdapter(requireContext(), imageFilePathSelectorList);
+        galleryViewAdapter.setOnClick(new GalleryViewAdapter.OnItemClicked() {
+            @Override
+            public void onItemClick(int position) {
+                // Item clicked
+                ImageFilePathSelector selectedImage = addBookViewModel.galleryImagesLiveData.getValue().get(position);
+                addBookViewModel.selectedImage.setValue(selectedImage);
+                addBookViewModel.updateListWithSelectedItem(position);
 
-        gridView.setAdapter(galleryViewAdapter);
+            }
+        });
+        galleryView.setAdapter(galleryViewAdapter);
 
-        addBookViewModel.listMutableLiveDataGalleryImages.observe(getViewLifecycleOwner(), galleryImageList -> {
+        addBookViewModel.galleryImagesLiveData.observe(getViewLifecycleOwner(), galleryImageList -> {
             galleryViewAdapter.refreshImages(galleryImageList);
         });
+        addBookViewModel.selectedImage.observe(getViewLifecycleOwner(), selectedImage -> {
+            selectImageBt.setEnabled(selectedImage != null);
 
+        });
+
+        selectImageBt.setOnClickListener(view1 -> {
+            addBookViewModel.addSelectedImageToAddBook();
+            dismiss();
+        });
+        closeBottomSheet.setOnClickListener(view1 -> {
+            dismiss();
+        });
         return view;
     }
 
@@ -78,5 +101,19 @@ public class BottomSheetGalleryImages extends BottomSheetDialogFragment {
                 dismiss();
             }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        //dialog dismissed, reset values in viewmodel
+        addBookViewModel.resetSelectedImages();
+
     }
 }
