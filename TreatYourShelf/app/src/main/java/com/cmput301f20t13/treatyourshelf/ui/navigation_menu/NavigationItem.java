@@ -1,5 +1,8 @@
 package com.cmput301f20t13.treatyourshelf.ui.navigation_menu;
 
+/**
+ * Data class for Navigation Item
+ */
 public class NavigationItem {
 
     private int navigationDestination;

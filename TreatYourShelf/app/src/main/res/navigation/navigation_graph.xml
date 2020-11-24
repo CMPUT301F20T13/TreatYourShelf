@@ -55,6 +55,10 @@
         android:id="@+id/requestDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragment"
         android:label="RequestDetailsFragment" />
+    <fragment
+        android:id="@+id/addBookFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"
+        android:label="AddBookFragment" />
 
 
 </navigation>

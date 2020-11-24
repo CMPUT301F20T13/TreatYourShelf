@@ -17,11 +17,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 
 import java.util.List;
 
+/**
+ * Class which analyzes each frame sent by the camera and determines if a barcode is there
+ */
 public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
     private Context context;
@@ -41,6 +45,10 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
         this.widthCropPercent = widthCropPercent;
     }
 
+    /**
+     * function which is called to analyze each picture
+     * @param imageProxy the image being analyzed
+     */
     @androidx.camera.core.ExperimentalGetImage
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
@@ -115,8 +123,13 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 //                    SparseArray<Barcode> barcodes = detector.detect(frame);
 //                    Barcode thisCode = barcodes.valueAt(0);
 //                    System.out.println(thisCode.rawValue);
+            BarcodeScannerOptions options =
+                    new BarcodeScannerOptions.Builder()
+                            .setBarcodeFormats(
+                                    Barcode.FORMAT_EAN_13)
+                            .build();
+            BarcodeScanner scanner = BarcodeScanning.getClient(options);
 
-            BarcodeScanner scanner = BarcodeScanning.getClient();
 
             Task<List<Barcode>> result = scanner.process(image)
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
