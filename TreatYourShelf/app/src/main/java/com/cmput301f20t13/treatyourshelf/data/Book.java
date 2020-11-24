@@ -26,7 +26,7 @@ public class Book implements Serializable {
         this.isbn = "default isbn";
     }
 
-    public Book(String title, String author, String isbn, String description, String owner, List<String> imageUrls) {
+    public Book(String title, String author, String isbn, String description, String owner, List<String> imageUrls, String status) {
 
         this.title = title;
         this.author = author;
@@ -34,6 +34,7 @@ public class Book implements Serializable {
         this.description = description;
         this.owner = owner;
         this.imageUrls = imageUrls;
+        this.status = status;
     }
 
 

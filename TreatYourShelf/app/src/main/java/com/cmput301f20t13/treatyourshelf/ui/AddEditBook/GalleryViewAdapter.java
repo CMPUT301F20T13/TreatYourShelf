@@ -23,12 +23,6 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
-import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListAdapter;
-import com.cmput301f20t13.treatyourshelf.ui.my_books.MyBookListAdapter;
-import com.google.android.material.card.MaterialCardView;
-
 import java.util.List;
 
 public class GalleryViewAdapter extends RecyclerView.Adapter<GalleryViewAdapter.MyViewHolder> {

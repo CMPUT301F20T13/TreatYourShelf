@@ -60,7 +60,6 @@ public class AddBookFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
             String email = user.getEmail();
 
             ownerTv.setText(email);
@@ -82,7 +81,7 @@ public class AddBookFragment extends Fragment {
         addBookViewModel.scannedIsbn.observe(getViewLifecycleOwner(), isbnEt::setText);
         addBookViewModel.selectedImages.observe(getViewLifecycleOwner(), selectedImages ->
         {
-            if(!selectedImages.isEmpty()) {
+            if (!selectedImages.isEmpty()) {
                 selectedImagesAdapter.refreshImages(selectedImages);
                 selectedImagesRv.smoothScrollToPosition(selectedImages.size() - 1);
             }
@@ -96,8 +95,8 @@ public class AddBookFragment extends Fragment {
         saveBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null
-                );
+                Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
+                        "available");
                 addBookViewModel.addBook(book);
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
 
