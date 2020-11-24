@@ -28,5 +28,8 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
-
+    <style name="SelectedImageCutCorner" parent="">
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerFamilyTopRight">cut</item>
+    </style>
 </resources>

@@ -21,6 +21,10 @@
             app:destination="@id/bookDetailsFragment">
 
         </action>
+        <argument
+            android:name="serviceCode"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/ownedBooksFragment"
@@ -66,7 +70,15 @@
     <fragment
         android:id="@+id/addBookFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"
-        android:label="AddBookFragment" />
+        android:label="AddBookFragment" >
+        <action
+            android:id="@+id/action_addBookFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" >
+            <argument
+                android:name="serviceCode"
+                android:defaultValue="1" />
+        </action>
+    </fragment>
 
 
 </navigation>
