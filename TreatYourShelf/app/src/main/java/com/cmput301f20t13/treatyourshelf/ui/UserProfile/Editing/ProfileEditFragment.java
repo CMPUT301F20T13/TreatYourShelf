@@ -72,7 +72,7 @@ public class ProfileEditFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileFragment);
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                 // dismiss();
             }
         });
