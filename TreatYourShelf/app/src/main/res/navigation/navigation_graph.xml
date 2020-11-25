@@ -82,6 +82,7 @@
         <action
             android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
             app:destination="@id/requestDetailsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/addBookFragment"

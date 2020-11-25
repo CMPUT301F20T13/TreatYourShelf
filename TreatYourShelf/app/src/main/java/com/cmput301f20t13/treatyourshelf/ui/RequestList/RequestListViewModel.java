@@ -16,9 +16,8 @@ public class RequestListViewModel extends ViewModel {
     private final RequestListRepository repository = new RequestListRepository();
     RequestListLiveData liveData = null;
 
-    public LiveData<List<Request>> getRequestByIdLiveData(String bookId) {
-        liveData = repository.getRequestByIdLiveData(bookId);
-        return liveData;
+    public void removeRequest(String isbn, String owner, String requester){
+        repository.removeRequest(isbn, owner, requester);
     }
 
     public LiveData<List<Request>> getRequestByIsbnLiveData(String isbn) {

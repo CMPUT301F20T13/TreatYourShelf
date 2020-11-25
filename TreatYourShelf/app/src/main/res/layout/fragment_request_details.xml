@@ -39,7 +39,7 @@
                 android:gravity="start"
                 android:text="@string/requested_by"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/user_request"
@@ -48,7 +48,7 @@
                 android:gravity="end"
                 android:text="user"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -63,7 +63,7 @@
                 android:gravity="start"
                 android:text="@string/title"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/book_title"
@@ -72,7 +72,7 @@
                 android:gravity="end"
                 android:text="title"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -87,7 +87,7 @@
                 android:gravity="start"
                 android:text="@string/author"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/book_author"
@@ -96,7 +96,7 @@
                 android:gravity="end"
                 android:text="author"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -111,7 +111,7 @@
                 android:gravity="start"
                 android:text="@string/isbn_header"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/book_isbn"
@@ -120,7 +120,7 @@
                 android:gravity="end"
                 android:text="isbn"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -135,7 +135,7 @@
                 android:gravity="start"
                 android:text="@string/owner_header"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/book_owner"
@@ -144,7 +144,7 @@
                 android:gravity="end"
                 android:text="owner"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -159,7 +159,7 @@
                 android:gravity="start"
                 android:text="@string/status"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/book_request_status"
@@ -168,7 +168,7 @@
                 android:gravity="end"
                 android:text="status"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </TableRow>
     </TableLayout>
 

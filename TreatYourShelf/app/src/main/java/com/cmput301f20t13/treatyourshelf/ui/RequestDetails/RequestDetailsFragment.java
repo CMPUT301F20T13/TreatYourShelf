@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
@@ -32,6 +34,7 @@ import static android.view.View.VISIBLE;
  * The owner can decide to accept or decline the request
  */
 public class RequestDetailsFragment extends Fragment {
+    private Request currentRequest;
 
     /**
      * Creates the fragment view
@@ -54,21 +57,25 @@ public class RequestDetailsFragment extends Fragment {
         Button acceptButton = view.findViewById(R.id.accept_button);
         Button declineButton = view.findViewById(R.id.decline_button);
         LinearLayout requestButtons = view.findViewById(R.id.request_buttons);
+
+        /*Retrieve the isbn, requester and owner from fragment arguments*/
         assert this.getArguments() != null;
         String isbnString = this.getArguments().getString("ISBN");
         String requesterString = this.getArguments().getString("REQUESTER");
         String ownerString = this.getArguments().getString("OWNER");
 
-        /*requestListViewModel sets the requester, isbn and owner*/
+        /*View Models*/
         RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity())
                 .get(RequestListViewModel.class);
-
-         RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity())
+        RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity())
                  .get(RequestDetailsViewModel.class);
+
+        /*Get and set the request details on the fragment*/
         requestDetailsViewModel.getRequestLiveData(isbnString, requesterString, ownerString)
                 .observe(getViewLifecycleOwner(), Observable -> {});
         requestDetailsViewModel.getRequest().observe(getViewLifecycleOwner(), request -> {
         if (request != null) {
+                currentRequest = request;
                 requester.setText(request.getRequester());
                 isbn.setText(request.getIsbn());
                 owner.setText(request.getOwner());
@@ -79,26 +86,32 @@ public class RequestDetailsFragment extends Fragment {
             }
         });
 
-        /*Accept Button*/
+        /*Accept Button - accepts the current request and removes all other requests for the book*/
         acceptButton.setOnClickListener(v -> {
             requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
                 if (requestList != null){
-                    for (Request request : requestList){
-                        requestListViewModel
-                                .updateStatusByIsbn(request.getRequester(), request.getIsbn(), "Declined");
+                    for (Request rq : requestList){
+                        if (currentRequest != null && equalTo(rq, currentRequest)){
+                            continue;
+                        }
+                        requestListViewModel.removeRequest(rq.getIsbn(), rq.getOwner(), rq.getRequester());
                     }
                 }
             });
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
+            /*TODO notify requester of accepted request*/
             requestButtons.setVisibility(INVISIBLE);
         });
 
-        /*Decline Button*/
-        declineButton.setOnClickListener(v -> {requestListViewModel
-                .updateStatusByIsbn(requesterString, isbnString, "Declined");
+
+        /*Decline Button - removes the request from the request list*/
+        declineButton.setOnClickListener(v -> {
+            requestListViewModel
+                    .removeRequest(isbnString, ownerString, requesterString);
+            getActivity().onBackPressed();
             Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
-            requestButtons.setVisibility(INVISIBLE);
+            /*TODO notify requester of declined request*/
         });
 
 
@@ -116,6 +129,20 @@ public class RequestDetailsFragment extends Fragment {
         } else {
             requestButtons.setVisibility(INVISIBLE);
         }
+    }
+
+    /**
+     * Compares rq1 if it is equal to rq2
+     * @param rq1 the first request to compare
+     * @param rq2 the second request to compare
+     * @return returns true or false
+     */
+    public boolean equalTo(Request rq1, Request rq2){
+        return rq1.getRequester().equals(rq2.getRequester()) &&
+                rq1.getAuthor().equals(rq2.getAuthor()) &&
+                rq1.getIsbn().equals(rq2.getIsbn()) &&
+                rq1.getOwner().equals(rq2.getOwner()) &&
+                rq1.getTitle().equals(rq2.getTitle());
     }
 
 

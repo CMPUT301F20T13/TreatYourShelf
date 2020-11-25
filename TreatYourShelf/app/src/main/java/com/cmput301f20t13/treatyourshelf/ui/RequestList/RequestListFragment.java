@@ -55,7 +55,7 @@ public class RequestListFragment extends Fragment {
 
         requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
             if (requestList != null ) {
-                requestListAdapter.clear();
+                //requestListAdapter.clear();
                 requestListAdapter.setRequestList(requestList);
                 RecyclerView requestRv = view.findViewById(R.id.request_list_rv);
                 requestRv.setLayoutManager(new LinearLayoutManager(getContext()));

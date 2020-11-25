@@ -23,10 +23,6 @@ public class RequestListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
 
-    public RequestListLiveData getRequestByIdLiveData(String bookId) {
-        Query query = collectionRequests.whereEqualTo("id", bookId);
-        return new RequestListLiveData(query);
-    }
 
     public RequestListLiveData getRequestByIsbnLiveData(String isbn) {
         Query query = collectionRequests.whereEqualTo("isbn", isbn);
@@ -68,5 +64,20 @@ public class RequestListRepository {
     }
 
 
+    public void removeRequest(String isbn, String owner, String requester) {
+        collectionRequests
+                .whereEqualTo("isbn", isbn)
+                .whereEqualTo("owner", owner)
+                .whereEqualTo("requester", requester)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            DocumentReference docRef = collectionRequests.document(document.getId());
+                            docRef.delete();
+                        }
+                    }
+                });
 
+    }
 }

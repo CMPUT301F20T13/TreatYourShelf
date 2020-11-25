@@ -1,6 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.ui.RequestDetails;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cmput301f20t13.treatyourshelf.data.Request;
@@ -23,5 +24,6 @@ public class RequestDetailsViewModel extends ViewModel {
     public LiveData<Request> getRequest() {
         return liveData.request;
     }
+
 
 }
