@@ -28,7 +28,8 @@ public class BookListLiveData extends
     private final Query query;
     public MutableLiveData<List<Book>> bookList = new MutableLiveData<>();
 
-    private ListenerRegistration listenerRegistration = () -> {};
+    private ListenerRegistration listenerRegistration = () -> {
+    };
 
     public BookListLiveData(Query query) {
         this.query = query;
@@ -52,16 +53,17 @@ public class BookListLiveData extends
             if (task.isSuccessful()) {
                 bookListTemp.clear();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Book itemToAdd = new Book();
-                        Map<String, Object> bookDetails = document.getData();
-                        itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
-                        itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
-                        itemToAdd.setDescription((String) bookDetails.getOrDefault("description", "default description"));
-                        itemToAdd.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
-                        itemToAdd.setOwner((String) bookDetails.getOrDefault("owner", "default owner"));
-                        itemToAdd.setBorrower((String) bookDetails.getOrDefault("borrower", "default borrower"));
-                        itemToAdd.setStatus((String) bookDetails.getOrDefault("status", "Available"));
-                        bookListTemp.add(itemToAdd);
+                    Book itemToAdd = new Book();
+                    Map<String, Object> bookDetails = document.getData();
+                    itemToAdd.setTitle((String) bookDetails.getOrDefault("title", "default title"));
+                    itemToAdd.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
+                    itemToAdd.setDescription((String) bookDetails.getOrDefault("description", "default description"));
+                    itemToAdd.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
+                    itemToAdd.setOwner((String) bookDetails.getOrDefault("owner", "default owner"));
+                    itemToAdd.setImageUrls((List<String>) bookDetails.getOrDefault("imageUrls", null));
+                    itemToAdd.setBorrower((String) bookDetails.getOrDefault("borrower", "default borrower"));
+                    itemToAdd.setStatus((String) bookDetails.getOrDefault("status", "Available"));
+                    bookListTemp.add(itemToAdd);
                 }
                 bookList.setValue(bookListTemp);
             } else {
