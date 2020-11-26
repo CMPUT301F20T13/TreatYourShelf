@@ -24,4 +24,8 @@ public class ProfileEditViewModel extends ViewModel {
         ProfileRepository.updateInformationByEmail(email, profile);
     }
 
+    public boolean isUsernameAvailable(String username) {
+        return ProfileRepository.isUsernameAvailable(username);
+    }
+
 }

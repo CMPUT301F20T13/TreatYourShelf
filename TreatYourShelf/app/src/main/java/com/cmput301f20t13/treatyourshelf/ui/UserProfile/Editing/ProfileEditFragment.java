@@ -78,10 +78,16 @@ public class ProfileEditFragment extends Fragment {
         });
 
         Button done = (Button) view.findViewById(R.id.profile_done_button);
-        cancel.setOnClickListener(new View.OnClickListener() {
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO : Navigate back to the profile screen with the changes committed
+                String newUsername = username.getText().toString();
+
+                // Check if the newUsername is valid or not
+                boolean validUsername = vm.isUsernameAvailable(newUsername);
+
+                String newPhone = phone.getText().toString();
             }
         });
 
