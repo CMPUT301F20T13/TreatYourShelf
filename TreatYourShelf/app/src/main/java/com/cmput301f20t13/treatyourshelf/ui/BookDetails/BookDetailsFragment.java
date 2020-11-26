@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -69,6 +70,7 @@ public class BookDetailsFragment extends Fragment {
         TextView bookOwner = view.findViewById(R.id.book_owner);
         TextView bookStatus = view.findViewById(R.id.book_status);
         Button requestBt = view.findViewById(R.id.book_request_button);
+        ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
 
         if (category == 0) {
             requestBt.setVisibility(View.VISIBLE);
@@ -108,7 +110,9 @@ public class BookDetailsFragment extends Fragment {
         requestBt.setOnClickListener(view1 -> {
 
         });
-
+        closeBt.setOnClickListener(view1 -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+        });
         /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
 
 
