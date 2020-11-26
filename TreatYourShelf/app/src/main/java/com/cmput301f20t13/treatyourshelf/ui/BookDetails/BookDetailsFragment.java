@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -88,11 +92,6 @@ public class BookDetailsFragment extends Fragment {
             }
         });
 
-
-        /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
-
-
-
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
         if (!bookListViewModel.ownerList) {
             requestButton.setVisibility(View.VISIBLE);
@@ -117,6 +116,13 @@ public class BookDetailsFragment extends Fragment {
 //            // Not implemented yet
 //            /*TODO - call edit book fragment*/
 //        });
+
+        Button viewRequestsButton = view.findViewById(R.id.view_request_button);
+        viewRequestsButton.setOnClickListener(v -> {
+            NavDirections action = BookDetailsFragmentDirections
+                    .actionBookDetailsFragmentToRequestListFragment().setISBN(Isbn);
+            Navigation.findNavController(v).navigate(action);
+        });
 
         return view;
     }

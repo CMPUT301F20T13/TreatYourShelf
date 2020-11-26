@@ -19,6 +19,8 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,12 +34,18 @@ public class OwnedBooksFragment extends Fragment {
     private final ArrayList<Book> unfilteredBookList = new ArrayList<>();
     // HashMap to map chip ids to string that represents the status that the chip filters
     private final HashMap<Integer, String> filterIdToName = new HashMap<>();
+    private String ownerEmail;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            ownerEmail = user.getEmail();
+            Log.e("Test", ownerEmail);
+        }
         // Make loading circle visible
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
@@ -56,31 +64,30 @@ public class OwnedBooksFragment extends Fragment {
         filterIdToName.put(acceptedChip.getId(), "accepted");
         filterIdToName.put(borrowedChip.getId(), "borrowed");
 
-        String owner = "user1"; // TODO: set owner with intent of fragment
-
         // Set up recycler view object
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialize BookListAdapter
         bookListAdapter = new BookListAdapter(new ArrayList<>());
-
+        bookRv.setAdapter(bookListAdapter);
         // Set up BookListViewModel and live data
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.clearLiveData();
-        bookListViewModel.getBookByOwnerLiveData(owner).observe(getViewLifecycleOwner(), Observable -> {});
+        bookListViewModel.getBookByOwnerLiveData(ownerEmail).observe(getViewLifecycleOwner(), Observable -> {
+        });
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
-            if (bookList != null ) {
+            if (bookList != null) {
+
                 // Reset adapter by setting it with a new list
                 bookListAdapter.setBookList(new ArrayList<>());
                 // Clear unfilteredBookList and set it to bookList
                 unfilteredBookList.clear();
+                bookListAdapter.setBookList(bookList);
                 setUnfilteredBookList(bookList);
-                // Set the adapter for the RecyclerView and make loading circle gone
-                bookRv.setAdapter(bookListAdapter);
+                // Make loading circle gone
                 progressBar.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 Log.d("TAG", "waiting for info");
             }
         });
@@ -89,25 +96,25 @@ public class OwnedBooksFragment extends Fragment {
         availableChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                OwnedBooksFragment.this.registerFilterChanged();
+                registerFilterChanged();
             }
         });
         requestedChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                OwnedBooksFragment.this.registerFilterChanged();
+                registerFilterChanged();
             }
         });
         acceptedChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                OwnedBooksFragment.this.registerFilterChanged();
+                registerFilterChanged();
             }
         });
         borrowedChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                OwnedBooksFragment.this.registerFilterChanged();
+                registerFilterChanged();
             }
         });
 
@@ -116,9 +123,10 @@ public class OwnedBooksFragment extends Fragment {
 
     /**
      * setUnfilteredBookList will set unfilteredBookList to a list of books and register change
+     *
      * @param bookList
      */
-    private void setUnfilteredBookList(List<Book> bookList){
+    private void setUnfilteredBookList(List<Book> bookList) {
         unfilteredBookList.addAll(bookList);
         registerFilterChanged();
     }
@@ -127,19 +135,19 @@ public class OwnedBooksFragment extends Fragment {
      * registerFilterChanged
      * called when the filters have been changed or unfilteredBookList changes
      */
-    private void registerFilterChanged(){
+    private void registerFilterChanged() {
         // Only keep books in list that have status in checkedFilters
         List<Book> found = new ArrayList<>();
         // Get the ids of all the chips
         List<Integer> checkedChipIds = chipGroup.getCheckedChipIds();
         // Array to store strings that represent which filters are selected
         ArrayList<String> checkedFilters = new ArrayList<>();
-        for (Integer id : checkedChipIds){
+        for (Integer id : checkedChipIds) {
             checkedFilters.add(filterIdToName.get(id));
         }
         // Go through unfilteredBookList and keep ones that match checked filters
-        for (Book book : unfilteredBookList){
-            if (checkedFilters.contains(book.getStatus())){
+        for (Book book : unfilteredBookList) {
+            if (checkedFilters.contains(book.getStatus())) {
                 found.add(book);
             }
         }

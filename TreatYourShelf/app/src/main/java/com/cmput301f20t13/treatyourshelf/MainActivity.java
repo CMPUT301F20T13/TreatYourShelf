@@ -31,10 +31,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
-                    switch (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId()) {
-                        case R.id.bookListFragment: {
-                            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
-                        }
+                    if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookListFragment) {
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
                     }
 
                 }
@@ -58,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.loginFragment:
-                case R.id.signUpFragment: {
-                    // Want to remove the bottom app bar from view
+                case R.id.addBookFragment: {
+                    // Want to remove the bottom app bar from view So the camera is full screen
                     bottomAppBar.performHide();
                     bottomAppBar.setVisibility(View.INVISIBLE);
                     fab.hide();
