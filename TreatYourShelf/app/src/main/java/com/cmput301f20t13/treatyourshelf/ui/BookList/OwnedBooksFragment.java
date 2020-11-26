@@ -12,11 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.GalleryViewAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,6 +73,11 @@ public class OwnedBooksFragment extends Fragment {
 
         // Initialize BookListAdapter
         bookListAdapter = new BookListAdapter(new ArrayList<>());
+        bookListAdapter.setOnClick((BookListAdapter.OnItemClicked) (position, book) -> {
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+        });
+
         bookRv.setAdapter(bookListAdapter);
         // Set up BookListViewModel and live data
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);

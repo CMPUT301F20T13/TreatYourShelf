@@ -20,14 +20,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
+
+import java.util.ArrayList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -39,6 +44,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Only appears when the book list is not accessed from mybooks
  */
 public class BookDetailsFragment extends Fragment {
+    private BookDetailsViewModel bookDetailsViewModel;
     private Book currentBook;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -55,23 +61,36 @@ public class BookDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_details, container, false);
-
-        ImageView image = view.findViewById(R.id.book_image);
-        TextView title = view.findViewById(R.id.book_title);
-        TextView author = view.findViewById(R.id.book_author);
-        TextView status = view.findViewById(R.id.book_status);
-
-        assert getArguments() != null;
         String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
+        int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
         System.out.println("The ISBN is" + Isbn);
         /*Tab Layout that includes a Summary tab and Details Tab*/
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
-        ViewPager viewPager = view.findViewById(R.id.book_details_view_pager);
-        tabLayout.setupWithViewPager(viewPager);
+
+
+        // TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager2 viewPager2 = view.findViewById(R.id.book_image_vp2);
+        WormDotsIndicator wormDotsIndicator = view.findViewById(R.id.worm_dots_indicator);
+        TextView bookTitle = view.findViewById(R.id.book_title);
+        TextView bookAuthor = view.findViewById(R.id.book_author);
+        TextView bookDescription = view.findViewById(R.id.book_description);
+        TextView bookIsbn = view.findViewById(R.id.book_isbn);
+        TextView bookOwner = view.findViewById(R.id.book_owner);
+        TextView bookStatus = view.findViewById(R.id.book_status);
+        Button requestBt = view.findViewById(R.id.book_request_button);
+        ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
+
+        if (category == 0) {
+            requestBt.setVisibility(View.VISIBLE);
+        } else {
+            requestBt.setVisibility(View.INVISIBLE);
+        }
+        // tabLayout.setupWithViewPager(viewPager);
+
+        BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
+        viewPager2.setAdapter(bookImagesAdapter);
+        wormDotsIndicator.setViewPager2(viewPager2);
         /*Fragments within the Tab Layout*/
-        BookDetailsDtab detailsFragment = new BookDetailsDtab();
-        BookDetailsStab summaryFragment = new BookDetailsStab();
-        BookViewPagerAdapter viewPagerAdapter = new BookViewPagerAdapter(getChildFragmentManager(), 0);
+
         /*View Models - where the fragment retrieves its data from*/
         RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity()).get(RequestListViewModel.class);
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
@@ -81,103 +100,55 @@ public class BookDetailsFragment extends Fragment {
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
                 Book book = bookList.get(0);
-                currentBook = book; //need this for making request
-                System.out.println(book.getTitle());
-                title.setText(book.getTitle());
-                author.setText(book.getAuthor());
-                status.setText(book.getStatus());
-                changeStatusColor(status, book.getStatus());
-                setSumFragBundle(book, summaryFragment);
-                setDetFragBundle(book, detailsFragment);
-                viewPagerAdapter.addFragment(summaryFragment, "summary");
-                viewPagerAdapter.addFragment(detailsFragment, "details");
-                viewPager.setAdapter(viewPagerAdapter);
+                bookTitle.setText(book.getTitle());
+                bookAuthor.setText(book.getAuthor());
+                bookDescription.setText(book.getDescription());
+                bookOwner.setText(book.getOwner());
+                bookIsbn.setText(book.getIsbn());
+                bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
+                bookImagesAdapter.setImages(book.getImageUrls());
+
+
             } else {
                 Log.d("TAG", "waiting for info");
             }
         });
+        requestBt.setOnClickListener(view1 -> {
 
-        /*Request Button - makes a request*/
-        FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
-        if (!bookListViewModel.ownerList) {
-            requestButton.setVisibility(View.VISIBLE); }
-        requestButton.setOnClickListener(v -> new AlertDialog.Builder(getContext())
-                .setMessage("Would you like to request this book?")
-                .setPositiveButton("YES", (dialog, id) -> {
-                    dialog.cancel();
-                    requestListViewModel.requestBook(currentBook, user.getEmail()); /*TODO get the user*/
-                    Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
-                })
-                .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
-                .show());
-
-        /*View Requests - view the request made on the current book*/
-        Button viewRequestsButton = view.findViewById(R.id.view_request_button);
-        viewRequestsButton.setOnClickListener(v -> {
-            NavDirections action = BookDetailsFragmentDirections
-                    .actionBookDetailsFragmentToRequestListFragment().setISBN(Isbn);
-            Navigation.findNavController(v).navigate(action);
         });
+        closeBt.setOnClickListener(view1 -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+        });
+        /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
+
+
+//        FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
+//        if (!bookListViewModel.ownerList) {
+//            requestButton.setVisibility(View.VISIBLE);
+//        }
+//        requestButton.setOnClickListener(v -> new AlertDialog.Builder(getContext())
+//                .setMessage("Would you like to request this book?")
+//                .setPositiveButton("YES", (dialog, id) -> {
+//                    dialog.cancel();
+//                    /*TODO call edit book fragment to change status*/
+//                    Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
+//                })
+//
+//                .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
+//                .show());
+
+
+        //ImageButton editButton = view.findViewById(R.id.book_edit_button);
+//        if (bookListViewModel.ownerList) {
+//            editButton.setVisibility(View.VISIBLE);
+//        }
+//        editButton.setOnClickListener(v -> {
+//            // Not implemented yet
+//            /*TODO - call edit book fragment*/
+//        });
 
         return view;
     }
-
-
-    /**
-     * Changes the color of the status based on the text
-     *
-     * @param status the status of the book
-     * @param book   candidate book
-     */
-    public void changeStatusColor(TextView status, String book) {
-        if (book != null) {
-
-
-            switch (book) {
-                /*Changes the color of the status based on the text*/
-                case "Available":
-                case "Accepted":
-                    status.setTextColor(0xFF00FF00); /*Green Color*/
-                    break;
-                case "Requested":
-                    status.setTextColor(0xFF0000FF); /*Blue Color*/
-                    break;
-                case "Borrowed":
-                    status.setTextColor(0xFFFF0000); /*Red Color*/
-                    break;
-            }
-        }
-    }
-
-
-    /**
-     * Sets the arguments on the summary fragment
-     *
-     * @param book            candidate book
-     * @param summaryFragment fragment that contains the description of the book
-     */
-    public void setSumFragBundle(Book book, Fragment summaryFragment) {
-        Bundle descBundle = new Bundle();
-        descBundle.putString("description", book.getDescription());
-        summaryFragment.setArguments(descBundle);
-    }
-
-
-    /**
-     * Sets the argument son the details fragment
-     *
-     * @param book            candidate book
-     * @param detailsFragment fragment that contains the isbn, owner, and borrower of book
-     */
-    public void setDetFragBundle(Book book, Fragment detailsFragment) {
-        Bundle detailBundle = new Bundle();
-        detailBundle.putString("isbn", book.getIsbn());
-        detailBundle.putString("owner", book.getOwner());
-        detailBundle.putString("borrower", book.getBorrower());
-        detailsFragment.setArguments(detailBundle);
-    }
-
-
 
 
 }
