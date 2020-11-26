@@ -43,7 +43,20 @@ public class ProfileRepository {
     }
 
     public static void updateInformationByEmail(String email, Profile profile) {
-        // firebaseFirestore.collection("users").
+        firebaseFirestore.collection("users").whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot docSnap : task.getResult()) {
+                            DocumentReference doc = firebaseFirestore.collection("users").document(docSnap.getId());
+                            doc.update("username", profile.getUsername());
+                            doc.update("phoneNumber", profile.getPhoneNumber());
+                            // TODO : Update the profile picture too
+                        }
+                    } else {
+                        // bad
+                    }
+                });
     }
 
 }

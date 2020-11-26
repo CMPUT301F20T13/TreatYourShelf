@@ -110,6 +110,8 @@ public class ProfileEditFragment extends Fragment {
                         newProfileData.setPhoneNumber(phone.getText().toString());
                         // newProfileData.setProfileImageUrl();
                         vm.setProfileByEmail(email.getText().toString(), newProfileData);
+                        // TODO : Update the profile picture too
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                     }
                     else {
                         Log.d("TAG", "waiting for info");
