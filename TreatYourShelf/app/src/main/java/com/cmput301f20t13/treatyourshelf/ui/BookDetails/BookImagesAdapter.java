@@ -73,5 +73,6 @@ public class BookImagesAdapter extends RecyclerView.Adapter<BookImagesAdapter.My
             bookImage = itemView.findViewById(R.id.book_image);
         }
     }
+
 }
 

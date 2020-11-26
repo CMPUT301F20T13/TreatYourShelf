@@ -10,7 +10,11 @@
         android:label="BookListFragment">
         <action
             android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
-            app:destination="@id/bookDetailsFragment" />
+            app:destination="@id/bookDetailsFragment" >
+            <argument
+                android:name="category"
+                android:defaultValue="0" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/cameraXFragment"
@@ -20,6 +24,9 @@
             android:id="@+id/action_cameraXFragment_to_bookDetailsFragment"
             app:destination="@id/bookDetailsFragment">
 
+            <argument
+                android:name="category"
+                android:defaultValue="0" />
         </action>
         <argument
             android:name="serviceCode"
@@ -32,7 +39,11 @@
         android:label="OwnedBooksFragment">
         <action
             android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
-            app:destination="@id/bookDetailsFragment" />
+            app:destination="@id/bookDetailsFragment" >
+            <argument
+                android:name="category"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -50,6 +61,10 @@
             android:name="ISBN"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="category"
+            android:defaultValue="0"
+            app:argType="integer"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

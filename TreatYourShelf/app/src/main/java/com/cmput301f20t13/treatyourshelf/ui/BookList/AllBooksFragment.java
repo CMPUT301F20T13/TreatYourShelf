@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,10 @@ public class AllBooksFragment extends Fragment {
 
         // Initialize BookListAdapter
         bookListAdapter = new BookListAdapter(new ArrayList<>());
+        bookListAdapter.setOnClick((position, book) -> {
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(0);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+        });
 
         // Set up recycler view object
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);

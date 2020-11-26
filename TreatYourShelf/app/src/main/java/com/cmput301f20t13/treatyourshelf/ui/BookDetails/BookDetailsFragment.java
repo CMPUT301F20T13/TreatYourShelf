@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class BookDetailsFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_details, container, false);
         String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
+        int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
         System.out.println("The ISBN is" + Isbn);
         /*Tab Layout that includes a Summary tab and Details Tab*/
 
@@ -66,6 +68,13 @@ public class BookDetailsFragment extends Fragment {
         TextView bookIsbn = view.findViewById(R.id.book_isbn);
         TextView bookOwner = view.findViewById(R.id.book_owner);
         TextView bookStatus = view.findViewById(R.id.book_status);
+        Button requestBt = view.findViewById(R.id.book_request_button);
+
+        if (category == 0) {
+            requestBt.setVisibility(View.VISIBLE);
+        } else {
+            requestBt.setVisibility(View.INVISIBLE);
+        }
         // tabLayout.setupWithViewPager(viewPager);
 
         BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
@@ -96,7 +105,9 @@ public class BookDetailsFragment extends Fragment {
                 Log.d("TAG", "waiting for info");
             }
         });
+        requestBt.setOnClickListener(view1 -> {
 
+        });
 
         /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
 
