@@ -37,6 +37,7 @@ import com.google.android.material.tabs.TabLayout;
  */
 public class BookDetailsFragment extends Fragment {
     private BookDetailsViewModel bookDetailsViewModel;
+    private Book currentBook;
 
     /**
      * Creates the fragment view
@@ -57,6 +58,7 @@ public class BookDetailsFragment extends Fragment {
         TextView author = view.findViewById(R.id.book_author);
         TextView status = view.findViewById(R.id.book_status);
 
+        assert getArguments() != null;
         String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
         System.out.println("The ISBN is" + Isbn);
         /*Tab Layout that includes a Summary tab and Details Tab*/
@@ -75,8 +77,8 @@ public class BookDetailsFragment extends Fragment {
 
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
-
                 Book book = bookList.get(0);
+                currentBook = book; //need this for making request
                 System.out.println(book.getTitle());
                 title.setText(book.getTitle());
                 author.setText(book.getAuthor());
@@ -100,22 +102,13 @@ public class BookDetailsFragment extends Fragment {
                 .setMessage("Would you like to request this book?")
                 .setPositiveButton("YES", (dialog, id) -> {
                     dialog.cancel();
-                    /*TODO call edit book fragment to change status*/
+                    bookDetailsViewModel.requestBook(currentBook, "requestertest"); /*TODO get the user*/
                     Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                 })
 
                 .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
                 .show());
 
-
-        //ImageButton editButton = view.findViewById(R.id.book_edit_button);
-//        if (bookListViewModel.ownerList) {
-//            editButton.setVisibility(View.VISIBLE);
-//        }
-//        editButton.setOnClickListener(v -> {
-//            // Not implemented yet
-//            /*TODO - call edit book fragment*/
-//        });
 
         Button viewRequestsButton = view.findViewById(R.id.view_request_button);
         viewRequestsButton.setOnClickListener(v -> {
@@ -181,5 +174,8 @@ public class BookDetailsFragment extends Fragment {
         detailBundle.putString("borrower", book.getBorrower());
         detailsFragment.setArguments(detailBundle);
     }
+
+
+
 
 }
