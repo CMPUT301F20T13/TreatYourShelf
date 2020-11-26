@@ -28,4 +28,7 @@
     <string name="requested">requested</string>
     <string name="accepted">accepted</string>
     <string name="borrowed">borrowed</string>
+    <string name="default_image">default image</string>
+    <string name="view_requests">VIEW REQUESTS</string>
+    <string name="status">Status</string>
 </resources>

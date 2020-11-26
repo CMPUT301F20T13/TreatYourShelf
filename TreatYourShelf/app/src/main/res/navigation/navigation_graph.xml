@@ -65,6 +65,9 @@
             android:name="category"
             android:defaultValue="0"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_requestListFragment"
+            app:destination="@id/requestListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -81,7 +84,33 @@
     <fragment
         android:id="@+id/requestDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragment"
-        android:label="RequestDetailsFragment" />
+        android:label="RequestDetailsFragment">
+        <argument
+            android:name="ISBN"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="REQUESTER"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="OWNER"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/requestListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragment"
+        android:label="RequestListsFragment" >
+        <argument
+            android:name="ISBN"
+            android:defaultValue=""
+            app:argType="string" />
+        <action
+            android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/addBookFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"

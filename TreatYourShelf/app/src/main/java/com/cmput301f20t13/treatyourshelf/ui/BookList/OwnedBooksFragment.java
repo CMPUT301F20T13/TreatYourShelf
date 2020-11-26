@@ -67,8 +67,6 @@ public class OwnedBooksFragment extends Fragment {
         filterIdToName.put(acceptedChip.getId(), "accepted");
         filterIdToName.put(borrowedChip.getId(), "borrowed");
 
-        // TODO: set owner with intent of fragment
-
         // Set up recycler view object
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -94,9 +92,8 @@ public class OwnedBooksFragment extends Fragment {
                 // Clear unfilteredBookList and set it to bookList
                 unfilteredBookList.clear();
                 bookListAdapter.setBookList(bookList);
-                // setUnfilteredBookList(bookList);
-                // Set the adapter for the RecyclerView and make loading circle gone
-
+                setUnfilteredBookList(bookList);
+                // Make loading circle gone
                 progressBar.setVisibility(View.GONE);
             } else {
                 Log.d("TAG", "waiting for info");
