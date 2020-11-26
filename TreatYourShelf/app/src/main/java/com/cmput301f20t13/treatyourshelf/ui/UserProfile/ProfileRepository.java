@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.data.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Future;
@@ -55,6 +58,30 @@ public class ProfileRepository {
                         }
                     } else {
                         // bad
+                    }
+                });
+    }
+
+    public static void addProfile(Profile profile) {
+        Map<String, Object> insertProfile = new HashMap<>();
+        insertProfile.put("email", profile.getEmail());
+        insertProfile.put("password", profile.getPassword());
+        insertProfile.put("phoneNumber", profile.getPhoneNumber());
+        // TODO : Profile images
+        // insertProfile.put("profileImage", profile.)
+        insertProfile.put("username", profile.getUsername());
+        firebaseFirestore.collection("users").document()
+                .set(insertProfile)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Nothing
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Nothing
                     }
                 });
     }
