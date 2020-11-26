@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="PHONE NUMBER"
-
+                android:inputType="phone"
                 android:textSize="16sp" />
         </TableRow>
 
