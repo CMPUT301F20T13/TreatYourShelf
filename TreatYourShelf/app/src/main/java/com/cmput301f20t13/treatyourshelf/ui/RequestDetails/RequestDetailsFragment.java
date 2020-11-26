@@ -19,13 +19,16 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
+import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 
 import java.security.acl.Group;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
@@ -57,6 +60,9 @@ public class RequestDetailsFragment extends Fragment {
         Button acceptButton = view.findViewById(R.id.accept_button);
         Button declineButton = view.findViewById(R.id.decline_button);
         LinearLayout requestButtons = view.findViewById(R.id.request_buttons);
+        Button locationButton = view.findViewById(R.id.set_loc_button);
+        Button giveBookButton = view.findViewById(R.id.give_book_button);
+        LinearLayout acceptedButtons = view.findViewById(R.id.accepted_buttons);
 
         /*Retrieve the isbn, requester and owner from fragment arguments*/
         assert this.getArguments() != null;
@@ -80,7 +86,7 @@ public class RequestDetailsFragment extends Fragment {
                 isbn.setText(request.getIsbn());
                 owner.setText(request.getOwner());
                 status.setText(request.getStatus());
-                checkStatus(request.getStatus(), requestButtons);
+                checkStatus(request.getStatus(), requestButtons, acceptedButtons);
                 title.setText(request.getTitle());
                 author.setText(request.getAuthor());
             }
@@ -95,13 +101,15 @@ public class RequestDetailsFragment extends Fragment {
                             continue;
                         }
                         requestListViewModel.removeRequest(rq.getIsbn(), rq.getOwner(), rq.getRequester());
+                        /*TODO notify requesters of declined request*/
                     }
                 }
             });
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
             /*TODO notify requester of accepted request*/
-            requestButtons.setVisibility(INVISIBLE);
+            requestButtons.setVisibility(GONE);
+            acceptedButtons.setVisibility(VISIBLE);
         });
 
 
@@ -109,9 +117,28 @@ public class RequestDetailsFragment extends Fragment {
         declineButton.setOnClickListener(v -> {
             requestListViewModel
                     .removeRequest(isbnString, ownerString, requesterString);
-            getActivity().onBackPressed();
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
             /*TODO notify requester of declined request*/
+        });
+
+
+        /*Set Location Button - specify a location for a book to be picked up*/
+        locationButton.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Location set!", Toast.LENGTH_SHORT).show();
+        });
+
+
+        /*Give Book Button - scan the book to denote the book as borrowed*/
+        giveBookButton.setOnClickListener(v -> {
+            //Navigate to camera fragment, scan isbn to update book status
+            Utils.hideKeyboardFrom(requireContext(), view);
+            NavDirections action = RequestDetailsFragmentDirections.actionRequestDetailsFragmentToCameraXFragment().setServiceCode(2);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            //Change current borrower to requester for the book
+            requestDetailsViewModel.updateBookBorrower(isbnString, requesterString);
+            Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
+            acceptedButtons.setVisibility(GONE);
         });
 
 
@@ -123,11 +150,15 @@ public class RequestDetailsFragment extends Fragment {
      * @param status - status of the request
      * @param requestButtons - the accept and decline buttons
      */
-    public void checkStatus(String status, LinearLayout requestButtons){
-        if (status.equals("Requested")){
-            requestButtons.setVisibility(VISIBLE);
-        } else {
-            requestButtons.setVisibility(INVISIBLE);
+    public void checkStatus(String status, LinearLayout requestButtons,
+                            LinearLayout acceptedButtons){
+        switch(status){
+            case "Requested":
+                requestButtons.setVisibility(VISIBLE);
+                break;
+            case "Accepted":
+                acceptedButtons.setVisibility(VISIBLE);
+                break;
         }
     }
 

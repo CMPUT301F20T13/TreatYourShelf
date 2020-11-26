@@ -48,4 +48,8 @@ public class RequestListViewModel extends ViewModel {
         repository.updateStatusByIsbn(requester, isbn, status);
     }
 
+    public void requestBook(Book book, String requester) {
+        repository.addRequest(book,requester);
+    }
+
 }

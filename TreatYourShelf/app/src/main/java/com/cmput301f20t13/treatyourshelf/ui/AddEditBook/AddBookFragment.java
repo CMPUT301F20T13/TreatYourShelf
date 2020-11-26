@@ -96,7 +96,7 @@ public class AddBookFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
-                        "available");
+                        "Available");
                 addBookViewModel.addBook(book);
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
 

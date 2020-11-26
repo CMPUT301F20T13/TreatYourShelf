@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListLiveData;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListRepository;
@@ -24,6 +25,19 @@ public class RequestDetailsViewModel extends ViewModel {
     public LiveData<Request> getRequest() {
         return liveData.request;
     }
+
+    public void updateBookStatus(String isbn, String status){
+        repository.updateBookStatusByIsbn(isbn, status);
+    }
+
+    public void updateRequestStatus(String requester, String status){
+        //repository.updateBookStatus();
+    }
+
+    public void updateBookBorrower(String isbn, String requester){
+        repository.updateBookBorrowerByIsbn(isbn, requester);
+    }
+
 
 
 }

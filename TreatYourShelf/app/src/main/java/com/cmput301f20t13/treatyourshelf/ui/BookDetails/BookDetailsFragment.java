@@ -25,8 +25,11 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
+import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * BookDetailsFragment displays the details of the book class.
@@ -36,8 +39,8 @@ import com.google.android.material.tabs.TabLayout;
  * Only appears when the book list is not accessed from mybooks
  */
 public class BookDetailsFragment extends Fragment {
-    private BookDetailsViewModel bookDetailsViewModel;
     private Book currentBook;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     /**
      * Creates the fragment view
@@ -70,7 +73,7 @@ public class BookDetailsFragment extends Fragment {
         BookDetailsStab summaryFragment = new BookDetailsStab();
         BookViewPagerAdapter viewPagerAdapter = new BookViewPagerAdapter(getChildFragmentManager(), 0);
         /*View Models - where the fragment retrieves its data from*/
-        bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
+        RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity()).get(RequestListViewModel.class);
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
@@ -94,22 +97,21 @@ public class BookDetailsFragment extends Fragment {
             }
         });
 
+        /*Request Button - makes a request*/
         FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
         if (!bookListViewModel.ownerList) {
-            requestButton.setVisibility(View.VISIBLE);
-        }
+            requestButton.setVisibility(View.VISIBLE); }
         requestButton.setOnClickListener(v -> new AlertDialog.Builder(getContext())
                 .setMessage("Would you like to request this book?")
                 .setPositiveButton("YES", (dialog, id) -> {
                     dialog.cancel();
-                    bookDetailsViewModel.requestBook(currentBook, "requestertest"); /*TODO get the user*/
+                    requestListViewModel.requestBook(currentBook, user.getEmail()); /*TODO get the user*/
                     Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                 })
-
                 .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
                 .show());
 
-
+        /*View Requests - view the request made on the current book*/
         Button viewRequestsButton = view.findViewById(R.id.view_request_button);
         viewRequestsButton.setOnClickListener(v -> {
             NavDirections action = BookDetailsFragmentDirections

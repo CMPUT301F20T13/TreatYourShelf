@@ -82,6 +82,13 @@
             android:name="OWNER"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" >
+            <argument
+                android:name="serviceCode"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/requestListFragment"
