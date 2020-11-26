@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> {
                     if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookListFragment) {
                         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
+                    }else if(Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment){
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
                     }
 
                 }
@@ -57,12 +59,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.loginFragment:
                 case R.id.signUpFragment:
-                case R.id.addBookFragment:
-                case R.id.bookDetailsFragment: {
+                case R.id.addBookFragment: {
                     // Want to remove the bottom app bar from view So the camera is full screen
                     bottomAppBar.performHide();
                     bottomAppBar.setVisibility(View.INVISIBLE);
                     fab.hide();
+                    break;
+                }
+                case R.id.bookDetailsFragment:{
+                    if(arguments.getInt("category") == 1){
+                        fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_edit_book));
+                        bottomAppBar.setVisibility(View.VISIBLE);
+                        bottomAppBar.performShow();
+                        fab.show();
+                    }else{
+                        bottomAppBar.performHide();
+                        bottomAppBar.setVisibility(View.INVISIBLE);
+                        fab.hide();
+                    }
                     break;
                 }
                 case R.id.bookListFragment: {
