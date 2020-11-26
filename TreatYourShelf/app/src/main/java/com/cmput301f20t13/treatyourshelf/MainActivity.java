@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.loginFragment:
-                case R.id.addBookFragment: {
+                case R.id.signUpFragment:
+                case R.id.addBookFragment:
+                case R.id.bookDetailsFragment: {
                     // Want to remove the bottom app bar from view So the camera is full screen
                     bottomAppBar.performHide();
                     bottomAppBar.setVisibility(View.INVISIBLE);

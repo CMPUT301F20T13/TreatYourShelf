@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.GalleryViewAdapter;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -19,6 +20,11 @@ import java.util.List;
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
 
     private List<Book> bookList;
+    private OnItemClicked onClick;
+
+    public interface OnItemClicked {
+        void onItemClick(int position, Book book);
+    }
 
 
     public BookListAdapter(List<Book> bookList) {
@@ -37,10 +43,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     public void onBindViewHolder(@NonNull BookListAdapter.MyViewHolder holder, int position) {
         holder.title.setText(bookList.get(position).getTitle());
         holder.author.setText(bookList.get(position).getAuthor());
-        holder.bookItem.setOnClickListener(v -> {
-            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(bookList.get(position).getIsbn());
-            Navigation.findNavController(v).navigate(action);
-        });
+        holder.itemView.setOnClickListener(v -> onClick.onItemClick(position, bookList.get(position)));
+
     }
 
     @Override
@@ -75,6 +79,10 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             author = itemView.findViewById(R.id.book_author);
             bookItem = itemView.findViewById(R.id.book_list_item_cardview);
         }
+    }
+
+    public void setOnClick(OnItemClicked onClick) {
+        this.onClick = onClick;
     }
 }
 
