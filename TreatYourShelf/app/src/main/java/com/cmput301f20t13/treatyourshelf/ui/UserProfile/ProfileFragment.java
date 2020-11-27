@@ -21,12 +21,22 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
+/**
+ * The Fragment for the Profile display screen.
+ */
 public class ProfileFragment extends Fragment {
 
+    /**
+     * Called when the fragment is navigated to.
+     * @param inflater              Inflates the screen
+     * @param container             The viewgroup container.
+     * @param savedInstanceState    The instance state.
+     * @return                      The inflated view, this is fragment_profile.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the fragment_profile screen
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Get the necessary Views in the Fragment
@@ -68,7 +78,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.profileEditFragment);
-                // dismiss();
             }
         });
         return view;

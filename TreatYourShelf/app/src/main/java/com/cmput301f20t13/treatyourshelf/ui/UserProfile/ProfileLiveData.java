@@ -21,29 +21,50 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * Class used to store the LiveData for the Profile. Stores the information for the profiles after
+ * a firebase query.
+ */
 public class ProfileLiveData extends LiveData<Profile> implements EventListener<QuerySnapshot> {
 
+    // Stores the query for which the data is set in Profile
     private final Query query;
+    // The actual mutable live data for the profile
     public MutableLiveData<Profile> profile = new MutableLiveData<>();
 
     private ListenerRegistration listenerRegistration = () -> {};
 
+    /**
+     * The constructor which takes in a Query and parses the data.
+     * @param query The asynchronous query given for which the data is parsed.
+     */
     public ProfileLiveData(Query query) {
         this.query = query;
     }
 
+    /**
+     * Called when the LiveData is active. Calls the super onActive.
+     */
     @Override
     protected void onActive() {
         listenerRegistration = query.addSnapshotListener(this);
         super.onActive();
     }
 
+    /**
+     * Called when the LiveData is inactive.
+     */
     @Override
     protected void onInactive() {
         listenerRegistration.remove();
         super.onInactive();
     }
 
+    /**
+     * Called when a Query event occurs. Parses the Query result and sets the MutableLiveData.
+     * @param value The QuerySnapshot. Not used.
+     * @param error The error from the Firebase Firestore.
+     */
     @Override
     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
         query.get().addOnCompleteListener(task -> {

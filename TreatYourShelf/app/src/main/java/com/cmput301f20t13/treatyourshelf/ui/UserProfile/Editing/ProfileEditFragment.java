@@ -24,8 +24,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The Fragment for the ProfileEdit screen.
+ */
 public class ProfileEditFragment extends Fragment {
 
+    /**
+     * Called when the Fragment is navigated to.
+     * @param inflater              Layout inflater used to display fragment_profile_edit.
+     * @param container             The ViewGroup container.
+     * @param savedInstanceState    The instance state.
+     * @return                      Returns the view, this is fragment_profile_edit.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +54,7 @@ public class ProfileEditFragment extends Fragment {
             profileEmail = user.getEmail();
         }
 
+        // Get the viewmodel and do an initial empty observe
         ProfileEditViewModel vm = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ProfileEditViewModel.class);
         vm.getProfileByEmailLiveData(profileEmail).observe(getViewLifecycleOwner(), Observable -> {});
 
@@ -61,6 +72,7 @@ public class ProfileEditFragment extends Fragment {
             }
         });
 
+        // Get the old username before its been edited
         final String oldUsername = username.getText().toString();
 
         // Add functionality for the buttons, which is the most important part here
@@ -72,28 +84,32 @@ public class ProfileEditFragment extends Fragment {
             }
         });
 
+        // Add functionality for the cancel button
         Button cancel = (Button) view.findViewById(R.id.profile_cancel_button);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Navigate back to the profile screen
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
-                // dismiss();
             }
         });
 
+
+        // Add functionality for the Done button
         Button done = (Button) view.findViewById(R.id.profile_done_button);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : Navigate back to the profile screen with the changes committed
+                // Get the field's typed in value
                 String newUsername = username.getText().toString();
 
-                // Check if the newUsername is valid or not
-                vm.isUsernameAvailableLiveData(newUsername).observe(getViewLifecycleOwner(), Observable -> {});
+                // Empty observe
+                vm.getProfileByUsernameLiveData(newUsername).observe(getViewLifecycleOwner(), Observable -> {});
 
-                // Set the View's values from the ViewModel's data
+                // Observe the profile and retrieve the data
                 vm.getProfile().observe(getViewLifecycleOwner(), profile -> {
                     if (profile != null ) {
+                        // Check if the username is available or not
                         if (!profile.getUsername().equals("default user") && !profile.getUsername().equals("default username")) {
                             if (!profile.getUsername().equals(oldUsername)) {
                                 // The username is invalid, it's taken already
@@ -111,6 +127,7 @@ public class ProfileEditFragment extends Fragment {
                         // newProfileData.setProfileImageUrl();
                         vm.setProfileByEmail(email.getText().toString(), newProfileData);
                         // TODO : Update the profile picture too
+                        // Navigate back to the profile screen with the committed changes
                         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                     }
                     else {
