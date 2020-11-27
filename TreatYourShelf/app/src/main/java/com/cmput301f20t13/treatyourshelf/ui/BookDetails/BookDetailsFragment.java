@@ -47,7 +47,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Only appears when the book list is not accessed from mybooks
  */
 public class BookDetailsFragment extends Fragment {
-    private Book currentBook;
+    private Book currentBook = null;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     /**
@@ -99,13 +99,10 @@ public class BookDetailsFragment extends Fragment {
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
-        BookDetailsViewModel bookDetailsViewModel =
-                new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
-        bookDetailsViewModel.getBookByIsbnOwner(Isbn,Owner)
-                .observe(getViewLifecycleOwner(), Observable -> {});
+
 
         /*Set the book details using the book list view model*/
-        /*bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
+        bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
                 Book book = bookList.get(0);
                 currentBook = book;
@@ -119,8 +116,12 @@ public class BookDetailsFragment extends Fragment {
             } else {
                 Log.d("TAG", "waiting for info");
             }
-        });*/
+        });
 
+/*        BookDetailsViewModel bookDetailsViewModel =
+                new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
+        bookDetailsViewModel.getBookByIsbnOwner(Isbn,Owner)
+                .observe(getViewLifecycleOwner(), Observable -> {});
         bookDetailsViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
             if (book != null) {
                 currentBook = book;
@@ -134,7 +135,7 @@ public class BookDetailsFragment extends Fragment {
             } else {
                 Log.d("TAG", "waiting for info");
             }
-        });
+        });*/
 
 
         /*Request Button - makes a request on the current book if it is available or requested status*/

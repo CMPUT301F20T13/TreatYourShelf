@@ -86,12 +86,9 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
             }
         });
         viewBookDetailsBt.setOnClickListener(view1 -> {
-            String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             // Want to navigate to Book Details Screen
-            assert user != null;
             NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment()
-                    .setISBN(isbn)
-                    .setOWNER(user);
+                    .setISBN(isbn);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
 
