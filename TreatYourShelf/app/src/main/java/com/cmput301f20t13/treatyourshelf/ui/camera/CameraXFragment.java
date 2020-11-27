@@ -209,7 +209,12 @@ public class CameraXFragment extends Fragment {
                             } else if (serviceCode == 2) {
                                 RequestDetailsViewModel requestDetailsViewModel =
                                         new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
-                                requestDetailsViewModel.updateBookStatus(barcode.getRawValue(),"Borrowed");
+                                requestDetailsViewModel.setOwnerScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 3) {
+                                RequestDetailsViewModel requestDetailsViewModel =
+                                        new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
+                                requestDetailsViewModel.setBorrowerScannedIsbn(barcode.getRawValue());
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                             }
                         }

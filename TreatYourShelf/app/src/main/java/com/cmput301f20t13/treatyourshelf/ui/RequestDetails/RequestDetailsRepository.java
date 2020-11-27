@@ -13,6 +13,7 @@ import java.util.Objects;
 public class RequestDetailsRepository{
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
+    private final CollectionReference collectionBooks = firebaseFirestore.collection("books");
 
     public RequestDetailsLiveData getRequestLiveData(String isbn, String requester, String owner) {
         Query query = collectionRequests
@@ -39,7 +40,6 @@ public class RequestDetailsRepository{
 
 
     public void updateBookBorrowerByIsbn(String isbn, String requester) {
-        CollectionReference collectionBooks = firebaseFirestore.collection("books");
         collectionBooks
                 .whereEqualTo("isbn", isbn)
                 .get()

@@ -33,27 +33,36 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class BookDetailsViewModel extends AndroidViewModel {
-    private final BookListRepository repository = new BookListRepository();
-    BookListLiveData liveData = null;
-    public MutableLiveData<Book> selectedBook = new MutableLiveData<>();
-    public boolean ownerList = true;
+    private final BookListRepository bookListRepository = new BookListRepository();
+    private final BookDetailsRepository bookDetailsRepository = new BookDetailsRepository();
+    BookListLiveData bookListLiveData = null;
+    BookDetailsLiveData bookDetailsLiveData = null;
 
     public BookDetailsViewModel(@NonNull Application application) {
         super(application);
     }
 
     public LiveData<List<Book>> getBookByIsbnLiveData(String isbn) {
-        liveData = repository.getBookByIsbnLiveData(isbn);
-        return liveData;
+        bookListLiveData = bookListRepository.getBookByIsbnLiveData(isbn);
+        return bookListLiveData;
+    }
+
+    public LiveData<Book> getBookByIsbnOwner(String isbn, String owner){
+        bookDetailsLiveData = bookDetailsRepository.getBookByIsbnOwner(isbn, owner);
+        return bookDetailsLiveData;
+    }
+
+    public LiveData<Book> getBook() {
+        return bookDetailsLiveData.book;
     }
 
     public LiveData<List<Book>> getBookList() {
-        return liveData.bookList;
+        return bookListLiveData.bookList;
     }
 
-    public void select(Book book){selectedBook.setValue(book);}
 
-    public LiveData<Book> getSelected() {return selectedBook;}
-
-    public void clearLiveData() { liveData = null; }
+    public void clearLiveData() {
+        bookListLiveData = null;
+        bookDetailsLiveData = null;
+    }
 }

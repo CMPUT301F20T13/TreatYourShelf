@@ -74,7 +74,10 @@ public class OwnedBooksFragment extends Fragment {
         // Initialize BookListAdapter
         bookListAdapter = new BookListAdapter(new ArrayList<>());
         bookListAdapter.setOnClick((BookListAdapter.OnItemClicked) (position, book) -> {
-            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment()
+                    .setISBN(book.getIsbn())
+                    .setOWNER(book.getOwner())
+                    .setCategory(1);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         });
 
