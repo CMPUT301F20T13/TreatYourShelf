@@ -77,8 +77,8 @@ public class AddBookRepository {
                 });
     }
 
-    public void editBook(Book book) {
-        firebaseFirestore.collection("books").whereEqualTo("isbn", book.getIsbn())
+    public void editBook(Book book, String oldIsbn) {
+        firebaseFirestore.collection("books").whereEqualTo("isbn", book.getIsbn()).whereEqualTo("owner",book.getOwner())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -89,6 +89,7 @@ public class AddBookRepository {
                                 uRef.update("author", book.getAuthor());
                                 uRef.update("description", book.getDescription());
                                 uRef.update("title", book.getTitle());
+                                uRef.update("imageUrls", book.getImageUrls());
                                 uRef.update("isbn", book.getIsbn()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.cmput301f20t13.treatyourshelf.ui.settings.BottomSheetSettingsMenu;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -32,9 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         fab.setOnClickListener(view -> {
                     if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookListFragment) {
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
+                        NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(0);
+
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
                     }else if(Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment){
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
+                        NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(1);
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
                     }
 
                 }

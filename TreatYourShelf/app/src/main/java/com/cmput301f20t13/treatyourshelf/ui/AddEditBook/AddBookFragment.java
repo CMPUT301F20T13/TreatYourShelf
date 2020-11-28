@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragmentArgs;
+import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,29 +34,43 @@ import java.util.ArrayList;
 public class AddBookFragment extends Fragment {
 
     private AddBookViewModel addBookViewModel;
+    private BookDetailsViewModel bookDetailsViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_book, container, false);
-        EditText titleEt = (EditText) view.findViewById(R.id.add_book_title_et);
-        EditText authorEt = (EditText) view.findViewById(R.id.add_book_author_et);
-        EditText descEt = (EditText) view.findViewById(R.id.add_book_description_et);
-        EditText isbnEt = (EditText) view.findViewById(R.id.add_book_isbn_et);
+        EditText titleEt = view.findViewById(R.id.add_book_title_et);
+        EditText authorEt = view.findViewById(R.id.add_book_author_et);
+        EditText descEt = view.findViewById(R.id.add_book_description_et);
+        EditText isbnEt = view.findViewById(R.id.add_book_isbn_et);
         TextView ownerTv = view.findViewById(R.id.add_book_owner_tv);
         TextView addImagesBt = view.findViewById(R.id.add_book_pictures_button);
         Button saveBt = view.findViewById(R.id.add_book_save_button);
         ImageButton scanIsbnBt = view.findViewById(R.id.add_book_scan_isbn_button);
         ImageButton closeBt = view.findViewById(R.id.close_fragmentBt);
         RecyclerView selectedImagesRv = view.findViewById(R.id.selected_images_rv);
+        addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
+        int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
+
+
+        if (category == 1) {
+            // Load book with old info
+            bookDetailsViewModel = new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
+            Book book = bookDetailsViewModel.getSelectedBook();
+            if (book != null) {
+                titleEt.setText(book.getTitle());
+                authorEt.setText(book.getAuthor());
+                descEt.setText(book.getDescription());
+                addBookViewModel.scannedIsbn.setValue(book.getIsbn());
+            }
+        }
+
 
         selectedImagesRv.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         SelectedImagesAdapter selectedImagesAdapter = new SelectedImagesAdapter(requireContext(), new ArrayList<>());
-        selectedImagesAdapter.setOnClick(new SelectedImagesAdapter.OnItemClicked() {
-            @Override
-            public void onItemClick(int position) {
-                // Clicked on Selected Image
-            }
+        selectedImagesAdapter.setOnClick(position -> {
+            // Clicked on Selected Image
         });
         selectedImagesRv.setAdapter(selectedImagesAdapter);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -77,7 +93,7 @@ public class AddBookFragment extends Fragment {
             bottomSheetGalleryImages.show(getChildFragmentManager(), null);
 
         });
-        addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
+
         addBookViewModel.scannedIsbn.observe(getViewLifecycleOwner(), isbnEt::setText);
         addBookViewModel.selectedImages.observe(getViewLifecycleOwner(), selectedImages ->
         {
@@ -97,7 +113,12 @@ public class AddBookFragment extends Fragment {
             public void onClick(View v) {
                 Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
                         "available");
-                addBookViewModel.addBook(book);
+                if (category == 1) {
+                    addBookViewModel.editBook(book);
+                } else {
+                    addBookViewModel.addBook(book);
+                }
+
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
 
 
@@ -148,15 +169,5 @@ public class AddBookFragment extends Fragment {
         super.onDestroyView();
     }
 
-    /*
-        for editing an existing book
-         */
-    static AddBookFragment newInstance(int selected, String isbn) {
-        Bundle args = new Bundle();
-        args.putString("isbn", isbn);
-        args.putInt("selected", selected);
-        AddBookFragment fragment = new AddBookFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 }

@@ -71,10 +71,14 @@ public class BookDetailsFragment extends Fragment {
         TextView bookStatus = view.findViewById(R.id.book_status);
         Button requestBt = view.findViewById(R.id.book_request_button);
         ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
+        bookDetailsViewModel = new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
 
         if (category == 0) {
+            // User is not allowed to edit book
             requestBt.setVisibility(View.VISIBLE);
         } else {
+            // User is allowed to edit book
+
             requestBt.setVisibility(View.INVISIBLE);
         }
         // tabLayout.setupWithViewPager(viewPager);
@@ -85,7 +89,7 @@ public class BookDetailsFragment extends Fragment {
         /*Fragments within the Tab Layout*/
 
         /*View Models - where the fragment retrieves its data from*/
-        bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
+
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
@@ -100,9 +104,14 @@ public class BookDetailsFragment extends Fragment {
                 bookOwner.setText(book.getOwner());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
-                bookImagesAdapter.setImages(book.getImageUrls());
+                if(book.getImageUrls() != null){
+                    bookImagesAdapter.setImages(book.getImageUrls());
+                }
 
 
+                if (category == 1) {
+                    bookDetailsViewModel.setBook(book);
+                }
             } else {
                 Log.d("TAG", "waiting for info");
             }

@@ -48,8 +48,8 @@ public class AddBookViewModel extends AndroidViewModel {
     }
 
     public void addBook(Book book) {
+        uploadImages(book, 0);
 
-        uploadImages(book);
     }
 
     public void deleteBook(String isbn) {
@@ -57,7 +57,8 @@ public class AddBookViewModel extends AndroidViewModel {
     }
 
     public void editBook(Book book) {
-        repository.editBook(book);
+        uploadImages(book, 1);
+
     }
 
     public void clearState() {
@@ -67,7 +68,7 @@ public class AddBookViewModel extends AndroidViewModel {
     }
 
     public void setScannedIsbn(String scannedIsbn) {
-        this.scannedIsbn.postValue(scannedIsbn);
+        this.scannedIsbn.setValue(scannedIsbn);
     }
 
     public void setSelectedImage(ImageFilePathSelector imageFilePathSelector) {
@@ -83,7 +84,7 @@ public class AddBookViewModel extends AndroidViewModel {
         }
     }
 
-    public void uploadImages(Book book) {
+    public void uploadImages(Book book, int category) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
 
@@ -117,7 +118,11 @@ public class AddBookViewModel extends AndroidViewModel {
                                     imageUrls.add(Objects.requireNonNull(imageUrl.getResult()).toString());
                                 }
                                 book.setImageUrls(imageUrls);
-                                repository.addBook(book);
+                                if (category == 0) {
+                                    repository.addBook(book);
+                                } else {
+                                    repository.editBook(book);
+                                }
                             }
                         }
                     });
@@ -125,7 +130,6 @@ public class AddBookViewModel extends AndroidViewModel {
                 }
             }
         });
-
     }
 
     public void resetSelectedImages() {
