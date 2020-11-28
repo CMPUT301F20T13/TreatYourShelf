@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.data.Profile;
+import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -70,6 +72,7 @@ public class SignUpFragment extends Fragment {
         Button signup_btn = (Button) view.findViewById(R.id.signup_btn);
         TextInputLayout email_layout = (TextInputLayout) view.findViewById(R.id.email_layout);
         TextInputLayout password_layout = (TextInputLayout) view.findViewById(R.id.password_layout);
+        TextInputLayout phone_layout = (TextInputLayout) view.findViewById(R.id.phone_layout);
         TextView already_member_tv = (TextView) view.findViewById(R.id.already_member_tv);
 
         // Handles sign up button click
@@ -77,15 +80,16 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Fields are not empty
-                String email, password;
+                String email, password, phone;
                 email = email_layout.getEditText().getText().toString();
                 password = password_layout.getEditText().getText().toString();
+                phone = phone_layout.getEditText().getText().toString();
                 if (email.isEmpty()) {
                     email_layout.setError("Email field can not be empty.");
                 } else if (password.isEmpty()) {
                     password_layout.setError("Password field can not be empty.");
                 } else { // If non-empty password and email
-                    createNewUser(email, password);
+                    createNewUser(email, password, phone);
                 }
             }
         });
@@ -109,7 +113,7 @@ public class SignUpFragment extends Fragment {
      * @param email    the email address provided.
      * @param password the password provided.
      */
-    public void createNewUser(String email, String password) {
+    public void createNewUser(String email, String password, String phone) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -118,6 +122,14 @@ public class SignUpFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            // Add the profile
+                            Profile profile = new Profile();
+                            profile.setEmail(email);
+                            profile.setPassword(password);
+                            profile.setPhoneNumber(phone);
+                            ProfileRepository.addProfile(profile);
+
                             Toast.makeText(getContext(), "Sign up successful.", Toast.LENGTH_SHORT).show();
                             navigateToNextScreen();
                         } else {

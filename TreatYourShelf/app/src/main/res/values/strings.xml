@@ -32,4 +32,6 @@
     <string name="view_requests">VIEW REQUESTS</string>
     <string name="status">Status</string>
     <string name="username_header">Username:</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
 </resources>
