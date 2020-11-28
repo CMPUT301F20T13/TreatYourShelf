@@ -36,62 +36,34 @@ public class BookSearchFragment extends Fragment {
         bookSearchAdapter = new BookSearchAdapter(bookArray);
         EditText searchBar = view.findViewById(R.id.search_text);
         Button searchButton = view.findViewById(R.id.search_button);
+        RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
+        bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), liveBookList ->{
+            bookSearchAdapter.setBookList(liveBookList);
+            bookRv.setAdapter(bookSearchAdapter);
 
-        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
+            //failed here, java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+            System.out.println(liveBookList.get(0));
 
-        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), bookList -> {
-            if (bookList != null ) {
-                bookSearchAdapter.clear();
-                bookSearchAdapter.setBookList(bookList);
-                RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
-                bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                bookRv.setAdapter(bookSearchAdapter);
-            }
-            else {
-                Log.d("TAG", "waiting for info");
-            }
         });
+//        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
+//
+//        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), bookList -> {
+//            if (bookList != null ) {
+//                bookSearchAdapter.clear();
+//                bookSearchAdapter.setBookList(bookList);
+//                bookRv.setAdapter(bookSearchAdapter);
+//            }
+//            else {
+//                Log.d("TAG", "waiting for info");
+//            }
+//        });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String keyword = (String) searchBar.getText().toString();
-
-                if (bookSearchViewModel.getBookByTitleLiveData(keyword) != null) {
-                    bookSearchAdapter.clear();
-                    List<Book> bookList = new ArrayList<>();
-                    bookSearchViewModel.getBookByTitleLiveData(keyword).observe(getViewLifecycleOwner(), books -> {
-
-                    });
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByOwnerLiveData(keyword));
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByIsbnLiveData(keyword));
-                    bookSearchAdapter.setBookList(bookList);
-                    RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
-                    bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    bookRv.setAdapter(bookSearchAdapter);
-
-                } else if (bookSearchViewModel.getBookByOwnerLiveData(keyword) != null) {
-                    bookSearchAdapter.clear();
-                    List<Book> bookList = (List<Book>) bookSearchViewModel.getBookByOwnerLiveData(keyword);
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByTitleLiveData(keyword));
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByIsbnLiveData(keyword));
-                    bookSearchAdapter.setBookList(bookList);
-                    RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
-                    bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    bookRv.setAdapter(bookSearchAdapter);
-
-                } else if (bookSearchViewModel.getBookByIsbnLiveData(keyword) != null) {
-                    bookSearchAdapter.clear();
-                    List<Book> bookList = (List<Book>) bookSearchViewModel.getBookByIsbnLiveData(keyword);
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByTitleLiveData(keyword));
-                    bookList.addAll((List<Book>) bookSearchViewModel.getBookByOwnerLiveData(keyword));
-                    bookSearchAdapter.setBookList(bookList);
-                    RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
-                    bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    bookRv.setAdapter(bookSearchAdapter);
-                } else {
-                    bookSearchAdapter.clear();
-                }
+                bookSearchViewModel.getBookSearch(keyword);
             }
         });
 
