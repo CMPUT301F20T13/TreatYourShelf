@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 }
+                case R.id.signUpFragment:
                 case R.id.loginFragment:
                 case R.id.signUpFragment:
                 case R.id.addBookFragment:

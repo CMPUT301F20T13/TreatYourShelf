@@ -10,7 +10,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-
         android:id="@+id/app_settings"
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:title="Settings"
