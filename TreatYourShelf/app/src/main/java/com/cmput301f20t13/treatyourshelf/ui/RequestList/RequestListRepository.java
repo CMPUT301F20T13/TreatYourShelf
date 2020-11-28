@@ -88,7 +88,7 @@ public class RequestListRepository {
         newRequest.put("author", book.getAuthor());
         newRequest.put("isbn", book.getIsbn());
         newRequest.put("owner", book.getOwner());
-        newRequest.put("status", "Requested");
+        newRequest.put("status", "requested");
         String requestId = book.getIsbn() + requester;
 
         collectionRequests.document(requestId)
