@@ -114,8 +114,8 @@ public class RequestDetailsFragment extends Fragment {
                     }
                 }
             });
-            requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "Accepted");
-            requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "Accepted");
+            requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "accepted");
+            requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
             /*TODO - navigate to location fragment*/
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
             /*TODO notify requester of accepted request*/
@@ -140,7 +140,7 @@ public class RequestDetailsFragment extends Fragment {
             navigateCameraFragment(2, view);
             /*Change current borrower to requester for the book*/
             requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "Borrowed");
+                requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "borrowed");
                 requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
             });
             Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
@@ -157,11 +157,11 @@ public class RequestDetailsFragment extends Fragment {
             /*TODO specify if owner or borrower to set conditionals*/
             /*Owner receiving the returned book from borrower updates the request details*/
             requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "Available"); });
+                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "available"); });
 
             /*Borrower receiving the book updates the request details*/
             requestDetailsViewModel.borrowerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "Borrowed"); });
+                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "borrowed"); });
             Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
         });
 
@@ -171,7 +171,7 @@ public class RequestDetailsFragment extends Fragment {
             navigateCameraFragment(2, view);
             requestDetailsViewModel.borrowerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
                 requestDetailsViewModel
-                        .updateRequestStatusByIsbn(isbnScanned, requesterString, "Available");
+                        .updateRequestStatusByIsbn(isbnScanned, requesterString, "available");
                 requestListViewModel
                         .removeRequest(isbnScanned, ownerString, requesterString);});
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
@@ -197,24 +197,24 @@ public class RequestDetailsFragment extends Fragment {
                             Button giveBookButton, Button receiveBookButton, Button returnBookButton){
         if (user.equals(currentRequest.getOwner())) {
             switch(currentRequest.getStatus()){
-                case "Requested":
+                case "requested":
                     requestButtons.setVisibility(VISIBLE);
                     break;
-                case "Accepted":
+                case "accepted":
                     giveBookButton.setVisibility(VISIBLE);
                     break;
-                case "Borrowed":
+                case "borrowed":
                     receiveBookButton.setVisibility(VISIBLE);
                     break;
             }
         } else if (user.equals(currentRequest.getRequester())){
             switch(currentRequest.getStatus()){
-                case "Requested":
+                case "requested":
                     break;
-                case "Accepted":
+                case "accepted":
                     receiveBookButton.setVisibility(VISIBLE);
                     break;
-                case "Borrowed":
+                case "borrowed":
                     returnBookButton.setVisibility(VISIBLE);
                     break;
             }
