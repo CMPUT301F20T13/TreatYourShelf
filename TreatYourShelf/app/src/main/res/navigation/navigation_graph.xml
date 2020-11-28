@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nagivation_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/bookSearchFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
@@ -123,6 +123,10 @@
                 android:defaultValue="1" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/bookSearchFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.BookSearch.BookSearchFragment"
+        android:label="BookSearchFragment" />
 
 
 </navigation>

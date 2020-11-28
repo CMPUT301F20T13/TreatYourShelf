@@ -6,13 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.GalleryViewAdapter;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -77,7 +74,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
 
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
-            bookItem = itemView.findViewById(R.id.book_list_item_cardview);
+            bookItem = itemView.findViewById(R.id.search_list_item_cardview);
         }
     }
 
