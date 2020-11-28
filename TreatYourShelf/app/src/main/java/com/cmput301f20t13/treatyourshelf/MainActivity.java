@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment) {
                         NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(1);
                         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
+
                     }
 
                 }
