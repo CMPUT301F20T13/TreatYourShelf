@@ -2,21 +2,12 @@ package com.cmput301f20t13.treatyourshelf.ui.RequestList;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListLiveData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-
-import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +38,12 @@ public class RequestListRepository {
     public RequestListLiveData getRequestByIsbnRequesterLiveData(String isbn, String requester) {
         Query query = collectionRequests
                 .whereEqualTo("isbn", isbn)
+                .whereEqualTo("requester", requester);
+        return new RequestListLiveData(query);
+    }
+
+    public RequestListLiveData getRequestByRequesterLiveData(String requester) {
+        Query query = collectionRequests
                 .whereEqualTo("requester", requester);
         return new RequestListLiveData(query);
     }

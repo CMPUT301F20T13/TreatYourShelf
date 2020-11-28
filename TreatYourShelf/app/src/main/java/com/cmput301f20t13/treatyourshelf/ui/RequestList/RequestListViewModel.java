@@ -1,13 +1,10 @@
 package com.cmput301f20t13.treatyourshelf.ui.RequestList;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListLiveData;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListRepository;
 
 import java.util.List;
 
@@ -37,6 +34,11 @@ public class RequestListViewModel extends ViewModel {
 
     public LiveData<List<Request>> getRequestByIsbnRequesterLiveData(String isbn, String requester){
         liveData = repository.getRequestByIsbnRequesterLiveData(isbn, requester);
+        return liveData;
+    }
+
+    public LiveData<List<Request>> getRequestByRequesterLiveData(String requester){
+        liveData = repository.getRequestByRequesterLiveData(requester);
         return liveData;
     }
 
