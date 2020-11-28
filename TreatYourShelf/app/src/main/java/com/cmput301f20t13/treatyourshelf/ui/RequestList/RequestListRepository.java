@@ -1,7 +1,10 @@
 package com.cmput301f20t13.treatyourshelf.ui.RequestList;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListLiveData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,7 +25,7 @@ import java.util.Objects;
 public class RequestListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
-
+    private static final String TAG = "RequestListRepo";
 
     public RequestListLiveData getRequestByIsbnLiveData(String isbn) {
         Query query = collectionRequests.whereEqualTo("isbn", isbn);
@@ -78,6 +81,26 @@ public class RequestListRepository {
                         }
                     }
                 });
+    }
+
+
+    public void addRequest(Book book, String requester) {
+        Map<String, Object> newRequest = new HashMap<>();
+        newRequest.put("requester", requester);
+        newRequest.put("title", book.getTitle());
+        newRequest.put("author", book.getAuthor());
+        newRequest.put("isbn", book.getIsbn());
+        newRequest.put("owner", book.getOwner());
+        newRequest.put("status", "Requested");
+        String requestId = book.getIsbn() + requester;
+
+        collectionRequests.document(requestId)
+                .set(newRequest)
+                .addOnSuccessListener(aVoid ->
+                        Log.d(TAG, "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e ->
+                        Log.w(TAG, "Error writing document", e));
+
 
     }
 }

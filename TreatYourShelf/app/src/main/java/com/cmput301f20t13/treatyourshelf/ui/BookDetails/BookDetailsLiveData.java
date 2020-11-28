@@ -1,4 +1,4 @@
-package com.cmput301f20t13.treatyourshelf.ui.RequestDetails;
+package com.cmput301f20t13.treatyourshelf.ui.BookDetails;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.cmput301f20t13.treatyourshelf.data.Request;
+import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -14,20 +14,22 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
-public class RequestDetailsLiveData extends
-        LiveData<Request> implements
+public class BookDetailsLiveData extends
+        LiveData<Book> implements
         EventListener<QuerySnapshot> {
     private final Query query;
-    public MutableLiveData<Request> request = new MutableLiveData<>();
+    public MutableLiveData<Book> book = new MutableLiveData<>();
 
-    private ListenerRegistration listenerRegistration = () -> {};
+    private ListenerRegistration listenerRegistration = () -> {
+    };
 
-    public RequestDetailsLiveData(Query query) {
+    public BookDetailsLiveData(Query query) {
         this.query = query;
     }
 
@@ -47,18 +49,19 @@ public class RequestDetailsLiveData extends
     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Request requestTemp = new Request();
+                Book bookTemp = new Book();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    Map<String, Object> requestDetails = document.getData();
-                    requestTemp.setRequester((String) requestDetails.getOrDefault("requester", "default requester"));
-                    requestTemp.setBookId((String) requestDetails.getOrDefault("bookId", "12345"));
-                    requestTemp.setStatus((String) requestDetails.getOrDefault("status", "Requested"));
-                    requestTemp.setOwner((String) requestDetails.getOrDefault("owner", "default owner"));
-                    requestTemp.setIsbn((String) requestDetails.getOrDefault("isbn", "12345678910"));
-                    requestTemp.setAuthor((String) requestDetails.getOrDefault("author", "default author"));
-                    requestTemp.setTitle((String) requestDetails.getOrDefault("title", "default title"));
+                    Map<String, Object> bookDetails = document.getData();
+                    bookTemp.setTitle((String) bookDetails.getOrDefault("title", "default title"));
+                    bookTemp.setAuthor((String) bookDetails.getOrDefault("author", "default author"));
+                    bookTemp.setDescription((String) bookDetails.getOrDefault("description", "default description"));
+                    bookTemp.setIsbn((String) bookDetails.getOrDefault("isbn", "default isbn"));
+                    bookTemp.setOwner((String) bookDetails.getOrDefault("owner", "default owner"));
+                    bookTemp.setImageUrls((List<String>) bookDetails.getOrDefault("imageUrls", null));
+                    bookTemp.setBorrower((String) bookDetails.getOrDefault("borrower", "default borrower"));
+                    bookTemp.setStatus((String) bookDetails.getOrDefault("status", "Available"));
                 }
-                request.setValue(requestTemp);
+                book.setValue(bookTemp);
             } else {
                 Log.w(TAG, "Error getting documents.", task.getException());
             }

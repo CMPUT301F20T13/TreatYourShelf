@@ -11,7 +11,7 @@
         android:label="BookListFragment">
         <action
             android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
-            app:destination="@id/bookDetailsFragment" >
+            app:destination="@id/bookDetailsFragment">
             <argument
                 android:name="category"
                 android:defaultValue="0" />
@@ -31,8 +31,8 @@
         </action>
         <argument
             android:name="serviceCode"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/ownedBooksFragment"
@@ -40,7 +40,7 @@
         android:label="OwnedBooksFragment">
         <action
             android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
-            app:destination="@id/bookDetailsFragment" >
+            app:destination="@id/bookDetailsFragment">
             <argument
                 android:name="category"
                 android:defaultValue="1" />
@@ -67,9 +67,13 @@
             android:defaultValue=""
             app:argType="string" />
         <argument
+            android:name="OWNER"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
             android:name="category"
             android:defaultValue="0"
-            app:argType="integer"/>
+            app:argType="integer" />
         <action
             android:id="@+id/action_bookDetailsFragment_to_requestListFragment"
             app:destination="@id/requestListFragment" />
@@ -102,11 +106,18 @@
             android:name="OWNER"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" >
+            <argument
+                android:name="serviceCode"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/requestListFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragment"
-        android:label="RequestListsFragment" >
+        android:label="RequestListsFragment">
         <argument
             android:name="ISBN"
             android:defaultValue=""
@@ -119,15 +130,47 @@
     <fragment
         android:id="@+id/addBookFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragment"
-        android:label="AddBookFragment" >
+        android:label="AddBookFragment">
+        <argument
+            android:name="category"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_addBookFragment_to_cameraXFragment"
-            app:destination="@id/cameraXFragment" >
+            app:destination="@id/cameraXFragment">
             <argument
                 android:name="serviceCode"
                 android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/action_addBookFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment"
+            app:popUpTo="@id/bookDetailsFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="isbn"
+                android:defaultValue="" />
+            <argument
+                android:name="category"
+                android:defaultValue="0" />
+        </action>
+        <action
+            android:id="@+id/action_addBookFragment_to_ownedBooksFragment"
+            app:destination="@id/ownedBooksFragment"
+            app:popUpTo="@id/ownedBooksFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_addBookFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment"
+            app:popUpTo="@id/bookListFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
-
+    <action
+        android:id="@+id/action_global_to_addBookfragment"
+        app:destination="@id/addBookFragment">
+        <argument
+            android:name="category"
+            android:defaultValue="0" />
+    </action>
 
 </navigation>
