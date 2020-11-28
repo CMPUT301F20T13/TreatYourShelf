@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nagivation_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/signUpFragment">
 
     <fragment
         android:id="@+id/bookListFragment"
@@ -53,6 +54,10 @@
         android:id="@+id/profileFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.Editing.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
     <fragment
         android:id="@+id/bookDetailsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragment"
