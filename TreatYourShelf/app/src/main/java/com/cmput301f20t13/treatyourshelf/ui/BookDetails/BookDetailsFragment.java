@@ -16,9 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,18 +24,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
-import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
-import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragmentDirections;
-import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * BookDetailsFragment displays the details of the book class.
@@ -47,8 +39,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Only appears when the book list is not accessed from mybooks
  */
 public class BookDetailsFragment extends Fragment {
-    private Book currentBook = null;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private BookDetailsViewModel bookDetailsViewModel;
 
     /**
      * Creates the fragment view
@@ -64,10 +55,12 @@ public class BookDetailsFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_details, container, false);
         String Isbn = BookDetailsFragmentArgs.fromBundle(getArguments()).getISBN();
-        String Owner = BookDetailsFragmentArgs.fromBundle(getArguments()).getOWNER();
         int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
         System.out.println("The ISBN is" + Isbn);
+        /*Tab Layout that includes a Summary tab and Details Tab*/
 
+
+        // TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager2 viewPager2 = view.findViewById(R.id.book_image_vp2);
         WormDotsIndicator wormDotsIndicator = view.findViewById(R.id.worm_dots_indicator);
         TextView bookTitle = view.findViewById(R.id.book_title);
@@ -77,106 +70,91 @@ public class BookDetailsFragment extends Fragment {
         TextView bookOwner = view.findViewById(R.id.book_owner);
         TextView bookStatus = view.findViewById(R.id.book_status);
         Button requestBt = view.findViewById(R.id.book_request_button);
-        Button viewRequestBt = view.findViewById(R.id.view_requests_button);
         ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
+        bookDetailsViewModel = new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
 
-        /*Show or hide the request button and view request button*/
         if (category == 0) {
+            // User is not allowed to edit book
             requestBt.setVisibility(View.VISIBLE);
-            viewRequestBt.setVisibility(View.GONE);
         } else {
-            requestBt.setVisibility(View.GONE);
-            viewRequestBt.setVisibility(View.VISIBLE);
+            // User is allowed to edit book
+
+            requestBt.setVisibility(View.INVISIBLE);
         }
+        // tabLayout.setupWithViewPager(viewPager);
 
         BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
         viewPager2.setAdapter(bookImagesAdapter);
         wormDotsIndicator.setViewPager2(viewPager2);
+        /*Fragments within the Tab Layout*/
 
         /*View Models - where the fragment retrieves its data from*/
-        RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity()).get(RequestListViewModel.class);
-        RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
+
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
 
-
-        /*Set the book details using the book list view model*/
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
+
                 Book book = bookList.get(0);
-                currentBook = book;
                 bookTitle.setText(book.getTitle());
                 bookAuthor.setText(book.getAuthor());
                 bookDescription.setText(book.getDescription());
                 bookOwner.setText(book.getOwner());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
-                bookImagesAdapter.setImages(book.getImageUrls());
+                if(book.getImageUrls() != null){
+                    bookImagesAdapter.setImages(book.getImageUrls());
+                }
+
+
+                if (category == 1) {
+                    bookDetailsViewModel.setBook(book);
+                }
             } else {
                 Log.d("TAG", "waiting for info");
             }
         });
+        requestBt.setOnClickListener(view1 -> {
 
-/*        BookDetailsViewModel bookDetailsViewModel =
-                new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
-        bookDetailsViewModel.getBookByIsbnOwner(Isbn,Owner)
-                .observe(getViewLifecycleOwner(), Observable -> {});
-        bookDetailsViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
-            if (book != null) {
-                currentBook = book;
-                bookTitle.setText(book.getTitle());
-                bookAuthor.setText(book.getAuthor());
-                bookDescription.setText(book.getDescription());
-                bookOwner.setText(book.getOwner());
-                bookIsbn.setText(book.getIsbn());
-                bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
-                bookImagesAdapter.setImages(book.getImageUrls());
-            } else {
-                Log.d("TAG", "waiting for info");
-            }
-        });*/
-
-
-        /*Request Button - makes a request on the current book if it is available or requested status*/
-        requestBt.setOnClickListener(v -> {
-            if (currentBook.getStatus().equals("Available") || currentBook.getStatus().equals("Requested")){
-                new AlertDialog.Builder(getContext())
-                        .setMessage("Would you like to request this book?")
-                        .setPositiveButton("YES", (dialog, id) -> {
-                            dialog.cancel();
-                            requestListViewModel.requestBook(currentBook, user.getEmail()); //creates a request
-                            requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "Requested"); //updates the books status
-                            Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
-                        })
-                        .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
-                        .show();
-            } else {
-                new AlertDialog.Builder(getContext())
-                        .setMessage("This book is unavailable")
-                        .setNegativeButton("CLOSE", (dialog, which) -> dialog.cancel())
-                        .show();
-            }
         });
-
-
-        /*View Request - view the requests made on the current book*/
-        viewRequestBt.setOnClickListener(v -> {
-            NavDirections action =
-                    BookDetailsFragmentDirections.actionBookDetailsFragmentToRequestListFragment()
-                    .setISBN(Isbn);
-            Navigation.findNavController(v).navigate(action);
-        });
-
-
-        /*Close Button - closes the book details fragment*/
         closeBt.setOnClickListener(view1 -> {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
         });
+        /*ViewPagerAdapter - Attaches the fragment to the tablayout*/
 
+
+//        FloatingActionButton requestButton = view.findViewById(R.id.book_request_button);
+//        if (!bookListViewModel.ownerList) {
+//            requestButton.setVisibility(View.VISIBLE);
+//        }
+//        requestButton.setOnClickListener(v -> new AlertDialog.Builder(getContext())
+//                .setMessage("Would you like to request this book?")
+//                .setPositiveButton("YES", (dialog, id) -> {
+//                    dialog.cancel();
+//                    /*TODO call edit book fragment to change status*/
+//                    Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
+//                })
+//
+//                .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
+//                .show());
+
+
+        //ImageButton editButton = view.findViewById(R.id.book_edit_button);
+//        if (bookListViewModel.ownerList) {
+//            editButton.setVisibility(View.VISIBLE);
+//        }
+//        editButton.setOnClickListener(v -> {
+//            // Not implemented yet
+//            /*TODO - call edit book fragment*/
+//        });
 
         return view;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

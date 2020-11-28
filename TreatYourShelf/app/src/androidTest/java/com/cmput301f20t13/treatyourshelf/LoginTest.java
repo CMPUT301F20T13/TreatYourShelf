@@ -57,7 +57,6 @@ public class LoginTest {
      */
     @Test
     public void invalidEmailPassword() {
-
         solo.enterText((EditText) solo.getView(R.id.edit_et), "INVALID_EMAIL");
         solo.enterText((EditText) solo.getView(R.id.password_et), "INVALID_PASSWORD");
         solo.clickOnButton("LOGIN"); // Attempt to login
