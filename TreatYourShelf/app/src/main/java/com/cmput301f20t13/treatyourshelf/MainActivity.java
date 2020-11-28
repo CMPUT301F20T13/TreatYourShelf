@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
-                    if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookListFragment) {
+                    if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.ownedBooksFragment) {
                         NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(0);
 
                         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
-                    }else if(Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment){
+                    } else if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment) {
                         NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(1);
                         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
                     }
@@ -71,24 +71,31 @@ public class MainActivity extends AppCompatActivity {
                     fab.hide();
                     break;
                 }
-                case R.id.bookDetailsFragment:{
-                    if(arguments.getInt("category") == 1){
+                case R.id.bookDetailsFragment: {
+                    if (arguments.getInt("category") == 1) {
                         fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_edit_book));
                         bottomAppBar.setVisibility(View.VISIBLE);
                         bottomAppBar.performShow();
                         fab.show();
-                    }else{
+                    } else {
                         bottomAppBar.performHide();
                         bottomAppBar.setVisibility(View.INVISIBLE);
                         fab.hide();
                     }
                     break;
                 }
-                case R.id.bookListFragment: {
+                case R.id.ownedBooksFragment: {
                     fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_add_24));
                     bottomAppBar.setVisibility(View.VISIBLE);
                     bottomAppBar.performShow();
                     fab.show();
+                    break;
+                }
+                case R.id.bookListFragment: {
+
+                    bottomAppBar.setVisibility(View.VISIBLE);
+                    bottomAppBar.performShow();
+                    fab.hide();
                     break;
                 }
                 default: {

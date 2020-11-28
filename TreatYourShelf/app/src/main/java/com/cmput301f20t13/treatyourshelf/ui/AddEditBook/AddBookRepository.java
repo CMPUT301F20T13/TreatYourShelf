@@ -78,7 +78,7 @@ public class AddBookRepository {
     }
 
     public void editBook(Book book, String oldIsbn) {
-        firebaseFirestore.collection("books").whereEqualTo("isbn", book.getIsbn()).whereEqualTo("owner",book.getOwner())
+        firebaseFirestore.collection("books").whereEqualTo("isbn", oldIsbn).whereEqualTo("owner",book.getOwner())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

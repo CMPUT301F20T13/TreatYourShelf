@@ -48,7 +48,7 @@ public class AddBookViewModel extends AndroidViewModel {
     }
 
     public void addBook(Book book) {
-        uploadImages(book, 0);
+        uploadImages(book, 0, null);
 
     }
 
@@ -56,8 +56,8 @@ public class AddBookViewModel extends AndroidViewModel {
         repository.deleteBook(isbn);
     }
 
-    public void editBook(Book book) {
-        uploadImages(book, 1);
+    public void editBook(Book book, String oldIsbn) {
+        uploadImages(book, 1, oldIsbn);
 
     }
 
@@ -84,7 +84,7 @@ public class AddBookViewModel extends AndroidViewModel {
         }
     }
 
-    public void uploadImages(Book book, int category) {
+    public void uploadImages(Book book, int category, String oldisbn) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
 
@@ -121,7 +121,7 @@ public class AddBookViewModel extends AndroidViewModel {
                                 if (category == 0) {
                                     repository.addBook(book);
                                 } else {
-                                    repository.editBook(book);
+                                    repository.editBook(book, oldisbn);
                                 }
                             }
                         }

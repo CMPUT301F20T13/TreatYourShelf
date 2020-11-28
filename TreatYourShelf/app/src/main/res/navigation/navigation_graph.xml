@@ -126,8 +126,31 @@
                 android:name="serviceCode"
                 android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/action_addBookFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment"
+            app:popUpTo="@id/bookDetailsFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="isbn"
+                android:defaultValue="" />
+            <argument
+                android:name="category"
+                android:defaultValue="0" />
+        </action>
+        <action
+            android:id="@+id/action_addBookFragment_to_ownedBooksFragment"
+            app:destination="@id/ownedBooksFragment"
+            app:popUpTo="@id/ownedBooksFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_addBookFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment"
+            app:popUpTo="@id/bookListFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
-    <action android:id="@+id/action_global_to_addBookfragment"
+    <action
+        android:id="@+id/action_global_to_addBookfragment"
         app:destination="@id/addBookFragment">
         <argument
             android:name="category"

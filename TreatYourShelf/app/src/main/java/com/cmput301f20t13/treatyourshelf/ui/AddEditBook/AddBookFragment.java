@@ -1,8 +1,10 @@
 package com.cmput301f20t13.treatyourshelf.ui.AddEditBook;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -25,7 +29,9 @@ import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragmentArgs;
 import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsViewModel;
+import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.camera.CameraXFragmentDirections;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -49,6 +55,7 @@ public class AddBookFragment extends Fragment {
         Button saveBt = view.findViewById(R.id.add_book_save_button);
         ImageButton scanIsbnBt = view.findViewById(R.id.add_book_scan_isbn_button);
         ImageButton closeBt = view.findViewById(R.id.close_fragmentBt);
+        ImageButton menuBt = view.findViewById(R.id.add_edit_book_menu_bt);
         RecyclerView selectedImagesRv = view.findViewById(R.id.selected_images_rv);
         addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
         int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
@@ -62,8 +69,9 @@ public class AddBookFragment extends Fragment {
                 titleEt.setText(book.getTitle());
                 authorEt.setText(book.getAuthor());
                 descEt.setText(book.getDescription());
-                addBookViewModel.scannedIsbn.setValue(book.getIsbn());
+                isbnEt.setText(book.getIsbn());
             }
+            menuBt.setVisibility(View.VISIBLE);
         }
 
 
@@ -94,7 +102,13 @@ public class AddBookFragment extends Fragment {
 
         });
 
-        addBookViewModel.scannedIsbn.observe(getViewLifecycleOwner(), isbnEt::setText);
+        addBookViewModel.scannedIsbn.observe(getViewLifecycleOwner(), isbn -> {
+            if (isbn != null && !isbn.equals("")) {
+                isbnEt.setText(isbn);
+            }
+
+
+        });
         addBookViewModel.selectedImages.observe(getViewLifecycleOwner(), selectedImages ->
         {
             if (!selectedImages.isEmpty()) {
@@ -114,15 +128,56 @@ public class AddBookFragment extends Fragment {
                 Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
                         "available");
                 if (category == 1) {
-                    addBookViewModel.editBook(book);
+                    Book oldBook = bookDetailsViewModel.getSelectedBook();
+                    String oldIsbn = oldBook.getIsbn();
+                    addBookViewModel.editBook(book, oldIsbn);
+                    NavDirections action = AddBookFragmentDirections.actionAddBookFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 } else {
                     addBookViewModel.addBook(book);
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.ownedBooksFragment);
                 }
-
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
 
 
             }
+        });
+        menuBt.setOnClickListener(view1 -> {
+            PopupMenu popup = new PopupMenu(requireContext(), view1);
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.delete_book) {
+                    new MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Delete Book")
+                            .setMessage("Are you sure you want to delete this book? This action is irreversible.")
+
+                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                            // The dialog is automatically dismissed when a dialog button is clicked.
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Book book = bookDetailsViewModel.getSelectedBook();
+                                    addBookViewModel.deleteBook(book.getIsbn());
+
+                                    NavDirections action;
+                                    if (category == 1) {
+                                        action = AddBookFragmentDirections.actionAddBookFragmentToOwnedBooksFragment();
+                                    } else {
+                                        action = AddBookFragmentDirections.actionAddBookFragmentToBookListFragment();
+                                    }
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+
+                                }
+                            })
+
+                            // A null listener allows the button to dismiss the dialog and take no further action.
+                            .setNegativeButton(android.R.string.no, null)
+                            .show();
+                    return true;
+                }
+                return false;
+            });
+
+
+            popup.getMenuInflater().inflate(R.menu.edit_book_menu, popup.getMenu());
+            popup.show();
         });
 
 //        editButton.setOnClickListener(new View.OnClickListener() {
@@ -138,25 +193,7 @@ public class AddBookFragment extends Fragment {
 //        deleteButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                new AlertDialog.Builder(getContext())
-//                        .setTitle("Delete entry")
-//                        .setMessage("Are you sure you want to delete this entry?")
 //
-//                        // Specifying a listener allows you to take an action before dismissing the dialog.
-//                        // The dialog is automatically dismissed when a dialog button is clicked.
-//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Book book = new Book(txtTitle.getText().toString(), txtAuthor.getText().toString(), txtIsbn.getText().toString());
-//                                addBookViewModel.deleteBook(book.getIsbn());
-////                                Toast.makeText(getActivity(),"book deleted",Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//
-//                        // A null listener allows the button to dismiss the dialog and take no further action.
-//                        .setNegativeButton(android.R.string.no, null)
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .show();
-//            }
 //        });
 
 
