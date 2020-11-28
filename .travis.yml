@@ -28,6 +28,6 @@ before_install:
 before_script:
   - chmod +x TreatYourShelf/gradlew
 
-#script:
-#  - ./gradlew clean build
-#  - ./gradlew test
+script:
+  - ./TreatYourShelf/gradlew clean build
+  - ./TreatYourShelf/gradlew test
