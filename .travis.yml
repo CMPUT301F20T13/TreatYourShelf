@@ -24,11 +24,12 @@ android:
 
 before_install:
   - chmod +x TreatYourShelf/gradlew
+  - yes | sdkmanager "platforms;android-30"
 
 before_script:
   - chmod +x TreatYourShelf/gradlew
+  - cd TreatYourShelf
 
 script:
-  - cd TreatYourShelf/
   - ./gradlew clean build
   - ./gradlew test
