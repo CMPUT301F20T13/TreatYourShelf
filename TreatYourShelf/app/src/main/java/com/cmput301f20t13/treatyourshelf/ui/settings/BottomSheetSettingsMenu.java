@@ -16,6 +16,7 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItem;
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItemAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,13 @@ public class BottomSheetSettingsMenu extends BottomSheetDialogFragment {
         settingsRv.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         settingsRv.setAdapter(new SettingsAdapter(setUpSettingsMenu(), requireContext(), settingsItem -> {
+
+            if (settingsItem.getSettingsOption().equals("Log Out")) {
+                // Handle a log out request
+                FirebaseAuth.getInstance().signOut();
+                // Back to the login page
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.loginFragment);
+            }
 
             // closes bottom sheet
             dismiss();
