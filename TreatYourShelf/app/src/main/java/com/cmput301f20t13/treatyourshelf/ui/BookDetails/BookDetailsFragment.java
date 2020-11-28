@@ -26,7 +26,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragmentDirections;
@@ -82,9 +81,13 @@ public class BookDetailsFragment extends Fragment {
 
         /*Show or hide the request button and view request button*/
         if (category == 0) {
+            // User is not allowed to edit book
             requestBt.setVisibility(View.VISIBLE);
             viewRequestBt.setVisibility(View.GONE);
         } else {
+            // User is allowed to edit book
+
+            //requestBt.setVisibility(View.INVISIBLE);
             requestBt.setVisibility(View.GONE);
             viewRequestBt.setVisibility(View.VISIBLE);
         }
@@ -105,33 +108,20 @@ public class BookDetailsFragment extends Fragment {
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
                 Book book = bookList.get(0);
-                currentBook = book;
                 bookTitle.setText(book.getTitle());
                 bookAuthor.setText(book.getAuthor());
                 bookDescription.setText(book.getDescription());
                 bookOwner.setText(book.getOwner());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
-                bookImagesAdapter.setImages(book.getImageUrls());
-            } else {
-                Log.d("TAG", "waiting for info");
-            }
-        });
+                if(book.getImageUrls() != null){
+                    bookImagesAdapter.setImages(book.getImageUrls());
+                }
 
-/*        BookDetailsViewModel bookDetailsViewModel =
-                new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
-        bookDetailsViewModel.getBookByIsbnOwner(Isbn,Owner)
-                .observe(getViewLifecycleOwner(), Observable -> {});
-        bookDetailsViewModel.getBook().observe(getViewLifecycleOwner(), book -> {
-            if (book != null) {
-                currentBook = book;
-                bookTitle.setText(book.getTitle());
-                bookAuthor.setText(book.getAuthor());
-                bookDescription.setText(book.getDescription());
-                bookOwner.setText(book.getOwner());
-                bookIsbn.setText(book.getIsbn());
-                bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
-                bookImagesAdapter.setImages(book.getImageUrls());
+
+                if (category == 1) {
+                    bookDetailsViewModel.setBook(book);
+                }
             } else {
                 Log.d("TAG", "waiting for info");
             }
@@ -178,5 +168,8 @@ public class BookDetailsFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

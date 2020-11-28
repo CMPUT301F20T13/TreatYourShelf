@@ -204,13 +204,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:insetLeft="12dp"
+
             android:insetRight="12dp"
 
             android:text="Save"
-
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@+id/close_fragmentBt"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/add_edit_book_menu_bt"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/close_fragmentBt" />
@@ -230,6 +230,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+
+        <ImageButton
+            android:id="@+id/add_edit_book_menu_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/add_book_title_et"
