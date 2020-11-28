@@ -99,6 +99,7 @@ public class BookDetailsFragment extends Fragment {
         /*View Models - where the fragment retrieves its data from*/
         RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity()).get(RequestListViewModel.class);
         RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
+        BookDetailsViewModel bookDetailsViewModel = new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.getBookByIsbnLiveData(Isbn).observe(getViewLifecycleOwner(), Observable -> {
         });
@@ -108,6 +109,7 @@ public class BookDetailsFragment extends Fragment {
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
             if (!bookList.isEmpty()) {
                 Book book = bookList.get(0);
+                currentBook = book;
                 bookTitle.setText(book.getTitle());
                 bookAuthor.setText(book.getAuthor());
                 bookDescription.setText(book.getDescription());
@@ -125,18 +127,18 @@ public class BookDetailsFragment extends Fragment {
             } else {
                 Log.d("TAG", "waiting for info");
             }
-        });*/
+        });
 
 
         /*Request Button - makes a request on the current book if it is available or requested status*/
         requestBt.setOnClickListener(v -> {
-            if (currentBook.getStatus().equals("Available") || currentBook.getStatus().equals("Requested")){
+            if (currentBook.getStatus().equals("available") || currentBook.getStatus().equals("requested")){
                 new AlertDialog.Builder(getContext())
                         .setMessage("Would you like to request this book?")
                         .setPositiveButton("YES", (dialog, id) -> {
                             dialog.cancel();
                             requestListViewModel.requestBook(currentBook, user.getEmail()); //creates a request
-                            requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "Requested"); //updates the books status
+                            requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "requested"); //updates the books status
                             Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                         })
                         .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
