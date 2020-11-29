@@ -61,6 +61,12 @@ public class AddBookViewModel extends AndroidViewModel {
 
     }
 
+    public void deleteImage(int position) {
+        List<ImageFilePathSelector> tempSelectedImages = selectedImages.getValue();
+        tempSelectedImages.remove(position);
+        selectedImages.setValue(tempSelectedImages);
+    }
+
     public void clearState() {
         scannedIsbn.setValue(null);
         selectedImage.setValue(null);
@@ -87,14 +93,16 @@ public class AddBookViewModel extends AndroidViewModel {
     public void uploadImages(Book book, int category, String oldisbn) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-
+        List<String> imageUrls = new ArrayList<>();
         Collection<UploadTask> tasksList = new ArrayList<>();
         for (ImageFilePathSelector image : Objects.requireNonNull(selectedImages.getValue()))
-            if (image.getImageFilePath() != null) {
+            if (image.getImageFilePath() != null && !image.isImageUrl()) {
 
                 StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
                 UploadTask uploadTask = ref.putFile(image.getImageFilePath());
                 tasksList.add(uploadTask);
+            } else if (image.getImageFilePath() != null && image.isImageUrl()) {
+                imageUrls.add(image.getImageFilePath().toString());
             }
         Task<Void> imageUploadTaskList = Tasks.whenAll(tasksList);
         imageUploadTaskList.addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -104,7 +112,6 @@ public class AddBookViewModel extends AndroidViewModel {
                 if (task.isSuccessful()) {
 
                     Collection<Task<Uri>> tasksList2 = new ArrayList<>();
-                    List<String> imageUrls = new ArrayList<>();
                     for (UploadTask completedTask : tasksList) {
 
                         UploadTask.TaskSnapshot result = completedTask.getResult();
