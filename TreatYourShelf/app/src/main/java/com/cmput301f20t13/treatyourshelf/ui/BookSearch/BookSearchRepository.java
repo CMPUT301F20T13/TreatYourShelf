@@ -51,12 +51,26 @@ public class BookSearchRepository {
                 .whereEqualTo("title", keyword).whereNotEqualTo("owner", owner)
                 .whereEqualTo("status", "available");
         Query query2 = firebaseFirestore.collection("books")
-                .whereEqualTo("owner", keyword).whereNotEqualTo("owner", owner)
+                .whereEqualTo("author", keyword).whereNotEqualTo("owner", owner)
                 .whereEqualTo("status", "available");
+        Query query3 = firebaseFirestore.collection("books")
+                .whereEqualTo("isbn", keyword).whereNotEqualTo("owner", owner)
+                .whereEqualTo("status", "requested");
+        Query query4 = firebaseFirestore.collection("books")
+                .whereEqualTo("title", keyword).whereNotEqualTo("owner", owner)
+                .whereEqualTo("status", "requested");
+        Query query5 = firebaseFirestore.collection("books")
+                .whereEqualTo("author", keyword).whereNotEqualTo("owner", owner)
+                .whereEqualTo("status", "requested");
         List<Book> bookListTemp = new ArrayList<>();
         Collection<Task<QuerySnapshot>> tasksList = new ArrayList<>();
 
         tasksList.add(query.get());
+        tasksList.add(query1.get());
+        tasksList.add(query2.get());
+        tasksList.add(query3.get());
+        tasksList.add(query4.get());
+        tasksList.add(query5.get());
 
         Task<Void> searchTaskList = Tasks.whenAll(tasksList);
 

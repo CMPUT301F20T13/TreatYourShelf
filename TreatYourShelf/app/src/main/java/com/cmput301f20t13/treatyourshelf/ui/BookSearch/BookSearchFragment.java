@@ -42,6 +42,7 @@ public class BookSearchFragment extends Fragment {
         Profile testProfile = new Profile();
         String owner = testProfile.getUsername();
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), Observable -> {});
 
         bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), liveBookList ->{
             bookSearchAdapter.setBookList(liveBookList);
@@ -49,7 +50,7 @@ public class BookSearchFragment extends Fragment {
 
             //failed here, java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
             // issue is currently doe not return anything
-            System.out.println(liveBookList.get(0));
+            //System.out.println(liveBookList.get(0));
 
         });
 //        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
