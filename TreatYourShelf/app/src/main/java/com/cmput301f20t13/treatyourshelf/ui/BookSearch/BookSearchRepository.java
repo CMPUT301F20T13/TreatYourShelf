@@ -35,15 +35,23 @@ public class BookSearchRepository {
                 .whereEqualTo("status", "available");
         return new BookSearchLiveData(query);
     }
-    public List<Book> searchBooks(String keyword) {
+
+    /**
+     * this function searches for a keyword in the titles, author's and isbn's of
+     * all available books that do not belong to the current user
+     * @param keyword (String): the keyword used for the current search
+     * @param owner (String): the username of the current user
+     * @return
+     */
+    public List<Book> searchBooks(String keyword, String owner) {
         Query query = firebaseFirestore.collection("books")
-                .whereEqualTo("isbn", keyword)
+                .whereEqualTo("isbn", keyword).whereNotEqualTo("owner", owner)
                 .whereEqualTo("status", "available");
         Query query1 = firebaseFirestore.collection("books")
-                .whereEqualTo("title", keyword)
+                .whereEqualTo("title", keyword).whereNotEqualTo("owner", owner)
                 .whereEqualTo("status", "available");
         Query query2 = firebaseFirestore.collection("books")
-                .whereEqualTo("owner", keyword)
+                .whereEqualTo("owner", keyword).whereNotEqualTo("owner", owner)
                 .whereEqualTo("status", "available");
         List<Book> bookListTemp = new ArrayList<>();
         Collection<Task<QuerySnapshot>> tasksList = new ArrayList<>();

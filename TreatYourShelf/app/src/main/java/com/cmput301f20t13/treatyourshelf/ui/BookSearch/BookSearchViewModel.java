@@ -29,9 +29,15 @@ public class BookSearchViewModel extends ViewModel {
         return liveData;
     }
 
-    public void getBookSearch(String keyword) {
+    /**
+     * calls the repository function that provides the searching, updates
+     * the MutableLiveData liveBookList with the results
+     * @param keyword (String): user entered keyword
+     * @param owner (String): the username of the current user
+     */
+    public void getBookSearch(String keyword, String owner) {
         //failed here
-        liveBookList.setValue(repository.searchBooks(keyword));
+        liveBookList.setValue(repository.searchBooks(keyword, owner));
     }
 
     public LiveData<List<Book>> getAllBooksLiveData() {
