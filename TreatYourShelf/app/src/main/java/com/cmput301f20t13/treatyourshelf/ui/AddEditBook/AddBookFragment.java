@@ -1,6 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.ui.AddEditBook;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddBookFragment extends Fragment {
 
@@ -70,6 +72,16 @@ public class AddBookFragment extends Fragment {
                 authorEt.setText(book.getAuthor());
                 descEt.setText(book.getDescription());
                 isbnEt.setText(book.getIsbn());
+                List<ImageFilePathSelector> bookImages = new ArrayList<>();
+                for (String imageUrl : book.getImageUrls()
+                ) {
+                    ImageFilePathSelector imageFilePathSelector = new ImageFilePathSelector();
+                    imageFilePathSelector.setImageFilePath(Uri.parse(imageUrl));
+                    imageFilePathSelector.setImageSelectedState(0);
+                    imageFilePathSelector.setImageUrl(true);
+                    bookImages.add(imageFilePathSelector);
+                }
+                addBookViewModel.selectedImages.setValue(bookImages);
             }
             menuBt.setVisibility(View.VISIBLE);
         }
@@ -77,8 +89,21 @@ public class AddBookFragment extends Fragment {
 
         selectedImagesRv.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         SelectedImagesAdapter selectedImagesAdapter = new SelectedImagesAdapter(requireContext(), new ArrayList<>());
-        selectedImagesAdapter.setOnClick(position -> {
-            // Clicked on Selected Image
+        selectedImagesAdapter.setOnClick((position, itemView) -> {
+            // Clicked on Selected Image, Show popup menu
+            PopupMenu popup = new PopupMenu(requireContext(), itemView);
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.delete_book) {
+                    // Delete Image
+                    addBookViewModel.deleteImage(position);
+                    return true;
+                }
+                return false;
+            });
+
+
+            popup.getMenuInflater().inflate(R.menu.edit_book_menu, popup.getMenu());
+            popup.show();
         });
         selectedImagesRv.setAdapter(selectedImagesAdapter);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,10 +136,12 @@ public class AddBookFragment extends Fragment {
         });
         addBookViewModel.selectedImages.observe(getViewLifecycleOwner(), selectedImages ->
         {
-            if (!selectedImages.isEmpty()) {
-                selectedImagesAdapter.refreshImages(selectedImages);
+
+            selectedImagesAdapter.refreshImages(selectedImages);
+            if (selectedImages != null && !selectedImages.isEmpty()) {
                 selectedImagesRv.smoothScrollToPosition(selectedImages.size() - 1);
             }
+
         });
 
         closeBt.setOnClickListener(view1 -> {
