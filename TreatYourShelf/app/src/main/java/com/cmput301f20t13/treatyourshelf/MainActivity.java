@@ -1,20 +1,16 @@
 package com.cmput301f20t13.treatyourshelf;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.cmput301f20t13.treatyourshelf.ui.settings.BottomSheetSettingsMenu;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -92,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
                     fab.show();
                     break;
                 }
+                case R.id.requestListFragment:
+                case R.id.borrRequestedListFragment:
+                case R.id.requestDetailsFragment:
                 case R.id.bookListFragment: {
-
                     bottomAppBar.setVisibility(View.VISIBLE);
                     bottomAppBar.performShow();
                     fab.hide();
