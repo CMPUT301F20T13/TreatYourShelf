@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class BorrRequestedListFragment extends Fragment {
 
-    private RequestListAdapter requestListAdapter;
+    private BorrRequestedListAdapter borrRequestedListAdapter;
     private String userEmail;
 
     /**
@@ -53,17 +53,17 @@ public class BorrRequestedListFragment extends Fragment {
 
         RequestListViewModel requestListViewModel = new ViewModelProvider(requireActivity()).get(RequestListViewModel.class);
         ArrayList<Request> requestArray = new ArrayList<>();
-        requestListAdapter = new RequestListAdapter(requestArray, requestListViewModel);
+        borrRequestedListAdapter = new BorrRequestedListAdapter(requestArray, requestListViewModel);
 
         requestListViewModel.getRequestByRequesterLiveData(userEmail).observe(getViewLifecycleOwner(), Observable -> {});
 
         requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
             if (requestList != null ) {
-                //requestListAdapter.clear();
-                requestListAdapter.setRequestList(requestList);
+                //borrRequestedListAdapter.clear();
+                borrRequestedListAdapter.setRequestList(requestList);
                 RecyclerView requestRv = view.findViewById(R.id.request_list_rv);
                 requestRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                requestRv.setAdapter(requestListAdapter);
+                requestRv.setAdapter(borrRequestedListAdapter);
                 progressBar.setVisibility(View.GONE);
             }
             else {

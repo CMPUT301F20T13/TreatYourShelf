@@ -10,12 +10,13 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/username_prompt"
+            android:id="@+id/owner_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@string/username"
+            android:text="@string/owner_header"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -23,14 +24,16 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_username"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
             android:text="@string/username"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/username_prompt"
+            app:layout_constraintEnd_toStartOf="@+id/request_status"
+            app:layout_constraintStart_toEndOf="@+id/owner_prompt"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.152">
+            app:layout_constraintVertical_bias="0.106">
 
         </com.google.android.material.textview.MaterialTextView>
 
@@ -40,17 +43,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/title"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username_prompt">
+            app:layout_constraintTop_toBottomOf="@+id/owner_prompt">
 
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/request_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="8dp"
             android:text="@string/title"
+            app:layout_constraintEnd_toStartOf="@+id/request_status"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/title_prompt"
             app:layout_constraintTop_toBottomOf="@+id/profile_username">
 
@@ -62,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/author"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_prompt"
@@ -71,11 +78,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/request_author"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
+            android:layout_marginStart="8dp"
             android:text="@string/author"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/request_status"
             app:layout_constraintStart_toEndOf="@+id/author_prompt"
             app:layout_constraintTop_toBottomOf="@+id/request_title"
             app:layout_constraintVertical_bias="1.0">
@@ -83,29 +91,15 @@
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/status_prompt"
+            android:id="@+id/request_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:text="@string/status"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/status_image"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </com.google.android.material.textview.MaterialTextView>
-
-        <ImageView
-            android:id="@+id/status_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/status"
-            android:scaleX="2"
-            android:scaleY="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_status_circle" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
