@@ -71,22 +71,24 @@ public class MapsFragment extends Fragment {
         enter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchString = location_layout.getEditText().getText().toString();
-                Geocoder geocoder = new Geocoder(getContext());
-                List<Address> addresses = new ArrayList<>();
+                if(mapReady){
+                    String searchString = location_layout.getEditText().getText().toString();
+                    Geocoder geocoder = new Geocoder(getContext());
+                    List<Address> addresses = new ArrayList<>();
 
-                try{
-                    addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
-                }catch (IOException e){
-                    Log.e("MapsFragment", e.getMessage());
-                }
-                if (addresses.size() > 0){
-                    Address address = addresses.get(0);
-                    LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    Log.d("MapsFragment", address.toString());
+                    try{
+                        addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
+                    }catch (IOException e){
+                        Log.e("MapsFragment", e.getMessage());
+                    }
+                    if (addresses.size() > 0){
+                        Address address = addresses.get(0);
+                        LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        Log.d("MapsFragment", address.toString());
 
-                    mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
+                        mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
+                    }
                 }
             }
         });
