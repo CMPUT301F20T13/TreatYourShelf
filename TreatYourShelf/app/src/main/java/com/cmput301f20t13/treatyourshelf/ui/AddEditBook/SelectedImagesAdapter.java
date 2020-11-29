@@ -23,7 +23,7 @@ public class SelectedImagesAdapter extends RecyclerView.Adapter<SelectedImagesAd
     private OnItemClicked onClick;
 
     public interface OnItemClicked {
-        void onItemClick(int position);
+        void onItemClick(int position, View itemview);
     }
 
     // 1
@@ -44,7 +44,7 @@ public class SelectedImagesAdapter extends RecyclerView.Adapter<SelectedImagesAd
         final ImageFilePathSelector imageFilePathSelector = images.get(position);
 
 
-        holder.itemView.setOnClickListener(v -> onClick.onItemClick(position));
+        holder.itemView.setOnClickListener(v -> onClick.onItemClick(position, holder.itemView));
         Glide.with(mContext).load(images.get(position).getImageFilePath())
                 .placeholder(circularProgressDrawableFactory(mContext))
                 .into(holder.selectedImage);
