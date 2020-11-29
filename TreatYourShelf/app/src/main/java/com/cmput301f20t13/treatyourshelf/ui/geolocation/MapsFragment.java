@@ -4,10 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -16,8 +21,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+// Referenced https://www.youtube.com/watch?v=MWowf5SkiOE&ab_channel=CodingWithMitch
 
 public class MapsFragment extends Fragment {
+
+
+    private GoogleMap mMap;
+    private boolean mapReady = false;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -32,9 +49,11 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap = googleMap;
+            mapReady = true;
+            //LatLng sydney = new LatLng(-34, 151);
+            //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
     };
 
@@ -43,7 +62,36 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        Button enter_btn = (Button) view.findViewById(R.id.enter_btn);
+        TextInputLayout location_layout = (TextInputLayout) view.findViewById(R.id.location_layout);
+
+        enter_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchString = location_layout.getEditText().getText().toString();
+                Geocoder geocoder = new Geocoder(getContext());
+                List<Address> addresses = new ArrayList<>();
+
+                try{
+                    addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
+                }catch (IOException e){
+                    Log.e("MapsFragment", e.getMessage());
+                }
+                if (addresses.size() > 0){
+                    Address address = addresses.get(0);
+                    LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    Log.d("MapsFragment", address.toString());
+
+                    mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
+                }
+            }
+        });
+
+        return view;
     }
 
     @Override
