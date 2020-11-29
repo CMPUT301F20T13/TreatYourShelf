@@ -3,6 +3,7 @@ package com.cmput301f20t13.treatyourshelf.ui.geolocation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -76,7 +77,7 @@ public class MapsFragment extends Fragment {
         isOwner = this.getArguments().getBoolean("IS_OWNER");
 
         if(isOwner){
-
+            // If owner
         }else{ // Borrower
             String location = this.getArguments().getString("STRING_LOCATION");
             if(!location.isEmpty()){
@@ -110,7 +111,7 @@ public class MapsFragment extends Fragment {
 
             if(isOwner){
                 Toast.makeText(getContext(), "Set location", Toast.LENGTH_SHORT).show();
-                // Save or send it back
+                // Navigation action to return request details and send LatLon from address.
             }
         }
     }

@@ -140,6 +140,14 @@
             android:name="STRING_LOCATION"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_mapsFragment_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" >
+            <argument
+                android:name="LatLon"
+                android:defaultValue=""
+                app:argType="string"/>
+        </action>
     </fragment>
 
 
