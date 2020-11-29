@@ -35,7 +35,7 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mMap;
     private boolean mapReady = false;
-
+    private boolean isOwner = false;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -51,9 +51,6 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             mapReady = true;
-            //LatLng sydney = new LatLng(-34, 151);
-            //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
     };
 
@@ -71,29 +68,51 @@ public class MapsFragment extends Fragment {
         enter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mapReady){
-                    String searchString = location_layout.getEditText().getText().toString();
-                    Geocoder geocoder = new Geocoder(getContext());
-                    List<Address> addresses = new ArrayList<>();
-
-                    try{
-                        addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
-                    }catch (IOException e){
-                        Log.e("MapsFragment", e.getMessage());
-                    }
-                    if (addresses.size() > 0){
-                        Address address = addresses.get(0);
-                        LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-                        Log.d("MapsFragment", address.toString());
-
-                        mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
-                    }
-                }
+                String searchString = location_layout.getEditText().getText().toString();
+                navigateToString(searchString);
             }
         });
 
+        isOwner = this.getArguments().getBoolean("IS_OWNER");
+
+        if(isOwner){
+
+        }else{ // Borrower
+            String location = this.getArguments().getString("STRING_LOCATION");
+            if(!location.isEmpty()){
+                location_layout.getEditText().setText(location);
+                navigateToString(location);
+            }
+        }
+
         return view;
+    }
+
+    private void navigateToString(String searchString){
+        if(!mapReady) return;
+
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> addresses = new ArrayList<>();
+
+        try{
+            addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
+        }catch (IOException e){
+            Log.e("MapsFragment", e.getMessage());
+        }
+        if (addresses.size() > 0){
+            Toast.makeText(getContext(), "Found location", Toast.LENGTH_SHORT).show();
+            Address address = addresses.get(0);
+            LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+            Log.d("MapsFragment", address.toString());
+
+            mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
+
+            if(isOwner){
+                Toast.makeText(getContext(), "Set location", Toast.LENGTH_SHORT).show();
+                // Save or send it back
+            }
+        }
     }
 
     @Override

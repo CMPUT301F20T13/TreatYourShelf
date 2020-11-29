@@ -131,7 +131,16 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragment"
-        android:label="MapsFragment" />
+        android:label="MapsFragment" >
+        <argument
+            android:name="IS_OWNER"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="STRING_LOCATION"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>
