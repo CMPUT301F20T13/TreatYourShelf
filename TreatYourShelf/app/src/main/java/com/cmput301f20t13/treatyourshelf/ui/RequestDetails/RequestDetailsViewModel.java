@@ -16,6 +16,7 @@ public class RequestDetailsViewModel extends ViewModel {
     private final RequestDetailsRepository repository = new RequestDetailsRepository();
     RequestDetailsLiveData liveData = null;
     MutableLiveData<String> ownerScannedIsbn = new MutableLiveData<>();
+    Boolean ownerScanned = false;
     MutableLiveData<String> borrowerScannedIsbn = new MutableLiveData<>();
 
     public LiveData<Request> getRequestLiveData(String isbn, String requester, String owner) {
@@ -40,11 +41,11 @@ public class RequestDetailsViewModel extends ViewModel {
     }
 
     public void setOwnerScannedIsbn(String scannedIsbn) {
-        this.ownerScannedIsbn.postValue(scannedIsbn);
+        this.ownerScannedIsbn.setValue(scannedIsbn);
     }
 
     public void setBorrowerScannedIsbn(String scannedIsbn) {
-        this.ownerScannedIsbn.postValue(scannedIsbn);
+        this.ownerScannedIsbn.setValue(scannedIsbn);
     }
 
     public void clearState() {

@@ -18,18 +18,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Request;
 import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragmentDirections;
+import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookImagesAdapter;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.security.acl.Group;
+import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -57,12 +61,18 @@ public class RequestDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request_details, container, false);
+        ViewPager2 viewPager2 = view.findViewById(R.id.request_image_vp2);
+        WormDotsIndicator wormDotsIndicator = view.findViewById(R.id.worm2_dots_indicator);
         TextView requester = view.findViewById(R.id.user_request);
         TextView title = view.findViewById(R.id.book_title);
         TextView author = view.findViewById(R.id.book_author);
         TextView isbn = view.findViewById(R.id.book_isbn);
         TextView owner = view.findViewById(R.id.book_owner);
         TextView status = view.findViewById(R.id.book_request_status);
+
+        BookImagesAdapter requestImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
+        viewPager2.setAdapter(requestImagesAdapter);
+        wormDotsIndicator.setViewPager2(viewPager2);
 
         /*Buttons*/
         Button acceptButton = view.findViewById(R.id.accept_button);
@@ -71,7 +81,6 @@ public class RequestDetailsFragment extends Fragment {
         Button giveBookButton = view.findViewById(R.id.give_book_button);
         Button receiveBookButton = view.findViewById(R.id.receive_book_button);
         Button returnBookButton = view.findViewById(R.id.return_book_button);
-        LinearLayout borrowerButtons = view.findViewById(R.id.borrower_buttons);
 
         /*Retrieve the isbn, requester and owner from fragment arguments*/
         assert this.getArguments() != null;
@@ -99,6 +108,9 @@ public class RequestDetailsFragment extends Fragment {
                         receiveBookButton, returnBookButton);
                 title.setText(request.getTitle());
                 author.setText(request.getAuthor());
+                if(request.getImageUrls() != null){
+                    requestImagesAdapter.setImages(request.getImageUrls());
+                }
             }
         });
 
@@ -114,9 +126,10 @@ public class RequestDetailsFragment extends Fragment {
                     }
                 }
             });
+            /*TODO - navigate to location fragment, set argument of owner here*/
+
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "accepted");
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
-            /*TODO - navigate to location fragment*/
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
             /*TODO notify requester of accepted request*/
             requestButtons.setVisibility(GONE);
@@ -139,15 +152,18 @@ public class RequestDetailsFragment extends Fragment {
             /*Navigate to camera fragment, scan isbn to update book status*/
             navigateCameraFragment(2, view);
             /*Change current borrower to requester for the book*/
-            requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "borrowed");
-                requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
-            });
-            Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
-            giveBookButton.setVisibility(GONE);
-            receiveBookButton.setVisibility(VISIBLE);
         });
 
+        requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
+            if(isbnScanned != null && !isbnScanned.equals("")) {
+                requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "borrowed");
+                requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
+                requestDetailsViewModel.ownerScanned = true;
+                Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Please scan again", Toast.LENGTH_LONG).show();
+            }
+        });
 
         /*Received Book - the borrower scans the book to denote the request as borrowed*/
         receiveBookButton.setOnClickListener(v -> {
@@ -195,18 +211,22 @@ public class RequestDetailsFragment extends Fragment {
      */
     public void checkStatus(String status, LinearLayout requestButtons,
                             Button giveBookButton, Button receiveBookButton, Button returnBookButton){
+        /*If the user is the owner of the book requested*/
         if (user.equals(currentRequest.getOwner())) {
             switch(currentRequest.getStatus()){
                 case "requested":
-                    requestButtons.setVisibility(VISIBLE);
+                    requestButtons.setVisibility(VISIBLE); //accept/decline
                     break;
                 case "accepted":
-                    giveBookButton.setVisibility(VISIBLE);
+                    if(!requestDetailsViewModel.ownerScanned) {
+                        giveBookButton.setVisibility(VISIBLE);
+                    }
                     break;
                 case "borrowed":
                     receiveBookButton.setVisibility(VISIBLE);
                     break;
             }
+        /*If the user is the requester of the book*/
         } else if (user.equals(currentRequest.getRequester())){
             switch(currentRequest.getStatus()){
                 case "requested":
