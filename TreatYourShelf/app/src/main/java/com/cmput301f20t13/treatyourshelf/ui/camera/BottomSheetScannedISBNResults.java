@@ -27,6 +27,7 @@ import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItem;
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItemAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,8 @@ public class BottomSheetScannedISBNResults extends BottomSheetDialogFragment {
         });
         viewBookDetailsBt.setOnClickListener(view1 -> {
             // Want to navigate to Book Details Screen
-            NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment().setISBN(isbn);
+            NavDirections action = CameraXFragmentDirections.actionCameraXFragmentToBookDetailsFragment()
+                    .setISBN(isbn);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
 

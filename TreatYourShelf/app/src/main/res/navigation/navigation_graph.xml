@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nagivation_graph"
     app:startDestination="@id/signUpFragment">
 
@@ -47,6 +46,14 @@
         </action>
     </fragment>
     <fragment
+        android:id="@+id/borrRequestedListFragment"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.RequestList.BorrRequestedListFragment"
+        android:label="BorrRequestedListFragment">
+        <action
+            android:id="@+id/action_requestListFragment_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.search_page.SearchFragment"
         android:label="SearchFragment" />
@@ -64,6 +71,10 @@
         android:label="BookDetailsFragment">
         <argument
             android:name="ISBN"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="OWNER"
             android:defaultValue=""
             app:argType="string" />
         <argument
@@ -102,6 +113,13 @@
             android:name="OWNER"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" >
+            <argument
+                android:name="serviceCode"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/requestListFragment"
