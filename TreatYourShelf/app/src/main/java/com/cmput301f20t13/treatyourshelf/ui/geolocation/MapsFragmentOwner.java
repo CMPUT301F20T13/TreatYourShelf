@@ -3,6 +3,9 @@ package com.cmput301f20t13.treatyourshelf.ui.geolocation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
+import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragmentDirections;
+import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -71,9 +77,14 @@ public class MapsFragmentOwner extends Fragment {
         TextInputLayout location_layout = (TextInputLayout) view.findViewById(R.id.location_layout);
         address_tv = (TextView) view.findViewById(R.id.address_tv);
 
+        assert this.getArguments() != null;
+        String isbnString = this.getArguments().getString("ISBN");
+        String requesterString = this.getArguments().getString("REQUESTER");
+
         enter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.hideKeyboardFrom(requireContext(), v);
                 String searchString = location_layout.getEditText().getText().toString();
                 navigateToString(searchString);
             }
@@ -84,7 +95,21 @@ public class MapsFragmentOwner extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Returning...", Toast.LENGTH_SHORT).show();
                 // Return when clicked return. The address is saved on:
-                //if(beenSet) double lat = markerAddress.latitude; double lon = markerAddress.longitude;
+                RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity())
+                        .get(RequestDetailsViewModel.class);
+
+                float lat = 0;
+                float lon = 0;
+                if(hasBeenSet) {
+                    lat = (float)markerAddress.latitude;
+                    lon = (float)markerAddress.longitude;
+                }
+                String coordinates = String.valueOf(lat) + "," + String.valueOf(lon);
+                requestDetailsViewModel.setLocation(isbnString, requesterString, coordinates);
+/*                NavDirections action = MapsFragmentOwnerDirections
+                        .actionMapsFragmentOwnerToRequestDetailsFragment();
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);*/
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             }
         });
 

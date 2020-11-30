@@ -114,6 +114,7 @@
             android:name="OWNER"
             android:defaultValue=""
             app:argType="string" />
+
         <action
             android:id="@+id/action_requestDetailsFragment_to_cameraXFragment"
             app:destination="@id/cameraXFragment" >
@@ -121,6 +122,26 @@
         <action
             android:id="@+id/action_requestDetailsFragment_to_bookDetailsFragment"
             app:destination="@id/bookDetailsFragment" >
+        </action>
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_mapsFragmentOwner"
+            app:destination="@id/mapsFragmentOwner" >
+            <argument
+                android:name="REQUESTER"
+                android:defaultValue=""
+                app:argType="string" />
+            <argument
+                android:name="ISBN"
+                android:defaultValue=""
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_mapsFragmentBorrower"
+            app:destination="@id/mapsFragmentBorrower" >
+            <argument
+                android:name="COORD"
+                android:defaultValue=""
+                app:argType="string" />
         </action>
 
     </fragment>
@@ -178,19 +199,16 @@
     <fragment
         android:id="@+id/mapsFragmentOwner"
         android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragmentOwner"
-        android:label="MapsFragment" />
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragmentOwner_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" >
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/mapsFragmentBorrower"
         android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragmentBorrower"
         android:label="MapsFragment" >
-        <argument
-            android:name="LAT"
-            android:defaultValue="53.5461245"
-            app:argType="float" />
-        <argument
-            android:name="LON"
-            android:defaultValue="-113.4938229"
-            app:argType="float" />
     </fragment>
 
     <fragment

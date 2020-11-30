@@ -27,6 +27,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 
 // Referenced https://www.youtube.com/watch?v=MWowf5SkiOE&ab_channel=CodingWithMitch
@@ -70,7 +71,14 @@ public class MapsFragmentBorrower extends Fragment {
 
 
         // Get latLat passed to it.
-        markerAddress = new LatLng(getArguments().getFloat("LAT"), getArguments().getFloat("LON"));
+        assert this.getArguments() != null;
+        String[] coordString = (this.getArguments().getString("COORD")).split(",");
+        float lat = 0;
+        float lon = 0;
+        lat = Float.parseFloat(coordString[0]);
+        lon = Float.parseFloat(coordString[1]);
+
+        markerAddress = new LatLng(lat, lon);
 
         return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +86,7 @@ public class MapsFragmentBorrower extends Fragment {
                 Toast.makeText(getContext(), "Returning...", Toast.LENGTH_SHORT).show();
                 // Return when clicked return. The address is saved on:
                 //if(beenSet) double lat = markerAddress.latitude; double lon = markerAddress.longitude;
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             }
         });
 
