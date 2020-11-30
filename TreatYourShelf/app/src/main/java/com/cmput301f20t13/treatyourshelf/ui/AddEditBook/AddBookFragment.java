@@ -123,8 +123,8 @@ public class AddBookFragment extends Fragment {
         });
 
         addImagesBt.setOnClickListener(view1 -> {
-            BottomSheetGalleryImages bottomSheetGalleryImages = new BottomSheetGalleryImages();
-            bottomSheetGalleryImages.show(getChildFragmentManager(), null);
+            BottomSheetImageSourceSelection bottomSheetImageSourceSelection = new BottomSheetImageSourceSelection();
+            bottomSheetImageSourceSelection.show(getChildFragmentManager(), null);
 
         });
 
