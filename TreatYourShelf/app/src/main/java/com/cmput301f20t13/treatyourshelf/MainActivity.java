@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 }
-                case R.id.mapsFragment:
+                case R.id.mapsFragmentBorrower:
+                case R.id.mapsFragmentOwner:
                 case R.id.signUpFragment:
                 case R.id.loginFragment:
                 case R.id.addBookFragment:

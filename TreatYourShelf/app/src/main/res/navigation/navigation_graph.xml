@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nagivation_graph"
-    app:startDestination="@id/mapsFragment">
+    app:startDestination="@id/mapsFragmentBorrower">
 
     <fragment
         android:id="@+id/bookListFragment"
@@ -129,26 +129,12 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/mapsFragment"
-        android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragment"
-        android:label="MapsFragment" >
-        <argument
-            android:name="IS_OWNER"
-            android:defaultValue="true"
-            app:argType="boolean" />
-        <argument
-            android:name="STRING_LOCATION"
-            android:defaultValue=""
-            app:argType="string" />
-        <action
-            android:id="@+id/action_mapsFragment_to_requestDetailsFragment"
-            app:destination="@id/requestDetailsFragment" >
-            <argument
-                android:name="LatLon"
-                android:defaultValue=""
-                app:argType="string"/>
-        </action>
-    </fragment>
-
+        android:id="@+id/mapsFragmentOwner"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragmentOwner"
+        android:label="MapsFragment" />
+    <fragment
+        android:id="@+id/mapsFragmentBorrower"
+        android:name="com.cmput301f20t13.treatyourshelf.ui.geolocation.MapsFragmentBorrower"
+        android:label="MapsFragment" />
 
 </navigation>

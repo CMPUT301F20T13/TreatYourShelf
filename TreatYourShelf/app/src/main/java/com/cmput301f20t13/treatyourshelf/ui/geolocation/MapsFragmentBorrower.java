@@ -1,10 +1,5 @@
 package com.cmput301f20t13.treatyourshelf.ui.geolocation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -13,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
@@ -28,15 +24,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 
 // Referenced https://www.youtube.com/watch?v=MWowf5SkiOE&ab_channel=CodingWithMitch
 
-public class MapsFragment extends Fragment {
+public class MapsFragmentBorrower extends Fragment {
 
 
     private GoogleMap mMap;
     private boolean mapReady = false;
-    private boolean isOwner = false;
+    private LatLng markerAddress;
+    private TextView address_tv;
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -51,7 +53,7 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
-            mapReady = true;
+            navigateToMarkerAddress();
         }
     };
 
@@ -61,59 +63,31 @@ public class MapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        View view = inflater.inflate(R.layout.fragment_maps_borrower, container, false);
 
-        Button enter_btn = (Button) view.findViewById(R.id.enter_btn);
-        TextInputLayout location_layout = (TextInputLayout) view.findViewById(R.id.location_layout);
+        Button return_btn = (Button) view.findViewById(R.id.return_btn);
+        address_tv = (TextView) view.findViewById(R.id.address_tv);
 
-        enter_btn.setOnClickListener(new View.OnClickListener() {
+
+        // Get latLat passed to it.
+        markerAddress = new LatLng(53.5461245, -113.4938229);
+
+        return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchString = location_layout.getEditText().getText().toString();
-                navigateToString(searchString);
+                Toast.makeText(getContext(), "Returning...", Toast.LENGTH_SHORT).show();
+                // Return when clicked return. The address is saved on:
+                //if(beenSet) double lat = markerAddress.latitude; double lon = markerAddress.longitude;
             }
         });
-
-        isOwner = this.getArguments().getBoolean("IS_OWNER");
-
-        if(isOwner){
-            // If owner
-        }else{ // Borrower
-            String location = this.getArguments().getString("STRING_LOCATION");
-            if(!location.isEmpty()){
-                location_layout.getEditText().setText(location);
-                navigateToString(location);
-            }
-        }
 
         return view;
     }
 
-    private void navigateToString(String searchString){
-        if(!mapReady) return;
-
-        Geocoder geocoder = new Geocoder(getContext());
-        List<Address> addresses = new ArrayList<>();
-
-        try{
-            addresses = geocoder.getFromLocationName(searchString,1); // Gets one result
-        }catch (IOException e){
-            Log.e("MapsFragment", e.getMessage());
-        }
-        if (addresses.size() > 0){
-            Toast.makeText(getContext(), "Found location", Toast.LENGTH_SHORT).show();
-            Address address = addresses.get(0);
-            LatLng addLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-            Log.d("MapsFragment", address.toString());
-
-            mMap.addMarker(new MarkerOptions().position(addLatLng).title(searchString));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 20f));
-
-            if(isOwner){
-                Toast.makeText(getContext(), "Set location", Toast.LENGTH_SHORT).show();
-                // Navigation action to return request details and send LatLon from address.
-            }
-        }
+    private void navigateToMarkerAddress(){
+        mMap.addMarker(new MarkerOptions().position(markerAddress).title("Recieve Book Location"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerAddress, mMap.getMaxZoomLevel()));
+        address_tv.setText(markerAddress.toString());
     }
 
     @Override
@@ -125,4 +99,6 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
     }
+
+
 }
