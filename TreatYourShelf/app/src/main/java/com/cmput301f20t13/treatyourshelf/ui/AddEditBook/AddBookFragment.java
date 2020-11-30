@@ -161,9 +161,15 @@ public class AddBookFragment extends Fragment {
                     if (category == 1) {
                         Book oldBook = bookDetailsViewModel.getSelectedBook();
                         String oldIsbn = oldBook.getIsbn();
-                        addBookViewModel.editBook(book, oldIsbn);
-                        NavDirections action = AddBookFragmentDirections.actionAddBookFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                        book.setStatus(oldBook.getStatus());
+                        if (book.getStatus().equals("available")) {
+                            addBookViewModel.editBook(book, oldIsbn);
+                            NavDirections action = AddBookFragmentDirections.actionAddBookFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                        } else {
+                            Toast.makeText(requireContext(), "You cannot edit a book while it requested or borrowed", Toast.LENGTH_SHORT).show();
+                        }
+
                     } else {
                         addBookViewModel.addBook(book);
                         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.ownedBooksFragment);
