@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     fab.show();
                     break;
                 }
+                case R.id.bookSearchFragment:
                 case R.id.requestListFragment:
                 case R.id.borrRequestedListFragment:
                 case R.id.requestDetailsFragment:
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.bottom_app_search: {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookListFragment);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookSearchFragment);
                 break;
             }
             case R.id.app_settings: {
