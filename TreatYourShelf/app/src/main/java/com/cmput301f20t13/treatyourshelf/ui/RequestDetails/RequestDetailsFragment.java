@@ -169,7 +169,7 @@ public class RequestDetailsFragment extends Fragment {
                         requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
                         Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please scan again1" + isbnScanned, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please try again. Isbn Scanned: " + isbnScanned, Toast.LENGTH_LONG).show();
                     }
                     requestDetailsViewModel.resetOwnerScannedCheck();
                 }
@@ -190,7 +190,7 @@ public class RequestDetailsFragment extends Fragment {
                         requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "borrowed");
                         Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please scan again2", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please try again. Isbn Scanned: "+ isbnScanned, Toast.LENGTH_LONG).show();
                     }
                     requestDetailsViewModel.resetBorrowerScannedCheck();
                 }
@@ -213,7 +213,7 @@ public class RequestDetailsFragment extends Fragment {
                                 .updateRequestStatusByIsbn(isbnScanned, requesterString, "pending return");
                         Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please scan again3", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please try again. Isbn Scanned: "+ isbnScanned, Toast.LENGTH_LONG).show();
                     }
                     requestDetailsViewModel.resetBorrowerScannedCheck();
 
@@ -242,7 +242,7 @@ public class RequestDetailsFragment extends Fragment {
                                 .removeRequest(isbnScanned, ownerString, requesterString);
                         Toast.makeText(getContext(), "Book status updated!" + isbnScanned, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please scan again to confirm return" + isbnScanned, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please try again. Isbn Scanned: " + isbnScanned, Toast.LENGTH_LONG).show();
                     }
                     requestDetailsViewModel.resetOwnerScannedCheck();
                 }
