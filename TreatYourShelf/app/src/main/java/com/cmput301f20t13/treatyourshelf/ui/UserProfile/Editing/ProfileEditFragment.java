@@ -45,7 +45,7 @@ public class ProfileEditFragment extends Fragment {
         ImageView image = (ImageView) view.findViewById(R.id.profile_image_edit);
         TextInputEditText username = (TextInputEditText) view.findViewById(R.id.profile_username_edit);
         TextView email = (TextView) view.findViewById(R.id.profile_email_edit);
-        EditText phone = (EditText) view.findViewById(R.id.profile_phone_edit);
+        TextInputEditText phone = (TextInputEditText) view.findViewById(R.id.profile_phone_edit);
 
         // Get the current user's email, this is a constant
         String profileEmail = "user1@gmail.com";
@@ -116,6 +116,18 @@ public class ProfileEditFragment extends Fragment {
                                 username.setError("That username is taken!");
                                 return;
                             }
+                        }
+                        boolean isError = false;
+                        if (newUsername.isEmpty()) {
+                            username.setError("Username cannot be blank!");
+                            isError = true;
+                        }
+                        if (phone.getText().toString().isEmpty()) {
+                            phone.setError("Phone Number cannot be blank!");
+                            isError = true;
+                        }
+                        if (isError) {
+                            return;
                         }
                         // The username is valid, it's ours or not taken
                         // Write the new profile data to Firebase

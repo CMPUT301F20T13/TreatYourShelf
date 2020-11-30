@@ -11,25 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
-import com.cmput301f20t13.treatyourshelf.data.Profile;
 import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileLiveData;
 import com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileRepository;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 
 /**
@@ -75,6 +70,9 @@ public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
 
         NavigationItem navigationItem3 = new NavigationItem(R.id.ownedBooksFragment, R.drawable.ic_baseline_book_24, "My Owned Books");
         navigationItems.add(navigationItem3);
+
+        NavigationItem navigationItem4 = new NavigationItem(R.id.borrRequestedListFragment, R.drawable.ic_round_book_online, "Requested Books");
+        navigationItems.add(navigationItem4);
 
         return navigationItems;
     }

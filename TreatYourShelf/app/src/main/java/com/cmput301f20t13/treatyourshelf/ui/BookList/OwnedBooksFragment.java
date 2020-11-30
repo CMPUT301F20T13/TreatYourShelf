@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
-import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.GalleryViewAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +38,14 @@ public class OwnedBooksFragment extends Fragment {
     private final HashMap<Integer, String> filterIdToName = new HashMap<>();
     private String ownerEmail;
 
+    /**
+     * Creates the fragment view
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
+     * @param savedInstanceState a bundle
+     * @return returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -135,7 +142,7 @@ public class OwnedBooksFragment extends Fragment {
     /**
      * setUnfilteredBookList will set unfilteredBookList to a list of books and register change
      *
-     * @param bookList
+     * @param bookList  List of books to set unfilteredBookList to
      */
     private void setUnfilteredBookList(List<Book> bookList) {
         unfilteredBookList.addAll(bookList);
