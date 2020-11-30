@@ -44,10 +44,10 @@ import static android.view.View.VISIBLE;
  * The owner can decide to accept or decline the request
  */
 public class RequestDetailsFragment extends Fragment {
-    private Request currentRequest;
     private RequestDetailsViewModel requestDetailsViewModel;
     private RequestListViewModel requestListViewModel;
     private String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    private String requestStatus = "";
 
     /**
      * Creates the fragment view
@@ -69,6 +69,7 @@ public class RequestDetailsFragment extends Fragment {
         TextView isbn = view.findViewById(R.id.book_isbn);
         TextView owner = view.findViewById(R.id.book_owner);
         TextView status = view.findViewById(R.id.book_request_status);
+        TextView location = view.findViewById(R.id.set_location);
 
         BookImagesAdapter requestImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
         viewPager2.setAdapter(requestImagesAdapter);
@@ -79,8 +80,10 @@ public class RequestDetailsFragment extends Fragment {
         Button declineButton = view.findViewById(R.id.decline_button);
         LinearLayout requestButtons = view.findViewById(R.id.request_buttons);
         Button giveBookButton = view.findViewById(R.id.give_book_button);
-        Button receiveBookButton = view.findViewById(R.id.receive_book_button);
+        Button confirmBorrowedButton = view.findViewById(R.id.confirm_borrowed_button);
+        Button confirmReturnedButton = view.findViewById(R.id.confirm_returned_button);
         Button returnBookButton = view.findViewById(R.id.return_book_button);
+        Button viewLocButton = view.findViewById(R.id.view_location_button);
 
         /*Retrieve the isbn, requester and owner from fragment arguments*/
         assert this.getArguments() != null;
@@ -99,15 +102,20 @@ public class RequestDetailsFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), Observable -> {});
         requestDetailsViewModel.getRequest().observe(getViewLifecycleOwner(), request -> {
         if (request != null) {
-                currentRequest = request;
                 requester.setText(request.getRequester());
                 isbn.setText(request.getIsbn());
                 owner.setText(request.getOwner());
                 status.setText(request.getStatus());
-                checkStatus(request.getStatus(), requestButtons, giveBookButton,
-                        receiveBookButton, returnBookButton);
+                requestStatus = request.getStatus();
+                checkStatus(request.getStatus(), request.getOwner(), request.getRequester(),
+                        requestButtons, giveBookButton, confirmBorrowedButton,
+                        confirmReturnedButton, returnBookButton);
                 title.setText(request.getTitle());
                 author.setText(request.getAuthor());
+                location.setText(request.getLocation());
+                if (!request.getLocation().equals("")){
+                    viewLocButton.setVisibility(VISIBLE);
+                }
                 if(request.getImageUrls() != null){
                     requestImagesAdapter.setImages(request.getImageUrls());
                 }
@@ -120,7 +128,7 @@ public class RequestDetailsFragment extends Fragment {
             requestListViewModel.getRequestList().observe(getViewLifecycleOwner(), requestList -> {
                 if (requestList != null){
                     for (Request rq : requestList){
-                        if (currentRequest != null && equalTo(rq, currentRequest)){ continue; }
+                        if (rq.getRequester().equals(requesterString)) {continue;}
                         requestListViewModel.removeRequest(rq.getIsbn(), rq.getOwner(), rq.getRequester());
                         /*TODO notify requesters of declined request*/
                     }
@@ -132,8 +140,6 @@ public class RequestDetailsFragment extends Fragment {
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
             /*TODO notify requester of accepted request*/
-            requestButtons.setVisibility(GONE);
-            giveBookButton.setVisibility(VISIBLE); //scan the book isbn
         });
 
 
@@ -149,55 +155,105 @@ public class RequestDetailsFragment extends Fragment {
 
         /*Give Book Button - the owner scans the book to denote the book as borrowed*/
         giveBookButton.setOnClickListener(v -> {
-            /*Navigate to camera fragment, scan isbn to update book status*/
             navigateCameraFragment(2, view);
-            /*Change current borrower to requester for the book*/
         });
+        /* Updates current borrower to requester
+         * Updates book status to "borrowed"
+         * Updates request status to "pending borrowed" */
+        if (requestStatus.equals("accepted")) {
+            requestDetailsViewModel.ownBorrowedScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
+                if (requestDetailsViewModel.getOwnerScannedCheck()) {
+                    if (isbnScanned != null && !isbnScanned.equals("") && isbnScanned.equals(isbnString)) {
+                        requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "pending borrowed");
+                        requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "borrowed");
+                        requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
+                        Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Please scan again1" + isbnScanned, Toast.LENGTH_LONG).show();
+                    }
+                    requestDetailsViewModel.resetOwnerScannedCheck();
+                }
+            });
+        }
 
-        requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-            if(isbnScanned != null && !isbnScanned.equals("")) {
-                requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "borrowed");
-                requestDetailsViewModel.updateBookBorrower(isbnScanned, requesterString);
-                requestDetailsViewModel.ownerScanned = true;
-                Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getContext(), "Please scan again", Toast.LENGTH_LONG).show();
-            }
-        });
 
-        /*Received Book - the borrower scans the book to denote the request as borrowed*/
-        receiveBookButton.setOnClickListener(v -> {
-            /*Navigate to camera fragment, scan isbn to update request status*/
+        /*Confirm Borrowed - the borrower scans the book to confirm the book as borrowed*/
+        confirmBorrowedButton.setOnClickListener(v -> {
             navigateCameraFragment(3, view);
-
-            /*TODO specify if owner or borrower to set conditionals*/
-            /*Owner receiving the returned book from borrower updates the request details*/
-            requestDetailsViewModel.ownerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "available"); });
-
-            /*Borrower receiving the book updates the request details*/
-            requestDetailsViewModel.borrowerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "borrowed"); });
-            Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
         });
+
+        /*Borrower receiving the book updates the request status*/
+        if (requestStatus.equals("pending borrowed")) {
+            requestDetailsViewModel.borBorrowedScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
+                if (requestDetailsViewModel.getBorrowerScannedCheck()) {
+                    if (isbnScanned != null && !isbnScanned.equals("") && isbnScanned.equals(isbnString)) {
+                        requestDetailsViewModel.updateRequestStatusByIsbn(isbnScanned, requesterString, "borrowed");
+                        Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Please scan again2", Toast.LENGTH_LONG).show();
+                    }
+                    requestDetailsViewModel.resetBorrowerScannedCheck();
+                }
+            });
+        }
+
 
 
         /*Return Book - borrower returns the book updates the request details*/
         returnBookButton.setOnClickListener(v -> {
-            navigateCameraFragment(2, view);
-            requestDetailsViewModel.borrowerScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
-                requestDetailsViewModel
-                        .updateRequestStatusByIsbn(isbnScanned, requesterString, "available");
-                requestListViewModel
-                        .removeRequest(isbnScanned, ownerString, requesterString);});
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
-            Toast.makeText(getContext(), "Book returned", Toast.LENGTH_LONG).show();
+            navigateCameraFragment(4, view);
         });
 
-        return view;
-    }
+        /*Borrower scans the book to denote they want to return the book*/
+        if (requestStatus.equals("borrowed")) {
+            requestDetailsViewModel.borReturnedScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
+                if (requestDetailsViewModel.getBorrowerScannedCheck()) {
+                    if (isbnScanned != null && !isbnScanned.equals("") && isbnScanned.equals(isbnString)) {
+                        requestDetailsViewModel
+                                .updateRequestStatusByIsbn(isbnScanned, requesterString, "pending return");
+                        Toast.makeText(getContext(), "Request status updated!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Please scan again3", Toast.LENGTH_LONG).show();
+                    }
+                    requestDetailsViewModel.resetBorrowerScannedCheck();
 
-    @Override
+                }
+            });
+        }
+
+
+
+        /*Confirm Returned - the owner scans the book to confirm the book returned and available*/
+        confirmReturnedButton.setOnClickListener(v -> {
+            navigateCameraFragment(5, view);
+        });
+
+        /*Owner confirms the book returned from borrower and updates book status to available while removing request*/
+        if (requestStatus.equals("pending return")) {
+            requestDetailsViewModel.ownReturnedScannedIsbn.observe(getViewLifecycleOwner(), isbnScanned -> {
+                if (requestDetailsViewModel.getOwnerScannedCheck()) {
+                    if (isbnScanned != null && !isbnScanned.equals("") && isbnScanned.equals(isbnString)) {
+                        requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "available");
+                        requestDetailsViewModel.updateBookBorrower(isbnScanned, "");
+                        NavDirections action = RequestDetailsFragmentDirections
+                                .actionRequestDetailsFragmentToBookDetailsFragment().setISBN(isbnScanned);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                        requestListViewModel
+                                .removeRequest(isbnScanned, ownerString, requesterString);
+                        Toast.makeText(getContext(), "Book status updated!" + isbnScanned, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Please scan again to confirm return" + isbnScanned, Toast.LENGTH_LONG).show();
+                    }
+                    requestDetailsViewModel.resetOwnerScannedCheck();
+                }
+            });
+        }
+
+
+            return view;
+        }
+
+        @Override
     public void onDestroyView() {
         requestDetailsViewModel.clearState();
         super.onDestroyView();
@@ -205,59 +261,59 @@ public class RequestDetailsFragment extends Fragment {
 
 
     /**
-     * Checks the request of the status and hides the request buttons
+     * Checks the status of the request to hide or show buttons
      * @param status - status of the request
      * @param requestButtons - the accept and decline buttons
      */
-    public void checkStatus(String status, LinearLayout requestButtons,
-                            Button giveBookButton, Button receiveBookButton, Button returnBookButton){
+    public void checkStatus(String status, String owner, String requester, LinearLayout requestButtons,
+                            Button giveBookButton, Button confirmBorrowedButton,
+                            Button confirmReturnedButton,Button returnBookButton){
         /*If the user is the owner of the book requested*/
-        if (user.equals(currentRequest.getOwner())) {
-            switch(currentRequest.getStatus()){
+        if (user.equals(owner)) {
+            switch(status){
                 case "requested":
                     requestButtons.setVisibility(VISIBLE); //accept/decline
                     break;
                 case "accepted":
-                    if(!requestDetailsViewModel.ownerScanned) {
-                        giveBookButton.setVisibility(VISIBLE);
-                    }
+                    requestButtons.setVisibility(GONE);
+                    giveBookButton.setVisibility(VISIBLE);
                     break;
-                case "borrowed":
-                    receiveBookButton.setVisibility(VISIBLE);
+                case "pending borrowed":
+                    giveBookButton.setVisibility(GONE);
+                    break;
+                case "pending return":
+                    confirmReturnedButton.setVisibility(VISIBLE);
                     break;
             }
         /*If the user is the requester of the book*/
-        } else if (user.equals(currentRequest.getRequester())){
-            switch(currentRequest.getStatus()){
-                case "requested":
-                    break;
-                case "accepted":
-                    receiveBookButton.setVisibility(VISIBLE);
+        } else if (user.equals(requester)){
+            switch(status){
+                case "pending borrowed":
+                    confirmBorrowedButton.setVisibility(VISIBLE);
                     break;
                 case "borrowed":
+                    confirmBorrowedButton.setVisibility(GONE);
                     returnBookButton.setVisibility(VISIBLE);
+                    break;
+                case "pending return":
+                    returnBookButton.setVisibility(GONE);
                     break;
             }
         }
     }
 
-    /**
-     * Compares rq1 if it is equal to rq2
-     * @param rq1 the first request to compare
-     * @param rq2 the second request to compare
-     * @return returns true or false
-     */
-    public boolean equalTo(Request rq1, Request rq2){
-        return rq1.getRequester().equals(rq2.getRequester()) &&
-                rq1.getAuthor().equals(rq2.getAuthor()) &&
-                rq1.getIsbn().equals(rq2.getIsbn()) &&
-                rq1.getOwner().equals(rq2.getOwner()) &&
-                rq1.getTitle().equals(rq2.getTitle());
-    }
 
+    /**
+     * Navigates to the CameraFragment to scan the ISBN
+     * Service Code 2 = owner scanned the ISBN
+     * Service Code 3 = borrower scanned the ISBN
+     * @param serviceCode - determines who is scanning the book
+     * @param view - takes the current view to hide the keyboard
+     */
     public void navigateCameraFragment(int serviceCode, View view){
         Utils.hideKeyboardFrom(requireContext(), view);
-        NavDirections action = RequestDetailsFragmentDirections.actionRequestDetailsFragmentToCameraXFragment().setServiceCode(3);
+        NavDirections action = RequestDetailsFragmentDirections
+                .actionRequestDetailsFragmentToCameraXFragment().setServiceCode(serviceCode);
         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
     }
 

@@ -77,10 +77,8 @@ public class ProfileLiveData extends LiveData<Profile> implements EventListener<
                         profileTemp.setEmail((String) profileDetails.getOrDefault("email", "default email"));
                         profileTemp.setPhoneNumber((String) profileDetails.getOrDefault("phoneNumber", "default number"));
                         // Get the profile URL
-/*                        DocumentReference profileRef = (DocumentReference) profileDetails.getOrDefault("profileImage", "");
-                        profileTemp.setProfileImageUrl(profileRef.toString());*/
-
-                        profileTemp.setProfileImageUrl((String) profileDetails.getOrDefault("profileImage", ""));
+                        DocumentReference profileRef = (DocumentReference) profileDetails.getOrDefault("profileImage", "");
+                        profileTemp.setProfileImageUrl(profileRef.toString());
                 }
                 profile.setValue(profileTemp);
             } else {

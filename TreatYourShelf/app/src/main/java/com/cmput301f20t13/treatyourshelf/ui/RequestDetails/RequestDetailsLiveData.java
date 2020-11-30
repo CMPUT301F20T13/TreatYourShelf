@@ -59,6 +59,7 @@ public class RequestDetailsLiveData extends
                     requestTemp.setAuthor((String) requestDetails.getOrDefault("author", "default author"));
                     requestTemp.setTitle((String) requestDetails.getOrDefault("title", "default title"));
                     requestTemp.setImageUrls((List<String>) requestDetails.getOrDefault("imageUrls", null));
+                    requestTemp.setLocation((String) requestDetails.getOrDefault("location", ""));
                 }
                 request.setValue(requestTemp);
             } else {

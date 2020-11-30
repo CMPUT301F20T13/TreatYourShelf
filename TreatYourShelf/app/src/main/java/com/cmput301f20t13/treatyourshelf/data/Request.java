@@ -11,6 +11,7 @@ public class Request {
     private String isbn;
     private String author;
     private String title;
+    private String location;
     private List<String> imageUrls;
 
     public String getRequester() {
@@ -50,4 +51,8 @@ public class Request {
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
+
+    public String getLocation() { return location; }
+
+    public void setLocation(String location) { this.location = location; }
 }

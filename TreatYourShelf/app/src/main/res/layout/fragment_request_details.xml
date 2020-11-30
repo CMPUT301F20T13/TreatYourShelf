@@ -184,6 +184,14 @@
                 android:text="Location"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/set_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:text="location"
+                android:textSize="16sp" />
+
         </TableRow>
     </TableLayout>
 
@@ -223,6 +231,16 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/view_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rq_button"
+        android:layout_gravity="center_horizontal"
+        android:text="VIEW LOCATION"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/give_book_button"
@@ -235,41 +253,36 @@
         />
 
 
-    <LinearLayout
-        android:id="@+id/borrower_buttons"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/confirm_borrowed_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
+        android:background="@drawable/rq_button"
+        android:layout_gravity="center_horizontal"
+        android:text="CONFIRM BORROWED"
         android:visibility="gone"
-        >
+        />
 
-        <Button
-            android:id="@+id/receive_book_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/rq_button"
-            android:text="RECEIVE BOOK"
-            />
+    <Button
+        android:id="@+id/return_book_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rq_button"
+        android:layout_gravity="center_horizontal"
+        android:text="RETURN BOOK"
+        android:visibility="gone"
+        />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" >
-        </Space>
+    <Button
+        android:id="@+id/confirm_returned_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rq_button"
+        android:layout_gravity="center_horizontal"
+        android:text="CONFIRM RETURNED"
+        android:visibility="gone"
+        />
 
-        <Button
-            android:id="@+id/return_book_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/rq_button"
-            android:text="RETURN BOOK"
-            />
-
-    </LinearLayout>
 
 
 </LinearLayout>
