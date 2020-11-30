@@ -90,6 +90,7 @@ public class RequestListRepository {
         newRequest.put("owner", book.getOwner());
         newRequest.put("status", "requested");
         newRequest.put("imageUrls", book.getImageUrls());
+        newRequest.put("location", "");
         String requestId = book.getIsbn() + requester;
 
         collectionRequests.document(requestId)

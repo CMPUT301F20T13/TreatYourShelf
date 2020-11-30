@@ -87,6 +87,9 @@ public class RequestDetailsViewModel extends ViewModel {
         borReturnedScannedIsbn.setValue(null);
     }
 
+    public void setLocation(String isbn, String requester, String coordinates){
+        repository.setLocation(isbn, requester, coordinates);
+    }
 
 
 }
