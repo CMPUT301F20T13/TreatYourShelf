@@ -70,7 +70,7 @@ public class MapsFragmentBorrower extends Fragment {
 
 
         // Get latLat passed to it.
-        markerAddress = new LatLng(53.5461245, -113.4938229);
+        markerAddress = new LatLng(getArguments().getFloat("LAT"), getArguments().getFloat("LON"));
 
         return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
