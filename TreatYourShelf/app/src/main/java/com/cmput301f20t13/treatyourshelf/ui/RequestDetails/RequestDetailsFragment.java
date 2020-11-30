@@ -51,6 +51,7 @@ public class RequestDetailsFragment extends Fragment {
     private RequestListViewModel requestListViewModel;
     private String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     private String requestStatus = "";
+    private String coordinates = "";
 
     /**
      * Creates the fragment view
@@ -117,6 +118,7 @@ public class RequestDetailsFragment extends Fragment {
                 author.setText(request.getAuthor());
                 location.setText(request.getLocation());
                 if (!request.getLocation().equals("")){
+                    coordinates = request.getLocation();
                     viewLocButton.setVisibility(VISIBLE);
                 }
                 if(request.getImageUrls() != null){
@@ -138,6 +140,11 @@ public class RequestDetailsFragment extends Fragment {
                 }
             });
             /*TODO - navigate to location fragment, set argument of owner here*/
+            NavDirections action = RequestDetailsFragmentDirections
+                    .actionRequestDetailsFragmentToMapsFragmentOwner()
+                    .setISBN(isbnString)
+                    .setREQUESTER(requesterString);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
 
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "accepted");
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
@@ -253,6 +260,16 @@ public class RequestDetailsFragment extends Fragment {
             });
         }
 
+
+        viewLocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = RequestDetailsFragmentDirections
+                        .actionRequestDetailsFragmentToMapsFragmentBorrower()
+                        .setCOORD(coordinates);
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            }
+        });
 
             return view;
         }
