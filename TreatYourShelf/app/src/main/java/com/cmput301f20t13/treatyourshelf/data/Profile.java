@@ -3,21 +3,22 @@ package com.cmput301f20t13.treatyourshelf.data;
 import android.widget.ImageView;
 
 /**
- * The Profile object that holds the information about a user's profile
+ * The Profile class. Stores all the necessary data for Profiles.
  */
 public class Profile {
+    // The fields
     private String username;
     private String password;
     private String email;
     private String phoneNumber;
-    private ImageView profileImage;
+    private String profileImageUrl;
 
     /**
-     * the profile of the book
-     * @param username the username of the profile
-     * @param password the password of the profile
-     * @param email the email of the profile
-     * @param phoneNumber the phone number of the profile
+     * Construct a profile given explicit parameters.
+     * @param username      The unique username.
+     * @param password      The password associated with the login.
+     * @param email         The unique email.
+     * @param phoneNumber   The unique phone number.
      */
     public Profile(String username, String password, String email, String phoneNumber) {
         this.username = username;
@@ -27,7 +28,7 @@ public class Profile {
     }
 
     /**
-     * the default constructor for the Profile
+     * Constructs a default profile. Not recommended.
      */
     public Profile() {
         this.username = "default user";
@@ -37,82 +38,82 @@ public class Profile {
     }
 
     /**
-     * returns the username of the profile
-     * @return the username of the profile
+     * Gets the profile's username.
+     * @return  The username String.
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * sets the username of the profile
-     * @param username the provided username
+     * Sets the profile's username.
+     * @param username  The username String.
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * returns the password of the profile
-     * @return the password of the profile
+     * Gets the profile's password.
+     * @return
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * sets the password of the profile
-     * @param password the provided password
+     * Set the profile's password.
+     * @param password  The password String.
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * returns the email of the profile
-     * @return the email of the profile
+     * Get the profile's email.
+     * @return  The email String.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * sets the email of the profile
-     * @param email the provided email
+     * Set the profile's email.
+     * @param email The email String.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * returns the phone number of the profile
-     * @return the phone number of the profile
+     * Get the profile's phone number.
+     * @return  The phone number String.
      */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     /**
-     * sets the phone number of the profile
-     * @param phoneNumber the provided phone number
+     * Set the profile's phone number.
+     * @param phoneNumber   The phone number String.
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     /**
-     * returns the profile image of the profile
-     * @return the profile image of the profile
+     * Get the profile's image URL.
+     * @return  The image URL String.
      */
-    public ImageView getProfileImage() {
-        return profileImage;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     /**
-     * sets the profile image of the profile
-     * @param profileImage the provided profile image
+     * Set the profile's image URL.
+     * @param profileImageUrl   The image URL String.
      */
-    public void setProfileImage(ImageView profileImage) {
-        this.profileImage = profileImage;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

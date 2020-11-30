@@ -38,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/requested_by"
-                android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -47,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="user"
-                android:textColor="#000000"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -62,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/title"
-                android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -71,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="title"
-                android:textColor="#000000"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -86,7 +82,6 @@
                 android:layout_height="match_parent"
                 android:gravity="start"
                 android:text="@string/author"
-                android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -95,7 +90,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="author"
-                android:textColor="#000000"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -110,7 +104,6 @@
                 android:layout_height="match_parent"
                 android:gravity="start"
                 android:text="@string/isbn_header"
-                android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -119,7 +112,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="isbn"
-                android:textColor="#000000"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -134,7 +126,6 @@
                 android:layout_height="match_parent"
                 android:gravity="start"
                 android:text="@string/owner_header"
-                android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -143,7 +134,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="owner"
-                android:textColor="#000000"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -157,8 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="start"
-                android:text="@string/status"
-                android:textColor="#000000"
+                android:text="Status"
                 android:textSize="16sp" />
 
             <TextView
@@ -167,8 +156,23 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="status"
-                android:textColor="#000000"
                 android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/book_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:text="Location"
+                android:textSize="16sp" />
+
         </TableRow>
     </TableLayout>
 
@@ -180,7 +184,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <Button
             android:id="@+id/accept_button"
@@ -204,6 +208,54 @@
             android:layout_weight="1"
             android:background="@drawable/rq_button"
             android:text="@string/decline"
+            />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/give_book_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rq_button"
+        android:layout_gravity="center_horizontal"
+        android:text="GIVE BOOK"
+        android:visibility="gone"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/borrower_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <Button
+            android:id="@+id/receive_book_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rq_button"
+            android:text="RECEIVE BOOK"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <Button
+            android:id="@+id/return_book_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rq_button"
+            android:text="RETURN BOOK"
             />
 
     </LinearLayout>

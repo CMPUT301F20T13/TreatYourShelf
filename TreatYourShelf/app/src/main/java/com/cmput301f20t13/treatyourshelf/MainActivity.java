@@ -1,17 +1,15 @@
 package com.cmput301f20t13.treatyourshelf;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.cmput301f20t13.treatyourshelf.ui.settings.BottomSheetSettingsMenu;
@@ -31,8 +29,14 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
-                    if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookListFragment) {
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.addBookFragment);
+                    if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.ownedBooksFragment) {
+                        NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(0);
+
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
+                    } else if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.bookDetailsFragment) {
+                        NavDirections action = NagivationGraphDirections.actionGlobalToAddBookfragment().setCategory(1);
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(action);
+
                     }
 
                 }
@@ -57,19 +61,40 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.loginFragment:
                 case R.id.signUpFragment:
-                case R.id.addBookFragment:
-                case R.id.bookDetailsFragment: {
+                case R.id.addBookFragment: {
                     // Want to remove the bottom app bar from view So the camera is full screen
                     bottomAppBar.performHide();
                     bottomAppBar.setVisibility(View.INVISIBLE);
                     fab.hide();
                     break;
                 }
-                case R.id.bookListFragment: {
+                case R.id.bookDetailsFragment: {
+                    if (arguments.getInt("category") == 1) {
+                        fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_edit_book));
+                        bottomAppBar.setVisibility(View.VISIBLE);
+                        bottomAppBar.performShow();
+                        fab.show();
+                    } else {
+                        bottomAppBar.performHide();
+                        bottomAppBar.setVisibility(View.INVISIBLE);
+                        fab.hide();
+                    }
+                    break;
+                }
+                case R.id.ownedBooksFragment: {
                     fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_add_24));
                     bottomAppBar.setVisibility(View.VISIBLE);
                     bottomAppBar.performShow();
                     fab.show();
+                    break;
+                }
+                case R.id.requestListFragment:
+                case R.id.borrRequestedListFragment:
+                case R.id.requestDetailsFragment:
+                case R.id.bookListFragment: {
+                    bottomAppBar.setVisibility(View.VISIBLE);
+                    bottomAppBar.performShow();
+                    fab.hide();
                     break;
                 }
                 default: {
