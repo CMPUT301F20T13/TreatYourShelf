@@ -1,11 +1,13 @@
 package com.cmput301f20t13.treatyourshelf;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -31,7 +33,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                     fab.show();
                     break;
                 }
+                case R.id.requestListFragment:
+                case R.id.borrRequestedListFragment:
+                case R.id.requestDetailsFragment:
                 case R.id.bookListFragment: {
 
                     bottomAppBar.setVisibility(View.VISIBLE);

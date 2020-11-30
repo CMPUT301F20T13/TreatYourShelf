@@ -1,19 +1,13 @@
 package com.cmput301f20t13.treatyourshelf.ui.RequestList;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
-import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListLiveData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-
-import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +16,7 @@ import java.util.Objects;
 public class RequestListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
-
+    private static final String TAG = "RequestListRepo";
 
     public RequestListLiveData getRequestByIsbnLiveData(String isbn) {
         Query query = collectionRequests.whereEqualTo("isbn", isbn);
@@ -44,6 +38,12 @@ public class RequestListRepository {
     public RequestListLiveData getRequestByIsbnRequesterLiveData(String isbn, String requester) {
         Query query = collectionRequests
                 .whereEqualTo("isbn", isbn)
+                .whereEqualTo("requester", requester);
+        return new RequestListLiveData(query);
+    }
+
+    public RequestListLiveData getRequestByRequesterLiveData(String requester) {
+        Query query = collectionRequests
                 .whereEqualTo("requester", requester);
         return new RequestListLiveData(query);
     }
@@ -78,6 +78,27 @@ public class RequestListRepository {
                         }
                     }
                 });
+    }
+
+
+    public void addRequest(Book book, String requester) {
+        Map<String, Object> newRequest = new HashMap<>();
+        newRequest.put("requester", requester);
+        newRequest.put("title", book.getTitle());
+        newRequest.put("author", book.getAuthor());
+        newRequest.put("isbn", book.getIsbn());
+        newRequest.put("owner", book.getOwner());
+        newRequest.put("status", "requested");
+        newRequest.put("imageUrls", book.getImageUrls());
+        String requestId = book.getIsbn() + requester;
+
+        collectionRequests.document(requestId)
+                .set(newRequest)
+                .addOnSuccessListener(aVoid ->
+                        Log.d(TAG, "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e ->
+                        Log.w(TAG, "Error writing document", e));
+
 
     }
 }

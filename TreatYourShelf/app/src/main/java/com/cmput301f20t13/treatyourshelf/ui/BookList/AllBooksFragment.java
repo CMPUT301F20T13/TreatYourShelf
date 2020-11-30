@@ -53,7 +53,10 @@ public class AllBooksFragment extends Fragment {
         // Initialize BookListAdapter
         bookListAdapter = new BookListAdapter(new ArrayList<>());
         bookListAdapter.setOnClick((position, book) -> {
-            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(0);
+            NavDirections action = AllBooksFragmentDirections.actionBookListFragmentToBookDetailsFragment()
+                    .setISBN(book.getIsbn())
+                    .setOWNER(book.getOwner())
+                    .setCategory(0);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         });
 

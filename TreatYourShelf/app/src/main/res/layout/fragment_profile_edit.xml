@@ -108,17 +108,24 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/phone_header"
-
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/profile_phone_edit"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_phone_edit_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="PHONE NUMBER"
-                android:inputType="phone"
-                android:textSize="16sp" />
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@null">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_phone_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PHONE NUMBER"
+                    android:gravity="start"
+                    android:inputType="phone"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
         </TableRow>
 
     </TableLayout>

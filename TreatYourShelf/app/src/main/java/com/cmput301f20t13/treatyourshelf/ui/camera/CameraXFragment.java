@@ -39,6 +39,7 @@ import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookDetailsFragmentArgs;
+import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -185,6 +186,10 @@ public class CameraXFragment extends Fragment {
 //                            System.out.println(barcode.getBoundingBox());
 //                            System.out.println(barcode.getRawValue())
 
+                            RequestDetailsViewModel requestDetailsViewModel =
+                                    new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
+
+
                             if (serviceCode == 0) {
 
 
@@ -205,6 +210,18 @@ public class CameraXFragment extends Fragment {
                                 // Add set isbn value to shared viewModel
                                 AddBookViewModel addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
                                 addBookViewModel.setScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 2) {
+                                requestDetailsViewModel.setOwnBorrowedScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 3) {
+                                requestDetailsViewModel.setBorBorrowedScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 4) {
+                                requestDetailsViewModel.setBorReturnedScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 5) {
+                                requestDetailsViewModel.setOwnReturnedScannedIsbn(barcode.getRawValue());
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                             }
                         }

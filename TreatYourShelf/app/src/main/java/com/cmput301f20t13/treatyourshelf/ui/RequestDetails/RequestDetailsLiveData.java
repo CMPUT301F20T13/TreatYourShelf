@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cmput301f20t13.treatyourshelf.data.Request;
-import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListLiveData;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -15,7 +14,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,6 +58,8 @@ public class RequestDetailsLiveData extends
                     requestTemp.setIsbn((String) requestDetails.getOrDefault("isbn", "12345678910"));
                     requestTemp.setAuthor((String) requestDetails.getOrDefault("author", "default author"));
                     requestTemp.setTitle((String) requestDetails.getOrDefault("title", "default title"));
+                    requestTemp.setImageUrls((List<String>) requestDetails.getOrDefault("imageUrls", null));
+                    requestTemp.setLocation((String) requestDetails.getOrDefault("location", ""));
                 }
                 request.setValue(requestTemp);
             } else {
