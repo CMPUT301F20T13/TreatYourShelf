@@ -44,6 +44,12 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         this.onNavigationItemClick = onNavigationItemClick;
     }
 
+    /**
+     * creates the view holder of the adapter and binds the layout to navigation_list_item.xml
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public NavigationItemAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,6 +58,11 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
 
     }
 
+    /**
+     * binds the navigation items to the viewholder properties
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull NavigationItemAdapter.MyViewHolder holder, int position) {
         holder.navigationName.setText(navigationItemList.get(position).getDestinationName());
@@ -59,11 +70,18 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         holder.itemView.setOnClickListener(view -> onNavigationItemClick.onClick(navigationItemList.get(position)));
     }
 
+    /**
+     * returns the number of navigationItems
+     * @return the size of the navigationItemList
+     */
     @Override
     public int getItemCount() {
         return navigationItemList.size();
     }
 
+    /**
+     * binds the viewholder properties to the ui elements
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView navigationName;
@@ -79,6 +97,10 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         }
     }
 
+    /**
+     * sets the nagivationItemList
+     * @param navigationItemList the list of navigationitems
+     */
     public void setNavigationItemList(List<NavigationItem> navigationItemList) {
         this.navigationItemList = navigationItemList;
         notifyDataSetChanged();

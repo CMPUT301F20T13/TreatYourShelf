@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * task that loads gallery images based on file path
+ */
 public class LoadGalleryImagesTask implements Callable<List<ImageFilePathSelector>> {
 
     private Context context;

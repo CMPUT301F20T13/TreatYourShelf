@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * the viewmodel used by the AddBooksFragment
+ */
 public class AddBookViewModel extends AndroidViewModel {
     private final AddBookRepository repository = new AddBookRepository();
     MutableLiveData<String> scannedIsbn = new MutableLiveData<>();
@@ -32,55 +35,98 @@ public class AddBookViewModel extends AndroidViewModel {
     MutableLiveData<List<ImageFilePathSelector>> selectedImages = new MutableLiveData<>();
     MutableLiveData<ImageFilePathSelector> selectedImage = new MutableLiveData<>();
 
+    /**
+     * sets the application
+     * @param application the current application
+     */
     public AddBookViewModel(@NonNull Application application) {
         super(application);
         selectedImages.setValue(new ArrayList<>());
     }
 
-
+    /**
+     * returns books based on the provided isbn
+     * @param isbn the provided isbn
+     * @return the livedata that contains the results
+     */
     public AddBookLiveData getBookBYIsbn(String isbn) {
         liveData = repository.getBookByIsbnLiveData(isbn);
         return liveData;
     }
 
+    /**
+     * returns the MutableLiveData attached to the livedata object
+     * @return
+     */
     public LiveData<Book> getBook() {
         return liveData.book;
     }
 
+    /**
+     * adds a book to the database using the uploadImages method
+     * @param book the book to add
+     */
     public void addBook(Book book) {
         uploadImages(book, 0, null);
 
     }
 
+    /**
+     * deletes a book from the database based on isbn using the repository function
+     * @param isbn the provided isbn
+     */
     public void deleteBook(String isbn) {
         repository.deleteBook(isbn);
     }
 
+    /**
+     * edits a book in the database using the repository function based on isbn
+     * @param book the book object containing the updated information
+     * @param oldIsbn the isbn of the book
+     */
     public void editBook(Book book, String oldIsbn) {
         uploadImages(book, 1, oldIsbn);
 
     }
 
+    /**
+     * deletes a user selected image from the list of images
+     * @param position the position of the image
+     */
     public void deleteImage(int position) {
         List<ImageFilePathSelector> tempSelectedImages = selectedImages.getValue();
         tempSelectedImages.remove(position);
         selectedImages.setValue(tempSelectedImages);
     }
 
+    /**
+     * for the camera scanner, clears the scannedIsbn, the selected image and the list of images
+     */
     public void clearState() {
         scannedIsbn.setValue(null);
         selectedImage.setValue(null);
         selectedImages.setValue(new ArrayList<>());
     }
 
+    /**
+     * sets the scanned isbn
+     * @param scannedIsbn the scanned isbn
+     */
     public void setScannedIsbn(String scannedIsbn) {
         this.scannedIsbn.setValue(scannedIsbn);
     }
 
+    /**
+     * sets the selected image
+     * @param imageFilePathSelector
+     */
     public void setSelectedImage(ImageFilePathSelector imageFilePathSelector) {
         selectedImage.setValue(imageFilePathSelector);
     }
 
+    /**
+     * adds a selected image to the current book
+     */
     public void addSelectedImageToAddBook() {
         if (selectedImage.getValue() != null) {
             List<ImageFilePathSelector> selectedImagesTempList = selectedImages.getValue();
@@ -90,6 +136,13 @@ public class AddBookViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * uploads the images to a book and calls the repository function that adds a book to the
+     * database
+     * @param book the information of the book to add
+     * @param category
+     * @param oldisbn
+     */
     public void uploadImages(Book book, int category, String oldisbn) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
@@ -139,12 +192,18 @@ public class AddBookViewModel extends AndroidViewModel {
         });
     }
 
+    /**
+     * resets the selected images
+     */
     public void resetSelectedImages() {
         prevSelectedPosition = -1;
         selectedImage.setValue(null);
     }
 
-
+    /**
+     * updates the list of images with a selected item
+     * @param position the position of the selected item
+     */
     public void updateListWithSelectedItem(int position) {
 
         if (selectedImage.getValue() != null) {
@@ -185,6 +244,9 @@ public class AddBookViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * gets a gallery of images
+     */
     public void getGalleryImages() {
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new LoadGalleryImagesTask(getApplication().getApplicationContext()), (data) -> {

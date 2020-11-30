@@ -20,6 +20,9 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * livedata object used by the BookDetailsRepository
+ */
 public class BookDetailsLiveData extends
         LiveData<Book> implements
         EventListener<QuerySnapshot> {

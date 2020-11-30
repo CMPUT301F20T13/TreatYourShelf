@@ -24,9 +24,21 @@ import com.cmput301f20t13.treatyourshelf.data.Profile;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the fragment that allows a borrower to specify a keyword, and search for all books that
+ * are not currently accepted or borrowed whose description contains the keyword.
+ */
 public class BookSearchFragment extends Fragment {
     private BookSearchAdapter bookSearchAdapter;
 
+    /**
+     * Creates the fragment view
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
+     * @param savedInstanceState a bundle
+     * @return returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

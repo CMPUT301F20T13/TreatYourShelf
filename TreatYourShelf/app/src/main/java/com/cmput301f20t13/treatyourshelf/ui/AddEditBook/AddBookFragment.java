@@ -40,15 +40,26 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this fragment adds a book to the database or edits one if a book's information if passed to the fragment
+ */
 public class AddBookFragment extends Fragment {
 
     private AddBookViewModel addBookViewModel;
     private BookDetailsViewModel bookDetailsViewModel;
 
+    /**
+     * runs when the fragment is created
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_book, container, false);
+        //initializes the editTexts, textviews and buttons
         EditText titleEt = view.findViewById(R.id.add_book_title_et);
         EditText authorEt = view.findViewById(R.id.add_book_author_et);
         EditText descEt = view.findViewById(R.id.add_book_description_et);
@@ -63,7 +74,7 @@ public class AddBookFragment extends Fragment {
         addBookViewModel = new ViewModelProvider(requireActivity()).get(AddBookViewModel.class);
         int category = BookDetailsFragmentArgs.fromBundle(getArguments()).getCategory();
 
-
+        //a book's information is passed to the fragment and the information is displayed
         if (category == 1) {
             // Load book with old info
             bookDetailsViewModel = new ViewModelProvider(requireActivity()).get(BookDetailsViewModel.class);

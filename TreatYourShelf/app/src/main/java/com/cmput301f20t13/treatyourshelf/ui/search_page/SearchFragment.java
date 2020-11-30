@@ -24,12 +24,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 // Referenced: https://stackoverflow.com/questions/30398247/how-to-filter-a-recyclerview-with-a-searchview
 
+/**
+ * a search page for the books
+ */
 public class SearchFragment extends Fragment {
     private BookListAdapter searchListAdapter;
     private BookListViewModel searchListViewModel;
 
     private List<Book> filteredList;
 
+    /**
+     * Creates the fragment view
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
+     * @param savedInstanceState a bundle
+     * @return returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

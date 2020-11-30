@@ -8,6 +8,10 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 
 import java.util.List;
 
+/**
+ * the viewmodel used by the BookSearchFragment, contains the methods called by the BooksearchFragment
+ * for searching
+ */
 public class BookSearchViewModel extends ViewModel {
 
     private final BookSearchRepository repository = new BookSearchRepository();

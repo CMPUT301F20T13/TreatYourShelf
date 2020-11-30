@@ -12,9 +12,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * the repository object that contains the methods used by the BookSearchViewModel
+ */
 public class BookSearchRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
+    /**
+     * returns available books from the database based on the provided isbn
+     * @param isbn the provided isbn
+     * @return BookSearchLiveData that holds the result of the query
+     */
     public BookSearchLiveData getBookByIsbnLiveData(String isbn) {
         Query query = firebaseFirestore.collection("books")
                 .whereEqualTo("isbn", isbn)
@@ -22,6 +30,11 @@ public class BookSearchRepository {
         return new BookSearchLiveData(query);
     }
 
+    /**
+     * returns available books from the database based on the provided owner
+     * @param owner the provided owner
+     * @return BookSearchLiveData that holds the result of the query
+     */
     public BookSearchLiveData getBookByOwnerLiveData(String owner) {
         Query query = firebaseFirestore.collection("books")
                 .whereEqualTo("owner", owner)
@@ -29,6 +42,11 @@ public class BookSearchRepository {
         return new BookSearchLiveData(query);
     }
 
+    /**
+     * returns available books from the database based on the provided title
+     * @param title the provided title
+     * @return BookSearchLiveData that holds the result of the query
+     */
     public BookSearchLiveData getBookByTitleLiveData(String title) {
         Query query = firebaseFirestore.collection("books")
                 .whereEqualTo("title", title)
@@ -41,7 +59,7 @@ public class BookSearchRepository {
      * all available books that do not belong to the current user
      * @param keyword (String): the keyword used for the current search
      * @param owner (String): the username of the current user
-     * @return
+     * @return BookSearchLiveData that holds the result of the query
      */
     public List<Book> searchBooks(String keyword, String owner) {
         Query query = firebaseFirestore.collection("books")
@@ -96,6 +114,10 @@ public class BookSearchRepository {
         return bookListTemp;
     }
 
+    /**
+     * returns all books from the database
+     * @return BookSearchLiveData that holds the result of the query
+     */
     public BookSearchLiveData getAllBooksLiveData() {
         Query query = firebaseFirestore.collection("books");
                 //.whereEqualTo("status", "available");

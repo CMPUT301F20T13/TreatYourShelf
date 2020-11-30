@@ -16,16 +16,30 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
+/**
+ * the adapter that binds to the recyclerview in BorrRequestListFragment
+ */
 public class BorrRequestedListAdapter extends RecyclerView.Adapter<BorrRequestedListAdapter.MyViewHolder> {
 
     private List<Request> requestList;
     private final RequestListViewModel requestListViewModel;
 
+    /**
+     * constructor for the adapter
+     * @param requestList the list of request objects
+     * @param requestListViewModel the RequestListViewModel used by the BorrRequestListFragment
+     */
     public BorrRequestedListAdapter(List<Request> requestList, RequestListViewModel requestListViewModel) {
         this.requestList = requestList;
         this.requestListViewModel = requestListViewModel;
     }
 
+    /**
+     * creates the view holder of the adapter and binds the layout to borr_requested_list_item.xml
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public BorrRequestedListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,6 +47,11 @@ public class BorrRequestedListAdapter extends RecyclerView.Adapter<BorrRequested
         return new BorrRequestedListAdapter.MyViewHolder(view);
     }
 
+    /**
+     * binds the requests to the viewholder properties
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull BorrRequestedListAdapter.MyViewHolder holder, int position) {
         holder.owner.setText(requestList.get(position).getOwner());
@@ -49,20 +68,34 @@ public class BorrRequestedListAdapter extends RecyclerView.Adapter<BorrRequested
         });
     }
 
+    /**
+     * returns the number of requests
+     * @return the size of the request list
+     */
     @Override
     public int getItemCount() {
         return requestList.size();
     }
 
+    /**
+     * clears the request list
+     */
     public void clear(){
         requestList.clear();
     }
 
+    /**
+     * sets the request list
+     * @param requestList the provided list of requests
+     */
     public void setRequestList(List<Request> requestList) {
         this.requestList = requestList;
         notifyDataSetChanged();
     }
 
+    /**
+     * binds the viewholder properties to the ui elements
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView owner;

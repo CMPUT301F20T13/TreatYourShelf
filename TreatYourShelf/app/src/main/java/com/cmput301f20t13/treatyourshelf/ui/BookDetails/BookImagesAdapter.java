@@ -22,6 +22,9 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
+/**
+ * adapter for the recyclerview used in the BookDetailsFragment
+ */
 public class BookImagesAdapter extends RecyclerView.Adapter<BookImagesAdapter.MyViewHolder> {
 
     private List<String> imageUrls;

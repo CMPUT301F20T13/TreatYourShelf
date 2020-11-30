@@ -13,21 +13,40 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * the repository object that contains the methods  used by the RequestListViewModel
+ */
 public class RequestListRepository {
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
     private static final String TAG = "RequestListRepo";
 
+    /**
+     * returns requests based on the isbn of the requested book
+     * @param isbn the provided isbn
+     * @return RequestListLiveData that holds the result of the query
+     */
     public RequestListLiveData getRequestByIsbnLiveData(String isbn) {
         Query query = collectionRequests.whereEqualTo("isbn", isbn);
         return new RequestListLiveData(query);
     }
 
+    /**
+     * returns requests based on the owner of the requested books
+     * @param owner the provided owner
+     * @return RequestListLiveData that holds the result of the query
+     */
     public RequestListLiveData getRequestByOwnerLiveData(String owner) {
         Query query = collectionRequests.whereEqualTo("owner", owner);
         return new RequestListLiveData(query);
     }
 
+    /**
+     * returns requests based on the owner and the isbn of the requested books
+     * @param isbn the isbn of the requested books
+     * @param owner the owner of the requested books
+     * @return RequestListLiveData that holds the result of the query
+     */
     public RequestListLiveData getRequestByIsbnOwnerLiveData(String isbn, String owner) {
         Query query = collectionRequests
                 .whereEqualTo("isbn", isbn)
@@ -35,6 +54,12 @@ public class RequestListRepository {
         return new RequestListLiveData(query);
     }
 
+    /**
+     * returns requests based on the requester and isbn of the requested book
+     * @param isbn the provided isbn
+     * @param requester the provided requester
+     * @return RequestListLiveData that holds the result of the query
+     */
     public RequestListLiveData getRequestByIsbnRequesterLiveData(String isbn, String requester) {
         Query query = collectionRequests
                 .whereEqualTo("isbn", isbn)
@@ -42,12 +67,23 @@ public class RequestListRepository {
         return new RequestListLiveData(query);
     }
 
+    /**
+     * returns requests for a specific requester
+     * @param requester the given requester
+     * @return RequestListLiveData that holds the result of the query
+     */
     public RequestListLiveData getRequestByRequesterLiveData(String requester) {
         Query query = collectionRequests
                 .whereEqualTo("requester", requester);
         return new RequestListLiveData(query);
     }
 
+    /**
+     * updates the status of a request with an isbn and requester that match the inputs
+     * @param requester the provided requester
+     * @param isbn the provided isbn
+     * @param status the status to update the request to
+     */
     public void updateStatusByIsbn(String requester, String isbn, String status){
         collectionRequests
                 .whereEqualTo("isbn", isbn)
@@ -63,7 +99,12 @@ public class RequestListRepository {
                 });
     }
 
-
+    /**
+     *  removes requests from the database with and isbn, owner and requester that match the inputs
+     * @param isbn the provided isbn
+     * @param owner the provided owner
+     * @param requester the provided requester
+     */
     public void removeRequest(String isbn, String owner, String requester) {
         collectionRequests
                 .whereEqualTo("isbn", isbn)
@@ -80,7 +121,11 @@ public class RequestListRepository {
                 });
     }
 
-
+    /**
+     * adds a request to the database
+     * @param book the book that is associated with the requested
+     * @param requester the provided requester
+     */
     public void addRequest(Book book, String requester) {
         Map<String, Object> newRequest = new HashMap<>();
         newRequest.put("requester", requester);

@@ -10,11 +10,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Objects;
 
+/**
+ * the repository object that contains the methods  used by the RequestDetailsViewModel
+ */
 public class RequestDetailsRepository{
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final CollectionReference collectionRequests = firebaseFirestore.collection("requests");
     private final CollectionReference collectionBooks = firebaseFirestore.collection("books");
 
+    /**
+     * returns the request based on a provided isbn, requester, and owner
+     * @param isbn the provided isbn
+     * @param requester the provided requester
+     * @param owner the provided owner
+     * @return RequestDetailsLiveData that holds the result of the query
+     */
     public RequestDetailsLiveData getRequestLiveData(String isbn, String requester, String owner) {
         Query query = collectionRequests
                 .whereEqualTo("isbn", isbn)
@@ -23,6 +33,11 @@ public class RequestDetailsRepository{
         return new RequestDetailsLiveData(query);
     }
 
+    /**
+     * updates the status of a book based on the provided isbn
+     * @param isbn the provided isbn
+     * @param status the status to set
+     */
     public void updateBookStatusByIsbn(String isbn, String status){
         CollectionReference collectionBooks = firebaseFirestore.collection("books");
         collectionBooks
@@ -38,7 +53,11 @@ public class RequestDetailsRepository{
                 });
     }
 
-
+    /**
+     * updates the requester or borrower of a book based on the isbn
+     * @param isbn the provided isbn
+     * @param requester the provided requester
+     */
     public void updateBookBorrowerByIsbn(String isbn, String requester) {
         collectionBooks
                 .whereEqualTo("isbn", isbn)
