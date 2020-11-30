@@ -55,7 +55,7 @@ public class Profile {
 
     /**
      * Gets the profile's password.
-     * @return
+     * @return  The password.
      */
     public String getPassword() {
         return password;
