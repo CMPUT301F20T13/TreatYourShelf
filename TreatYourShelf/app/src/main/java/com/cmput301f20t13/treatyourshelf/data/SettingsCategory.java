@@ -1,7 +1,5 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
-import androidx.fragment.app.Fragment;
-
 public class SettingsCategory {
 
     private String icon;
@@ -12,6 +10,12 @@ public class SettingsCategory {
         this.icon = icon;
         this.title = title;
         this.page = page;
+    }
+
+    public SettingsCategory() {
+        icon = "icon";
+        title = "title";
+        page = 0;
     }
 
     public String getIcon() {
@@ -26,4 +30,15 @@ public class SettingsCategory {
         return page;
     }
 
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
 }
