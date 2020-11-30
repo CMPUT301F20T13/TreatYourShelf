@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
+import com.cmput301f20t13.treatyourshelf.data.Notification;
 import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -93,7 +94,6 @@ public class MapsFragmentOwner extends Fragment {
         return_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Returning...", Toast.LENGTH_SHORT).show();
                 // Return when clicked return. The address is saved on:
                 RequestDetailsViewModel requestDetailsViewModel = new ViewModelProvider(requireActivity())
                         .get(RequestDetailsViewModel.class);
@@ -106,9 +106,10 @@ public class MapsFragmentOwner extends Fragment {
                 }
                 String coordinates = String.valueOf(lat) + "," + String.valueOf(lon);
                 requestDetailsViewModel.setLocation(isbnString, requesterString, coordinates);
-/*                NavDirections action = MapsFragmentOwnerDirections
-                        .actionMapsFragmentOwnerToRequestDetailsFragment();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);*/
+
+                Notification notification =
+                        new Notification("Request Accepted", "Yay :)", Utils.emailStripper(requesterString));
+                Utils.sendNotification(notification.getNotification(), requireContext());
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             }
         });

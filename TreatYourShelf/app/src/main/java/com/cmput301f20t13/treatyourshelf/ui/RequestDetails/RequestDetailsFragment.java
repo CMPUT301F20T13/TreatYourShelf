@@ -148,12 +148,10 @@ public class RequestDetailsFragment extends Fragment {
                     .setREQUESTER(requesterString);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
 
+
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "accepted");
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
-            Notification notification =
-                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(requesterString));
-            Utils.sendNotification(notification.getNotification(), requireContext());
         });
 
 
