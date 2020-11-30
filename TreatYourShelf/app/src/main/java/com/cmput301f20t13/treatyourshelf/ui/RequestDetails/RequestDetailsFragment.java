@@ -249,9 +249,7 @@ public class RequestDetailsFragment extends Fragment {
                         requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "available");
                         requestDetailsViewModel.updateBookBorrower(isbnScanned, "");
                         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
-                        NavDirections action = RequestDetailsFragmentDirections
-                                .actionRequestDetailsFragmentToBookDetailsFragment().setISBN(isbnScanned);
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                         requestListViewModel
                                 .removeRequest(isbnScanned, ownerString, requesterString);
                         Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
