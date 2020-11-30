@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.data.Notification;
 import com.cmput301f20t13.treatyourshelf.data.Request;
 import com.cmput301f20t13.treatyourshelf.ui.AddEditBook.AddBookFragmentDirections;
 import com.cmput301f20t13.treatyourshelf.ui.BookDetails.BookImagesAdapter;
@@ -135,11 +136,12 @@ public class RequestDetailsFragment extends Fragment {
                     for (Request rq : requestList){
                         if (rq.getRequester().equals(requesterString)) {continue;}
                         requestListViewModel.removeRequest(rq.getIsbn(), rq.getOwner(), rq.getRequester());
-                        /*TODO notify requesters of declined request*/
+                        Notification notification =
+                                new Notification("Request Decline", "sorry :(", Utils.emailStripper(requesterString));
+                        Utils.sendNotification(notification.getNotification(), requireContext());
                     }
                 }
             });
-            /*TODO - navigate to location fragment, set argument of owner here*/
             NavDirections action = RequestDetailsFragmentDirections
                     .actionRequestDetailsFragmentToMapsFragmentOwner()
                     .setISBN(isbnString)
@@ -149,7 +151,9 @@ public class RequestDetailsFragment extends Fragment {
             requestListViewModel.updateStatusByIsbn(requesterString, isbnString, "accepted");
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
-            /*TODO notify requester of accepted request*/
+            Notification notification =
+                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(ownerString));
+            Utils.sendNotification(notification.getNotification(), requireContext());
         });
 
 
@@ -159,7 +163,8 @@ public class RequestDetailsFragment extends Fragment {
                     .removeRequest(isbnString, ownerString, requesterString);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             Toast.makeText(getContext(), "Request Declined", Toast.LENGTH_SHORT).show();
-            /*TODO notify requester of declined request*/
+            Notification notification = new Notification("Request Declined", "sorry :(", Utils.emailStripper(requesterString));
+            Utils.sendNotification(notification.getNotification(), requireContext());
         });
 
 
