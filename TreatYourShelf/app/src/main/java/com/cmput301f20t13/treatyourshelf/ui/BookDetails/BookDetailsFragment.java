@@ -76,6 +76,7 @@ public class BookDetailsFragment extends Fragment {
         TextView bookIsbn = view.findViewById(R.id.book_isbn);
         TextView bookOwner = view.findViewById(R.id.book_owner);
         TextView bookStatus = view.findViewById(R.id.book_status);
+        TextView bookBorrower = view.findViewById(R.id.book_borrower);
         Button requestBt = view.findViewById(R.id.book_request_button);
         Button viewRequestBt = view.findViewById(R.id.view_requests_button);
         ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
@@ -117,6 +118,7 @@ public class BookDetailsFragment extends Fragment {
                 bookAuthor.setText(book.getAuthor());
                 bookDescription.setText(book.getDescription());
                 bookOwner.setText(book.getOwner());
+                bookBorrower.setText(book.getBorrower());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
                 checkOwner(book.getOwner(), requestBt, viewRequestBt);

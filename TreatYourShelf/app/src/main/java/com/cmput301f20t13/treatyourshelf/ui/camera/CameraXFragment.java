@@ -149,10 +149,11 @@ public class CameraXFragment extends Fragment {
 
         if (allPermissionsGranted()) {
             startCameraPreview();
+            cameraExecutor = Executors.newSingleThreadExecutor();
         } else {
-            requireActivity().requestPermissions(permissions, 11);
+            requestPermissions(permissions, 11);
         }
-        cameraExecutor = Executors.newSingleThreadExecutor();
+
     }
 
     /**
@@ -263,14 +264,18 @@ public class CameraXFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+
         if (requestCode == 11) {
+
             if (allPermissionsGranted()) {
+
                 startCameraPreview();
+                cameraExecutor = Executors.newSingleThreadExecutor();
             } else {
                 Toast.makeText(getContext(),
                         "Permissions not granted by the user.",
                         Toast.LENGTH_SHORT).show();
-                //Pop backstack
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             }
         }
     }

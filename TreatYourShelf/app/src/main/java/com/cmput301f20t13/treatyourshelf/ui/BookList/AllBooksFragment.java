@@ -17,7 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.data.Notification;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +33,20 @@ public class AllBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
     // List of books that are consistent even if app is closed and reopened. May be filtered in future.
     private final ArrayList<Book> unfilteredBookList = new ArrayList<>();
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         // Make loading circle visible
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        // TEsting notifications
+        FirebaseMessaging.getInstance().subscribeToTopic(Utils.emailStripper(currentUser.getEmail()));
+        Notification notification = new Notification("Test", "test", Utils.emailStripper(currentUser.getEmail()));
+        Utils.sendNotification(notification.getNotification(), requireContext());
+
+
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -52,9 +67,10 @@ public class AllBooksFragment extends Fragment {
         // Set up BookListViewModel and live data
         BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
         bookListViewModel.clearLiveData();
-        bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
+        bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {
+        });
         bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
-            if (bookList != null ) {
+            if (bookList != null) {
                 // Reset adapter by setting it with a new list
                 bookListAdapter.setBookList(new ArrayList<>());
                 // Clear unfilteredBookList and set it to bookList
@@ -66,8 +82,7 @@ public class AllBooksFragment extends Fragment {
                 // Set the adapter for the RecyclerView and make loading circle gone
                 bookRv.setAdapter(bookListAdapter);
                 progressBar.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 Log.d("TAG", "waiting for info");
             }
         });
@@ -77,9 +92,10 @@ public class AllBooksFragment extends Fragment {
 
     /**
      * setUnfilteredBookList will set unfilteredBookList to a list of books
+     *
      * @param bookList
      */
-    private void setUnfilteredBookList(List<Book> bookList){
+    private void setUnfilteredBookList(List<Book> bookList) {
         unfilteredBookList.addAll(bookList);
     }
 
