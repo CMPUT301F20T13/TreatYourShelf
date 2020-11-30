@@ -1,8 +1,6 @@
 package com.cmput301f20t13.treatyourshelf.ui.camera;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.Image;
 
@@ -28,14 +26,15 @@ import java.util.List;
  */
 public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
-    private Context context;
+    private final Context context;
     private Lifecycle lifecycle;
-    private OnBarcodeFound barcodeFound;
+    private final OnBarcodeFound barcodeFound;
     private RectF rectF;
-    private int heightCropPercent, widthCropPercent;
+    private final int heightCropPercent;
+    private final int widthCropPercent;
 
     interface OnBarcodeFound {
-        public void barcodeFound(Barcode barcode);
+        void barcodeFound(Barcode barcode);
     }
 
     BarcodeAnalyzer(OnBarcodeFound barcodeFound, int heightCropPercent, int widthCropPercent, Context context) {
@@ -63,66 +62,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
             float rectBottom = mediaImage.getHeight() * (1 - heightCropPercent / 2 / 100f);
 
             rectF = new RectF(rectLeft, rectTop, rectRight, rectBottom);
-//            int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();
-//            // CROP IMAGE FIRST
-////            System.out.println("Height: " + mediaImage.getHeight());
-////            System.out.println("Width: " + mediaImage.getWidth());
-//            int imageHeight = mediaImage.getHeight();
-//            int imageWidth = mediaImage.getWidth();
-////            System.out.println(mediaImage.getFormat());
-//            int actualAspectRatio = imageWidth / imageHeight;
-//
-//            Bitmap convertImageToBitmap = ImageUtilities.YUV_420_888_toRGB(image, imageWidth, imageHeight, context);
-//            Rect cropRect = new Rect(0, 0, imageWidth, imageHeight);
-//
-//            // If the image has a way wider aspect ratio than expected, crop less of the height so we
-//            // don't end up cropping too much of the image. If the image has a way taller aspect ratio
-//            // than expected, we don't have to make any changes to our cropping so we don't handle it
-//            // here.
-//
-//            if (actualAspectRatio > 3) {
-//                imageCropHeightPercentage = imageCropHeightPercentage / 2;
-//
-//            }
-//
-//            // If the image is rotated by 90 (or 270) degrees, swap height and width when calculating
-//            // the crop.
-//            float widthCrop, heightCrop;
-//
-//            switch (rotationDegrees) {
-//                case 90:
-//                case 270: {
-//                    widthCrop = imageCropHeightPercentage / 100f;
-//                    heightCrop = imageCropWidthPercentage / 100f;
-//                    break;
-//                }
-//                default: {
-//                    widthCrop = imageCropWidthPercentage / 100f;
-//                    heightCrop = imageCropHeightPercentage / 100f;
-//                }
-//            }
-//
-//            cropRect.inset(
-//                    Math.round(imageWidth * widthCrop / 2),
-//                    Math.round(imageHeight * heightCrop / 2)
-//            );
-//            Bitmap croppedBitmap =
-//                    ImageUtilities.rotateAndCrop(convertImageToBitmap, rotationDegrees, cropRect);
-//
 
-            // Pass image to an ML Kit Vision API
-            // ...
-            //        Bitmap myBitmap = BitmapFactory.decodeResource(
-            //                requireContext().getResources(),
-            //                R.drawable.puppy);
-            //        BarcodeDetector detector =
-            //                new BarcodeDetector.Builder(getContext())
-            //                        .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
-            //                        .build();
-//                    Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
-//                    SparseArray<Barcode> barcodes = detector.detect(frame);
-//                    Barcode thisCode = barcodes.valueAt(0);
-//                    System.out.println(thisCode.rawValue);
             BarcodeScannerOptions options =
                     new BarcodeScannerOptions.Builder()
                             .setBarcodeFormats(
@@ -130,35 +70,24 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                             .build();
             BarcodeScanner scanner = BarcodeScanning.getClient(options);
 
-
             Task<List<Barcode>> result = scanner.process(image)
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                         @Override
                         public void onSuccess(List<Barcode> barcodes) {
                             // Task completed successfully
-                            // ...
                             if (!barcodes.isEmpty()) {
                                 Barcode barcode = barcodes.get(0);
-                                //System.out.println(String.format(" Bounding box of screen top :%f , bottom: %f , left: %f , right: %f", rectF.top, rectF.bottom, rectF.left, rectF.right));
                                 RectF barcodeBoundingBox = new RectF(barcode.getBoundingBox());
-                                //System.out.println(String.format("Barcode bounding box top :%f , bottom: %f , left: %f , right: %f", barcodeBoundingBox.top, barcodeBoundingBox.bottom, barcodeBoundingBox.left, barcodeBoundingBox.right));
-
                                 if (rectF.contains(barcodeBoundingBox.left, barcodeBoundingBox.top, barcodeBoundingBox.right, barcodeBoundingBox.bottom)) {
                                     barcodeFound.barcodeFound(barcode);
                                 }
-
-
                             }
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Task failed with an exception
-                            // ...
-
                         }
                     });
             result.addOnCompleteListener(new OnCompleteListener<List<Barcode>>() {
