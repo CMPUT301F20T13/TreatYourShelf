@@ -46,12 +46,18 @@ public class ProfileFragment extends Fragment {
         TableLayout profileInfo = view.findViewById(R.id.profile_info_table);
         TextView email = view.findViewById(R.id.profile_email);
         TextView phone = view.findViewById(R.id.profile_phone);
+        Button editButton = view.findViewById(R.id.profile_edit_button);
 
-        // Get the current FirebaseAuth's email
-        String profileEmail = "user1@gmail.com";
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            profileEmail = user.getEmail();
+        // Get the current FirebaseAuth's email if not passed another email
+        String profileEmail = ProfileFragmentArgs.fromBundle(getArguments()).getEmail();
+        if (profileEmail.isEmpty()) {
+            profileEmail = "user1@gmail.com";
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                profileEmail = user.getEmail();
+            }
+        } else {
+            editButton.setVisibility(View.INVISIBLE);
         }
 
         // Get the details from the Firestore to set in the viewmodel
@@ -73,7 +79,7 @@ public class ProfileFragment extends Fragment {
         });
 
         // Add a listener for the edit button
-        Button editButton = view.findViewById(R.id.profile_edit_button);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

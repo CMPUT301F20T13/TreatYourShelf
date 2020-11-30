@@ -95,7 +95,23 @@ public class BookDetailsFragment extends Fragment {
             viewRequestBt.setVisibility(View.VISIBLE);
         }*/
 
+        bookOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment()
+                        .setEmail(bookOwner.getText().toString());
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            }
+        });
 
+        bookBorrower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment()
+                        .setEmail(bookBorrower.getText().toString());
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            }
+        });
 
         BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
         viewPager2.setAdapter(bookImagesAdapter);

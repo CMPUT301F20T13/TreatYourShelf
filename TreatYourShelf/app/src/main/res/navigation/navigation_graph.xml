@@ -61,7 +61,12 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment">
+        <argument
+            android:name="email"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.cmput301f20t13.treatyourshelf.ui.UserProfile.Editing.ProfileEditFragment"
@@ -85,6 +90,9 @@
         <action
             android:id="@+id/action_bookDetailsFragment_to_requestListFragment"
             app:destination="@id/requestListFragment" />
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
