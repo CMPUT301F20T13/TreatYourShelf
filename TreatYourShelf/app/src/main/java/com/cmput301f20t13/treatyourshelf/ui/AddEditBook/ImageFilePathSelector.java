@@ -5,7 +5,7 @@ import android.net.Uri;
 public class ImageFilePathSelector {
 
     private Uri imageFilePath;
-
+    private boolean isImageUrl = false;
     private int imageSelectedState;
 
     public Uri getImageFilePath() {
@@ -30,5 +30,13 @@ public class ImageFilePathSelector {
         } else {
             this.imageSelectedState = 1;
         }
+    }
+
+    public boolean isImageUrl() {
+        return isImageUrl;
+    }
+
+    public void setImageUrl(boolean imageUrl) {
+        isImageUrl = imageUrl;
     }
 }

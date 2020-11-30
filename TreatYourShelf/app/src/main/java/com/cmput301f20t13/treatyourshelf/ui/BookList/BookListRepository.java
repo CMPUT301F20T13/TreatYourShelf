@@ -1,5 +1,8 @@
 package com.cmput301f20t13.treatyourshelf.ui.BookList;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 

@@ -35,8 +35,9 @@ import java.util.UUID;
 public class BookDetailsViewModel extends AndroidViewModel {
     private final BookListRepository repository = new BookListRepository();
     BookListLiveData liveData = null;
-    public MutableLiveData<Book> selectedBook = new MutableLiveData<>();
+    private Book selectedBook;
     public boolean ownerList = true;
+
 
     public BookDetailsViewModel(@NonNull Application application) {
         super(application);
@@ -51,9 +52,15 @@ public class BookDetailsViewModel extends AndroidViewModel {
         return liveData.bookList;
     }
 
-    public void select(Book book){selectedBook.setValue(book);}
+    public void setBook(Book book) {
+        selectedBook = book;
+    }
 
-    public LiveData<Book> getSelected() {return selectedBook;}
+    public Book getSelectedBook() {
+        return selectedBook;
+    }
 
-    public void clearLiveData() { liveData = null; }
+    public void clearLiveData() {
+        liveData = null;
+    }
 }
