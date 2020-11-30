@@ -26,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.data.Notification;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragmentDirections;
@@ -144,6 +145,9 @@ public class BookDetailsFragment extends Fragment {
                             dialog.cancel();
                             requestListViewModel.requestBook(currentBook, user.getEmail()); //creates a request
                             requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "requested"); //updates the books status
+                            Notification notification =
+                                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(currentBook.getOwner()));
+                            Utils.sendNotification(notification.getNotification(), requireContext());
                             Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                         })
                         .setNegativeButton("NO", (dialog, which) -> dialog.cancel())

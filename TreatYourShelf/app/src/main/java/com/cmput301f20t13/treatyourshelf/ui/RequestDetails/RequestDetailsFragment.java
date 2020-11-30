@@ -152,7 +152,7 @@ public class RequestDetailsFragment extends Fragment {
             requestDetailsViewModel.updateBookStatusByIsbn(isbnString, "accepted");
             Toast.makeText(getContext(), "Request Accepted!", Toast.LENGTH_SHORT).show();
             Notification notification =
-                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(ownerString));
+                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(requesterString));
             Utils.sendNotification(notification.getNotification(), requireContext());
         });
 
