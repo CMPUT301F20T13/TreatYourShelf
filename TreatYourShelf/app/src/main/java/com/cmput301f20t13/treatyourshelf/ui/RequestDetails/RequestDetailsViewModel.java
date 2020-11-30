@@ -27,7 +27,6 @@ public class RequestDetailsViewModel extends ViewModel {
     MutableLiveData<String> borReturnedScannedIsbn = new MutableLiveData<>();
 
     /**
-     *
      * @param isbn
      * @param requester
      * @param owner
@@ -39,7 +38,6 @@ public class RequestDetailsViewModel extends ViewModel {
     }
 
     /**
-     *
      * @return
      */
     public LiveData<Request> getRequest() {
@@ -47,62 +45,44 @@ public class RequestDetailsViewModel extends ViewModel {
     }
 
     /**
-     *
      * @param isbn
      * @param status
      */
-    public void updateBookStatusByIsbn(String isbn, String status){
+    public void updateBookStatusByIsbn(String isbn, String status) {
         repository.updateBookStatusByIsbn(isbn, status);
     }
 
     /**
-     *
      * @param isbn
      * @param requester
      * @param status
      */
-    public void updateRequestStatusByIsbn(String isbn, String requester, String status){
+    public void updateRequestStatusByIsbn(String isbn, String requester, String status) {
         repository.updateRequestStatusByIsbn(isbn, requester, status);
     }
 
     /**
-     *
      * @param isbn
      * @param requester
      */
-    public void updateBookBorrower(String isbn, String requester){
+    public void updateBookBorrower(String isbn, String requester) {
         repository.updateBookBorrowerByIsbn(isbn, requester);
     }
 
-
-    /**
-     *
-     * @param scannedIsbn
-     */
-    public void setOwnerScannedIsbn(String scannedIsbn) {
-        this.ownerScannedIsbn.postValue(scannedIsbn);
-    }
-
-    /**
-     *
-     * @param scannedIsbn
-     */
-    public void setBorrowerScannedIsbn(String scannedIsbn) {
-        this.ownerScannedIsbn.postValue(scannedIsbn);
-
-    public Boolean getOwnerScannedCheck(){
+  
+    public Boolean getOwnerScannedCheck() {
         return ownerScannedCheck;
     }
 
-    public void resetOwnerScannedCheck(){
+    public void resetOwnerScannedCheck() {
         this.ownerScannedCheck = false;
     }
 
-    public Boolean getBorrowerScannedCheck(){
+    public Boolean getBorrowerScannedCheck() {
         return borrowerScannedCheck;
     }
 
-    public void resetBorrowerScannedCheck(){
+    public void resetBorrowerScannedCheck() {
         this.borrowerScannedCheck = false;
     }
 
@@ -128,7 +108,7 @@ public class RequestDetailsViewModel extends ViewModel {
     }
 
     /**
-     *  resets the ownerScannedIsbn MutableLiveData and borrowerScannedIsbn MutableLiveData
+     * resets the ownerScannedIsbn MutableLiveData and borrowerScannedIsbn MutableLiveData
      */
     public void clearState() {
         ownBorrowedScannedIsbn.setValue(null);
@@ -137,7 +117,7 @@ public class RequestDetailsViewModel extends ViewModel {
         borReturnedScannedIsbn.setValue(null);
     }
 
-    public void setLocation(String isbn, String requester, String coordinates){
+    public void setLocation(String isbn, String requester, String coordinates) {
         repository.setLocation(isbn, requester, coordinates);
     }
 
