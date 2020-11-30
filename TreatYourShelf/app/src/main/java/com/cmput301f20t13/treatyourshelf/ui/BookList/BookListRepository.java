@@ -16,6 +16,7 @@ public class BookListRepository {
         return new BookListLiveData(query);
     }
 
+
     public BookListLiveData getAllBooksLiveData() {
         Query query = firebaseFirestore.collection("books");
         return new BookListLiveData(query);

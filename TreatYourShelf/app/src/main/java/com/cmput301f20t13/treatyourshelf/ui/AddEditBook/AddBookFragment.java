@@ -164,8 +164,7 @@ public class AddBookFragment extends Fragment {
                     addBookViewModel.addBook(book);
                     Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.ownedBooksFragment);
                 }
-
-
+                
             }
         });
         menuBt.setOnClickListener(view1 -> {
