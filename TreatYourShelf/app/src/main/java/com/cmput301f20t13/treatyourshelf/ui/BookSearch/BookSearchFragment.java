@@ -1,6 +1,8 @@
 package com.cmput301f20t13.treatyourshelf.ui.BookSearch;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.data.Book;
 import com.cmput301f20t13.treatyourshelf.data.Profile;
+import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.List;
  */
 public class BookSearchFragment extends Fragment {
     private BookSearchAdapter bookSearchAdapter;
+    private List<Book> tempAllBooks;
 
     /**
      * Creates the fragment view
@@ -50,42 +54,52 @@ public class BookSearchFragment extends Fragment {
         EditText searchBar = view.findViewById(R.id.search_text);
         Button searchButton = view.findViewById(R.id.search_button);
         RecyclerView bookRv = view.findViewById(R.id.search_list_rv);
-        //test profile as a placeholder, do not want to return own books for a borrower
+      
         Profile testProfile = new Profile();
         String owner = testProfile.getUsername();
         bookRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), Observable -> {});
+        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), Observable -> {
+        });
 
-        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), liveBookList ->{
+        bookSearchViewModel.liveBookList.observe(getViewLifecycleOwner(), liveBookList -> {
             bookSearchAdapter.setBookList(liveBookList);
             bookRv.setAdapter(bookSearchAdapter);
 
-            //failed here, java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-            // issue is currently doe not return anything
-            //System.out.println(liveBookList.get(0));
 
         });
-//        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {});
-//
-//        bookSearchViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), bookList -> {
-//            if (bookList != null ) {
-//                bookSearchAdapter.clear();
-//                bookSearchAdapter.setBookList(bookList);
-//                bookRv.setAdapter(bookSearchAdapter);
-//            }
-//            else {
-//                Log.d("TAG", "waiting for info");
-//            }
-//        });
 
-        //operation for when search button is clicked
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String keyword = (String) searchBar.getText().toString();
-                bookSearchViewModel.getBookSearch(keyword, owner);
+        BookListViewModel bookListViewModel = new ViewModelProvider(requireActivity()).get(BookListViewModel.class);
+        bookListViewModel.clearLiveData();
+        bookListViewModel.getAllBooksLiveData().observe(getViewLifecycleOwner(), Observable -> {
+        });
+        bookListViewModel.getBookList().observe(getViewLifecycleOwner(), bookList -> {
+            if (bookList != null) {
+                // Reset adapter by setting it with a new list
+                bookSearchViewModel.setAllBooks(bookList);
+            } else {
+                Log.d("TAG", "waiting for info");
             }
         });
+
+        // Run code on every character change in the search bar
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String keyword = searchBar.getText().toString();
+                bookSearchViewModel.searchBooks(keyword);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
 
         return view;
     }

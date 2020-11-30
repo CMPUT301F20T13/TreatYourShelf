@@ -69,7 +69,7 @@ public class RequestDetailsViewModel extends ViewModel {
         repository.updateBookBorrowerByIsbn(isbn, requester);
     }
 
-  
+
     public Boolean getOwnerScannedCheck() {
         return ownerScannedCheck;
     }
