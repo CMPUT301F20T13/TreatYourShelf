@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301f20t13.treatyourshelf.R;
+import com.cmput301f20t13.treatyourshelf.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -83,6 +84,7 @@ public class LoginFragment extends Fragment {
                     setError(true, "Please fill in the required fields");
                 } else {
                     checkValid(email, password);
+                    Utils.hideKeyboardFrom(requireContext(), v);
                 }
 
 
@@ -130,13 +132,13 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getContext(), "Login in successful.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Login successful.", Toast.LENGTH_SHORT).show();
                             setError(false, "");
                             navigateToNextScreen();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getContext(), "Login in failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();
                             setError(true, "Email and Password does not match preexisting user.");
                         }
                     }

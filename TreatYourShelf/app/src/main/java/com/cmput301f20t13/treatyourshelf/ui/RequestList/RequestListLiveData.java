@@ -60,6 +60,8 @@ public class RequestListLiveData extends
                     itemToAdd.setIsbn((String) requestDetails.getOrDefault("isbn", "12345678910"));
                     itemToAdd.setAuthor((String) requestDetails.getOrDefault("author", "default author"));
                     itemToAdd.setTitle((String) requestDetails.getOrDefault("title", "default title"));
+                    itemToAdd.setImageUrls((List<String>) requestDetails.getOrDefault("imageUrls", null));
+                    itemToAdd.setLocation((String) requestDetails.getOrDefault("location", ""));
                     requestListTemp.add(itemToAdd);
                 }
                 requestList.setValue(requestListTemp);

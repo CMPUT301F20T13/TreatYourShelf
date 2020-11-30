@@ -116,10 +116,12 @@
         <action
             android:id="@+id/action_requestDetailsFragment_to_cameraXFragment"
             app:destination="@id/cameraXFragment" >
-            <argument
-                android:name="serviceCode"
-                android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/action_requestDetailsFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment" >
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/requestListFragment"

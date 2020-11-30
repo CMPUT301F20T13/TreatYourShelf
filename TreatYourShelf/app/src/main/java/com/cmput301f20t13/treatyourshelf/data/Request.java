@@ -1,5 +1,7 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
+import java.util.List;
+
 public class Request {
 
     private String requester;
@@ -9,6 +11,8 @@ public class Request {
     private String isbn;
     private String author;
     private String title;
+    private String location;
+    private List<String> imageUrls;
 
     public String getRequester() {
         return requester;
@@ -24,9 +28,7 @@ public class Request {
 
     public void setBookId(String bookId) { this.bookId = bookId; }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getStatus() { return status; }
 
     public void setStatus(String status) {
         this.status = status;
@@ -43,4 +45,14 @@ public class Request {
     public String getTitle() { return title; }
 
     public void setTitle(String title) { this.title = title; }
+
+    public List<String> getImageUrls() { return imageUrls; }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public String getLocation() { return location; }
+
+    public void setLocation(String location) { this.location = location; }
 }

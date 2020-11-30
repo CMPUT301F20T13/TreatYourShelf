@@ -48,6 +48,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class BookDetailsFragment extends Fragment {
     private Book currentBook = null;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
     /**
      * Creates the fragment view
@@ -80,7 +81,7 @@ public class BookDetailsFragment extends Fragment {
         ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
 
         /*Show or hide the request button and view request button*/
-        if (category == 0) {
+/*        if (category == 0) {
             // User is not allowed to edit book
             requestBt.setVisibility(View.VISIBLE);
             viewRequestBt.setVisibility(View.GONE);
@@ -90,7 +91,9 @@ public class BookDetailsFragment extends Fragment {
             //requestBt.setVisibility(View.INVISIBLE);
             requestBt.setVisibility(View.GONE);
             viewRequestBt.setVisibility(View.VISIBLE);
-        }
+        }*/
+
+
 
         BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
         viewPager2.setAdapter(bookImagesAdapter);
@@ -116,6 +119,7 @@ public class BookDetailsFragment extends Fragment {
                 bookOwner.setText(book.getOwner());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
+                checkOwner(book.getOwner(), requestBt, viewRequestBt);
                 if(book.getImageUrls() != null){
                     bookImagesAdapter.setImages(book.getImageUrls());
                 }
@@ -128,7 +132,6 @@ public class BookDetailsFragment extends Fragment {
                 Log.d("TAG", "waiting for info");
             }
         });
-
 
         /*Request Button - makes a request on the current book if it is available or requested status*/
         requestBt.setOnClickListener(v -> {
@@ -168,6 +171,16 @@ public class BookDetailsFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void checkOwner(String owner, Button requestBt, Button viewRequestBt){
+        if (userEmail.equals(owner)){
+            viewRequestBt.setVisibility(View.VISIBLE);
+            requestBt.setVisibility(View.GONE);
+        } else {
+            viewRequestBt.setVisibility(View.GONE);
+            requestBt.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
