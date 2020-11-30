@@ -41,7 +41,10 @@ public class BookDetailsViewModel extends AndroidViewModel {
     private Book selectedBook;
     public boolean ownerList = true;
 
-
+    /**
+     * attaches to an application
+     * @param application the provided application
+     */
     public BookDetailsViewModel(@NonNull Application application) {
         super(application);
     }

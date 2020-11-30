@@ -17,8 +17,15 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 
+/**
+ * the main activity of the application
+ */
 public class MainActivity extends AppCompatActivity {
-
+    /**
+     * creates the activity view, initializes the fragments where all the functionality of
+     * the application resides
+     * @param savedInstanceState a bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * creates the bottom menu for navigation
+     * @param menu a menu object
+     * @return a boolean upon successful completion
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -117,6 +128,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * a listener for when a menu option is selected
+     * @param item the menuItem that is selected
+     * @return a boolean, returns true if the item that links to the bottom_app_search is selected
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 

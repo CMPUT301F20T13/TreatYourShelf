@@ -32,6 +32,14 @@ import java.util.List;
  */
 public class BottomSheetNavigationMenu extends BottomSheetDialogFragment {
 
+    /**
+     * Creates the fragment view
+     *
+     * @param inflater           inflates the view in the fragment
+     * @param container          the viewgroup
+     * @param savedInstanceState a bundle
+     * @return returns the view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

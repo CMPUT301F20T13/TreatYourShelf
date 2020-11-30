@@ -16,6 +16,9 @@ import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.NavigationItem;
 
 import java.util.List;
 
+/**
+ * the adapter that binds to the recyclerview in BottomSheetSettingsMenu
+ */
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyViewHolder> {
 
     private List<SettingsItem> settingsItemList;
@@ -26,12 +29,24 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
         public void onClick(SettingsItem settingsItem);
     }
 
+    /**
+     * constructor for the adapter
+     * @param settingsItemList the list of settingItems
+     * @param context the context of the app
+     * @param onSettingsItemClick the interface that contains the onClick method
+     */
     public SettingsAdapter(List<SettingsItem> settingsItemList, Context context, OnSettingsItemClick onSettingsItemClick) {
         this.settingsItemList = settingsItemList;
         this.context = context;
         this.onSettingsItemClick = onSettingsItemClick;
     }
 
+    /**
+     * creates the view holder of the adapter and binds the layout to settings_list_item.xml
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public SettingsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +55,11 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
 
     }
 
+    /**
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull SettingsAdapter.MyViewHolder holder, int position) {
         holder.settingsDescription.setText(settingsItemList.get(position).getSettingDescription());
@@ -47,11 +67,18 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
         holder.itemView.setOnClickListener(view -> onSettingsItemClick.onClick(settingsItemList.get(position)));
     }
 
+    /**
+     * returns the number of settingsItems
+     * @return the size of the list of settingsItems
+     */
     @Override
     public int getItemCount() {
         return settingsItemList.size();
     }
 
+    /**
+     * binds the requests to the viewholder properties
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView settingsDescription;
@@ -67,6 +94,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
         }
     }
 
+    /**
+     * sets the settingsItemList
+     * @param settingsItemList the provided list of settingsItem objects
+     */
     public void setSettingsItemList(List<SettingsItem> settingsItemList) {
         this.settingsItemList = settingsItemList;
         notifyDataSetChanged();
