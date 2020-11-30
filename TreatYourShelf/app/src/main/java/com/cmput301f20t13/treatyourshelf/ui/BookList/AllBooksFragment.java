@@ -41,10 +41,8 @@ public class AllBooksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         // Make loading circle visible
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        // TEsting notifications
+        // Testing notifications
         FirebaseMessaging.getInstance().subscribeToTopic(Utils.emailStripper(currentUser.getEmail()));
-        Notification notification = new Notification("Test", "test", Utils.emailStripper(currentUser.getEmail()));
-        Utils.sendNotification(notification.getNotification(), requireContext());
 
 
         ProgressBar progressBar = view.findViewById(R.id.progressbar);
@@ -59,6 +57,7 @@ public class AllBooksFragment extends Fragment {
                     .setCategory(0);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         });
+
 
         // Set up recycler view object
         RecyclerView bookRv = view.findViewById(R.id.book_list_rv);
