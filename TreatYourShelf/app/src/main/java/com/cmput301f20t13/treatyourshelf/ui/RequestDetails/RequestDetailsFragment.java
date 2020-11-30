@@ -42,6 +42,9 @@ import static android.view.View.VISIBLE;
 /**
  * RequestDetailsFragment displays the request details for a specific book
  * The owner can decide to accept or decline the request
+ * Once accepted, the owner can specify a location for the borrower to pickup
+ * Scanning the ISBN of the book as either owner or borrower will
+ * update both the request status and the book status
  */
 public class RequestDetailsFragment extends Fragment {
     private RequestDetailsViewModel requestDetailsViewModel;
@@ -235,12 +238,13 @@ public class RequestDetailsFragment extends Fragment {
                     if (isbnScanned != null && !isbnScanned.equals("") && isbnScanned.equals(isbnString)) {
                         requestDetailsViewModel.updateBookStatusByIsbn(isbnScanned, "available");
                         requestDetailsViewModel.updateBookBorrower(isbnScanned, "");
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                         NavDirections action = RequestDetailsFragmentDirections
                                 .actionRequestDetailsFragmentToBookDetailsFragment().setISBN(isbnScanned);
                         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                         requestListViewModel
                                 .removeRequest(isbnScanned, ownerString, requesterString);
-                        Toast.makeText(getContext(), "Book status updated!" + isbnScanned, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Book status updated!", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getContext(), "Please try again. Isbn Scanned: " + isbnScanned, Toast.LENGTH_LONG).show();
                     }
@@ -305,8 +309,10 @@ public class RequestDetailsFragment extends Fragment {
 
     /**
      * Navigates to the CameraFragment to scan the ISBN
-     * Service Code 2 = owner scanned the ISBN
-     * Service Code 3 = borrower scanned the ISBN
+     * Service Code 2 = owner scanned to denote borrowed
+     * Service Code 3 = borrower scanned to confirm borrowed
+     * Service Code 4 = borrower scanned to return a book
+     * Service Code 5 = owner scanned to confirm book returned
      * @param serviceCode - determines who is scanning the book
      * @param view - takes the current view to hide the keyboard
      */
