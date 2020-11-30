@@ -19,6 +19,9 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * livedata object that is used by the RequestDetailsRepository
+ */
 public class RequestDetailsLiveData extends
         LiveData<Request> implements
         EventListener<QuerySnapshot> {
@@ -26,23 +29,35 @@ public class RequestDetailsLiveData extends
     public MutableLiveData<Request> request = new MutableLiveData<>();
 
     private ListenerRegistration listenerRegistration = () -> {};
-
+    /**
+     * sets the livedata's query property
+     * @param query the query object
+     */
     public RequestDetailsLiveData(Query query) {
         this.query = query;
     }
-
+    /**
+     * sets the listenerRegistration
+     */
     @Override
     protected void onActive() {
         listenerRegistration = query.addSnapshotListener(this);
         super.onActive();
     }
-
+    /**
+     * removes the listenerRegistration
+     */
     @Override
     protected void onInactive() {
         listenerRegistration.remove();
         super.onInactive();
     }
-
+    /**
+     * retrieves data from a query and adds the data to a list.
+     * the value of MutableLiveData is set to the list
+     * @param value
+     * @param error
+     */
     @Override
     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
         query.get().addOnCompleteListener(task -> {

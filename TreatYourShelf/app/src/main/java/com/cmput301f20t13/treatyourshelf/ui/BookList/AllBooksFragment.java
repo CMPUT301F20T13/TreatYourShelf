@@ -22,6 +22,9 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment that displays all books in the database
+ */
 public class AllBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
     // List of books that are consistent even if app is closed and reopened. May be filtered in future.

@@ -14,6 +14,9 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
+/**
+ * adapter for the recyclerview used in the AllBooksFragment
+ */
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyViewHolder> {
 
     private List<Book> bookList;

@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * the fragment that shows a user's owned books
+ */
 public class OwnedBooksFragment extends Fragment {
     private BookListAdapter bookListAdapter;
     // chipGroup is an easy way to store all the chips ids

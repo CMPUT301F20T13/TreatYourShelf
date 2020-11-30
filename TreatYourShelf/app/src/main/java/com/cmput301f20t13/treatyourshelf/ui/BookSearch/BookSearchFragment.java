@@ -24,6 +24,10 @@ import com.cmput301f20t13.treatyourshelf.data.Profile;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the fragment that allows a borrower to specify a keyword, and search for all books that
+ * are not currently accepted or borrowed whose description contains the keyword.
+ */
 public class BookSearchFragment extends Fragment {
     private BookSearchAdapter bookSearchAdapter;
 

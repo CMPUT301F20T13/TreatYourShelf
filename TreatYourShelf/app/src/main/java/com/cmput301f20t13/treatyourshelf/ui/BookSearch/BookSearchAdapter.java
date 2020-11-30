@@ -13,6 +13,9 @@ import com.cmput301f20t13.treatyourshelf.data.Book;
 
 import java.util.List;
 
+/**
+ * The adapter that binds a list of books to the recyclerview in BookSearchFragment
+ */
 public class BookSearchAdapter extends RecyclerView.Adapter<BookSearchAdapter.MyViewHolder> {
 
 private List<Book> bookList;

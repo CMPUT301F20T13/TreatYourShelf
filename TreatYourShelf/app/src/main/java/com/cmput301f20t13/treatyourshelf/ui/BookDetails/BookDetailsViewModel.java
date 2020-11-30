@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * viewmodel used for the BookDetailsFragment
+ */
 public class BookDetailsViewModel extends AndroidViewModel {
     private final BookListRepository repository = new BookListRepository();
     BookListLiveData liveData = null;

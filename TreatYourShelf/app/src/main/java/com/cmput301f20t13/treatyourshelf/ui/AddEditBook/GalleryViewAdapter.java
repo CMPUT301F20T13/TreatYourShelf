@@ -25,6 +25,9 @@ import com.bumptech.glide.Glide;
 import com.cmput301f20t13.treatyourshelf.R;
 import java.util.List;
 
+/**
+ * an adapter for the galleryview
+ */
 public class GalleryViewAdapter extends RecyclerView.Adapter<GalleryViewAdapter.MyViewHolder> {
 
     private List<ImageFilePathSelector> images;

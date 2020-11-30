@@ -25,6 +25,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * a gallery of images to choose an image for a book
+ */
 public class BottomSheetGalleryImages extends BottomSheetDialogFragment {
 
     private AddBookViewModel addBookViewModel;

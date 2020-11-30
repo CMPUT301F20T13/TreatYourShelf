@@ -16,6 +16,9 @@ import com.cmput301f20t13.treatyourshelf.R;
 
 import java.util.List;
 
+/**
+ * adapter for selected images
+ */
 public class SelectedImagesAdapter extends RecyclerView.Adapter<SelectedImagesAdapter.MyViewHolder> {
 
     private List<ImageFilePathSelector> images;

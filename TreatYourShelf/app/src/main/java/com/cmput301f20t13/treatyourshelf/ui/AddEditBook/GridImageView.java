@@ -6,6 +6,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
+/**
+ * the gridimageview
+ */
 public class GridImageView extends AppCompatImageView {
     public GridImageView(Context context) {
         super(context);

@@ -2,6 +2,9 @@ package com.cmput301f20t13.treatyourshelf.ui.AddEditBook;
 
 import android.net.Uri;
 
+/**
+ * selects the file path of the image a user selects
+ */
 public class ImageFilePathSelector {
 
     private Uri imageFilePath;
