@@ -28,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="user name"
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image_bsnv"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,14 +52,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:srcCompat="@drawable/sonic" />
+            />
 
         <TextView
             android:id="@+id/emailTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="email"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image_bsnv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
