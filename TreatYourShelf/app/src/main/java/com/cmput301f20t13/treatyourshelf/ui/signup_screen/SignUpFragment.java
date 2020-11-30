@@ -19,6 +19,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,8 +89,12 @@ public class SignUpFragment extends Fragment {
                     email_layout.setError("Email field can not be empty.");
                 } else if (password.isEmpty()) {
                     password_layout.setError("Password field can not be empty.");
+                } else if (password.length() < 6) {
+                    // If password is less than 6 characters in length, set error
+                    password_layout.setError("Password must be at least 6 characters long!");
                 } else { // If non-empty password and email
-                    createNewUser(email, password, phone);
+                    // Remove whitespace from email
+                    createNewUser(email.replaceAll("\\s+", ""), password, phone);
                 }
             }
         });

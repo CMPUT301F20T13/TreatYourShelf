@@ -43,8 +43,9 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
     public void onBindViewHolder(@NonNull BookListAdapter.MyViewHolder holder, int position) {
         holder.title.setText(bookList.get(position).getTitle());
         holder.author.setText(bookList.get(position).getAuthor());
+        holder.status.setText(bookList.get(position).getStatus());
+        holder.isbn.setText(bookList.get(position).getIsbn());
         holder.itemView.setOnClickListener(v -> onClick.onItemClick(position, bookList.get(position)));
-
     }
 
     @Override
@@ -69,6 +70,9 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
 
         private final TextView title;
         private final TextView author;
+
+        private final TextView status;
+        private final TextView isbn;
         private final MaterialCardView bookItem;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -77,6 +81,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
 
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
+            status = itemView.findViewById(R.id.book_status);
+            isbn = itemView.findViewById(R.id.book_isbn);
             bookItem = itemView.findViewById(R.id.search_list_item_cardview);
         }
     }

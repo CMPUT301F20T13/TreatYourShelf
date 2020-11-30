@@ -32,10 +32,12 @@ public class BookListRepository {
         return new BookListLiveData(query);
     }
 
+
     /**
      * returns all books from the database
      * @return BookListLiveData that holds the result of the query
      */
+
     public BookListLiveData getAllBooksLiveData() {
         Query query = firebaseFirestore.collection("books");
         return new BookListLiveData(query);

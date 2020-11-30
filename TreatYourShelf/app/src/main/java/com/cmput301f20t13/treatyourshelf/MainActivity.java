@@ -1,21 +1,39 @@
 package com.cmput301f20t13.treatyourshelf;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.cmput301f20t13.treatyourshelf.data.Notification;
+import com.cmput301f20t13.treatyourshelf.ui.BookList.AllBooksFragmentDirections;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-
 import com.cmput301f20t13.treatyourshelf.ui.navigation_menu.BottomSheetNavigationMenu;
 import com.cmput301f20t13.treatyourshelf.ui.settings.BottomSheetSettingsMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * the main activity of the application
@@ -67,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.loginFragment:
+                case R.id.mapsFragmentBorrower:
+                case R.id.mapsFragmentOwner:
                 case R.id.signUpFragment:
                 case R.id.addBookFragment: {
                     // Want to remove the bottom app bar from view So the camera is full screen

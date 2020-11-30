@@ -18,8 +18,13 @@ public class RequestDetailsViewModel extends ViewModel {
 
     private final RequestDetailsRepository repository = new RequestDetailsRepository();
     RequestDetailsLiveData liveData = null;
-    MutableLiveData<String> ownerScannedIsbn = new MutableLiveData<>();
-    MutableLiveData<String> borrowerScannedIsbn = new MutableLiveData<>();
+
+    Boolean ownerScannedCheck = false;
+    Boolean borrowerScannedCheck = false;
+    MutableLiveData<String> ownBorrowedScannedIsbn = new MutableLiveData<>();
+    MutableLiveData<String> borBorrowedScannedIsbn = new MutableLiveData<>();
+    MutableLiveData<String> ownReturnedScannedIsbn = new MutableLiveData<>();
+    MutableLiveData<String> borReturnedScannedIsbn = new MutableLiveData<>();
 
     /**
      *
@@ -57,7 +62,7 @@ public class RequestDetailsViewModel extends ViewModel {
      * @param status
      */
     public void updateRequestStatusByIsbn(String isbn, String requester, String status){
-        //repository.updateBookStatus();
+        repository.updateRequestStatusByIsbn(isbn, requester, status);
     }
 
     /**
@@ -68,6 +73,7 @@ public class RequestDetailsViewModel extends ViewModel {
     public void updateBookBorrower(String isbn, String requester){
         repository.updateBookBorrowerByIsbn(isbn, requester);
     }
+
 
     /**
      *
@@ -83,13 +89,57 @@ public class RequestDetailsViewModel extends ViewModel {
      */
     public void setBorrowerScannedIsbn(String scannedIsbn) {
         this.ownerScannedIsbn.postValue(scannedIsbn);
+
+    public Boolean getOwnerScannedCheck(){
+        return ownerScannedCheck;
+    }
+
+    public void resetOwnerScannedCheck(){
+        this.ownerScannedCheck = false;
+    }
+
+    public Boolean getBorrowerScannedCheck(){
+        return borrowerScannedCheck;
+    }
+
+    public void resetBorrowerScannedCheck(){
+        this.borrowerScannedCheck = false;
+    }
+
+    public void setOwnBorrowedScannedIsbn(String scannedIsbn) {
+        this.ownBorrowedScannedIsbn.setValue(scannedIsbn);
+        this.ownerScannedCheck = true;
+    }
+
+    public void setBorBorrowedScannedIsbn(String scannedIsbn) {
+        this.borBorrowedScannedIsbn.setValue(scannedIsbn);
+        this.borrowerScannedCheck = true;
+    }
+
+    public void setOwnReturnedScannedIsbn(String scannedIsbn) {
+        this.ownReturnedScannedIsbn.setValue(scannedIsbn);
+        this.ownerScannedCheck = true;
+    }
+
+    public void setBorReturnedScannedIsbn(String scannedIsbn) {
+        this.borReturnedScannedIsbn.setValue(scannedIsbn);
+        this.borrowerScannedCheck = true;
+
     }
 
     /**
      *  resets the ownerScannedIsbn MutableLiveData and borrowerScannedIsbn MutableLiveData
      */
     public void clearState() {
-        ownerScannedIsbn.setValue(null);
-        borrowerScannedIsbn.setValue(null);
+        ownBorrowedScannedIsbn.setValue(null);
+        borBorrowedScannedIsbn.setValue(null);
+        ownReturnedScannedIsbn.setValue(null);
+        borReturnedScannedIsbn.setValue(null);
     }
+
+    public void setLocation(String isbn, String requester, String coordinates){
+        repository.setLocation(isbn, requester, coordinates);
+    }
+
+
 }

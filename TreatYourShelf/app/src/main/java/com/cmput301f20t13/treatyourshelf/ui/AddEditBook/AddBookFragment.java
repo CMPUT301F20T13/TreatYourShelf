@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -133,8 +134,8 @@ public class AddBookFragment extends Fragment {
         });
 
         addImagesBt.setOnClickListener(view1 -> {
-            BottomSheetGalleryImages bottomSheetGalleryImages = new BottomSheetGalleryImages();
-            bottomSheetGalleryImages.show(getChildFragmentManager(), null);
+            BottomSheetImageSourceSelection bottomSheetImageSourceSelection = new BottomSheetImageSourceSelection();
+            bottomSheetImageSourceSelection.show(getChildFragmentManager(), null);
 
         });
 
@@ -163,20 +164,36 @@ public class AddBookFragment extends Fragment {
         saveBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
-                        "available");
-                if (category == 1) {
-                    Book oldBook = bookDetailsViewModel.getSelectedBook();
-                    String oldIsbn = oldBook.getIsbn();
-                    addBookViewModel.editBook(book, oldIsbn);
-                    NavDirections action = AddBookFragmentDirections.actionAddBookFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                if (!titleEt.getText().toString().isEmpty() && !authorEt.getText().toString().isEmpty() && !isbnEt.getText().toString().isEmpty() && isbnEt.getText().toString().length() == 13) {
+
+
+                    Book book = new Book(titleEt.getText().toString(), authorEt.getText().toString(), isbnEt.getText().toString(), descEt.getText().toString(), ownerTv.getText().toString(), null,
+                            "available");
+                    if (category == 1) {
+                        Book oldBook = bookDetailsViewModel.getSelectedBook();
+                        String oldIsbn = oldBook.getIsbn();
+                        book.setStatus(oldBook.getStatus());
+                        if (book.getStatus().equals("available")) {
+                            addBookViewModel.editBook(book, oldIsbn);
+                            NavDirections action = AddBookFragmentDirections.actionAddBookFragmentToBookDetailsFragment().setISBN(book.getIsbn()).setCategory(1);
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                        } else {
+                            Toast.makeText(requireContext(), "You cannot edit a book while it requested or borrowed", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        addBookViewModel.addBook(book);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.ownedBooksFragment);
+                    }
+
                 } else {
-                    addBookViewModel.addBook(book);
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.ownedBooksFragment);
+                    if (isbnEt.getText().toString().length() != 13) {
+                        Toast.makeText(requireContext(), "Please verify that your isbn is 13 characters long", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Please fill in the required fields", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
-
-
             }
         });
         menuBt.setOnClickListener(view1 -> {

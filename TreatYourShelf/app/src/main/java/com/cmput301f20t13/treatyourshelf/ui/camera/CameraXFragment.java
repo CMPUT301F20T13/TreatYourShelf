@@ -149,10 +149,11 @@ public class CameraXFragment extends Fragment {
 
         if (allPermissionsGranted()) {
             startCameraPreview();
+            cameraExecutor = Executors.newSingleThreadExecutor();
         } else {
-            requireActivity().requestPermissions(permissions, 11);
+            requestPermissions(permissions, 11);
         }
-        cameraExecutor = Executors.newSingleThreadExecutor();
+
     }
 
     /**
@@ -185,6 +186,10 @@ public class CameraXFragment extends Fragment {
 //                            System.out.println(barcode.getBoundingBox());
 //                            System.out.println(barcode.getRawValue())
 
+                            RequestDetailsViewModel requestDetailsViewModel =
+                                    new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
+
+
                             if (serviceCode == 0) {
 
 
@@ -207,14 +212,16 @@ public class CameraXFragment extends Fragment {
                                 addBookViewModel.setScannedIsbn(barcode.getRawValue());
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                             } else if (serviceCode == 2) {
-                                RequestDetailsViewModel requestDetailsViewModel =
-                                        new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
-                                requestDetailsViewModel.setOwnerScannedIsbn(barcode.getRawValue());
+                                requestDetailsViewModel.setOwnBorrowedScannedIsbn(barcode.getRawValue());
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                             } else if (serviceCode == 3) {
-                                RequestDetailsViewModel requestDetailsViewModel =
-                                        new ViewModelProvider(requireActivity()).get(RequestDetailsViewModel.class);
-                                requestDetailsViewModel.setBorrowerScannedIsbn(barcode.getRawValue());
+                                requestDetailsViewModel.setBorBorrowedScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 4) {
+                                requestDetailsViewModel.setBorReturnedScannedIsbn(barcode.getRawValue());
+                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+                            } else if (serviceCode == 5) {
+                                requestDetailsViewModel.setOwnReturnedScannedIsbn(barcode.getRawValue());
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
                             }
                         }
@@ -257,14 +264,18 @@ public class CameraXFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+
         if (requestCode == 11) {
+
             if (allPermissionsGranted()) {
+
                 startCameraPreview();
+                cameraExecutor = Executors.newSingleThreadExecutor();
             } else {
                 Toast.makeText(getContext(),
                         "Permissions not granted by the user.",
                         Toast.LENGTH_SHORT).show();
-                //Pop backstack
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             }
         }
     }

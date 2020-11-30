@@ -72,4 +72,36 @@ public class RequestDetailsRepository{
                 });
 
     }
+
+    public void updateRequestStatusByIsbn(String isbn, String requester, String status) {
+        collectionRequests
+                .whereEqualTo("isbn", isbn)
+                .whereEqualTo("requester", requester)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            DocumentReference docRef = collectionRequests.document(document.getId());
+                            docRef.update("status", status);
+                        }
+                    }
+                });
+    }
+
+
+    public void setLocation(String isbn, String requester, String coordinates) {
+        collectionRequests
+                .whereEqualTo("isbn", isbn)
+                .whereEqualTo("requester", requester)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            DocumentReference docRef = collectionRequests.document(document.getId());
+                            docRef.update("location", coordinates);
+                        }
+                    }
+                });
+
+    }
 }

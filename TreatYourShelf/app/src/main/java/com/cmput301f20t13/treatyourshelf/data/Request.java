@@ -1,8 +1,12 @@
 package com.cmput301f20t13.treatyourshelf.data;
 
+
 /**
  * the request object holds the information about a request for a book
  */
+
+import java.util.List;
+
 public class Request {
 
     private String requester;
@@ -12,6 +16,8 @@ public class Request {
     private String isbn;
     private String author;
     private String title;
+    private String location;
+    private List<String> imageUrls;
 
     /**
      * returns the requester for the request
@@ -51,6 +57,7 @@ public class Request {
      */
     public void setBookId(String bookId) { this.bookId = bookId; }
 
+
     /**
      * returns the status of the request
      * @return the status of the book
@@ -58,6 +65,7 @@ public class Request {
     public String getStatus() {
         return status;
     }
+
 
     /**
      * sets the status of the request
@@ -102,4 +110,14 @@ public class Request {
      * @param title the provided title
      */
     public void setTitle(String title) { this.title = title; }
+
+    public List<String> getImageUrls() { return imageUrls; }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public String getLocation() { return location; }
+
+    public void setLocation(String location) { this.location = location; }
 }

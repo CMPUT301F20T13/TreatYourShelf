@@ -26,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cmput301f20t13.treatyourshelf.R;
 import com.cmput301f20t13.treatyourshelf.Utils;
 import com.cmput301f20t13.treatyourshelf.data.Book;
+import com.cmput301f20t13.treatyourshelf.data.Notification;
 import com.cmput301f20t13.treatyourshelf.ui.BookList.BookListViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestDetails.RequestDetailsViewModel;
 import com.cmput301f20t13.treatyourshelf.ui.RequestList.RequestListFragmentDirections;
@@ -48,6 +49,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class BookDetailsFragment extends Fragment {
     private Book currentBook = null;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
     /**
      * Creates the fragment view
@@ -75,12 +77,13 @@ public class BookDetailsFragment extends Fragment {
         TextView bookIsbn = view.findViewById(R.id.book_isbn);
         TextView bookOwner = view.findViewById(R.id.book_owner);
         TextView bookStatus = view.findViewById(R.id.book_status);
+        TextView bookBorrower = view.findViewById(R.id.book_borrower);
         Button requestBt = view.findViewById(R.id.book_request_button);
         Button viewRequestBt = view.findViewById(R.id.view_requests_button);
         ImageButton closeBt = view.findViewById(R.id.close_bookdetails);
 
         /*Show or hide the request button and view request button*/
-        if (category == 0) {
+/*        if (category == 0) {
             // User is not allowed to edit book
             requestBt.setVisibility(View.VISIBLE);
             viewRequestBt.setVisibility(View.GONE);
@@ -90,7 +93,25 @@ public class BookDetailsFragment extends Fragment {
             //requestBt.setVisibility(View.INVISIBLE);
             requestBt.setVisibility(View.GONE);
             viewRequestBt.setVisibility(View.VISIBLE);
-        }
+        }*/
+
+        bookOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment()
+                        .setEmail(bookOwner.getText().toString());
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            }
+        });
+
+        bookBorrower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment()
+                        .setEmail(bookBorrower.getText().toString());
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            }
+        });
 
         BookImagesAdapter bookImagesAdapter = new BookImagesAdapter(new ArrayList<>(), requireContext());
         viewPager2.setAdapter(bookImagesAdapter);
@@ -114,8 +135,10 @@ public class BookDetailsFragment extends Fragment {
                 bookAuthor.setText(book.getAuthor());
                 bookDescription.setText(book.getDescription());
                 bookOwner.setText(book.getOwner());
+                bookBorrower.setText(book.getBorrower());
                 bookIsbn.setText(book.getIsbn());
                 bookStatus.setText(Utils.capitalizeString(book.getStatus().toUpperCase()));
+                checkOwner(book.getOwner(), requestBt, viewRequestBt);
                 if(book.getImageUrls() != null){
                     bookImagesAdapter.setImages(book.getImageUrls());
                 }
@@ -129,7 +152,6 @@ public class BookDetailsFragment extends Fragment {
             }
         });
 
-
         /*Request Button - makes a request on the current book if it is available or requested status*/
         requestBt.setOnClickListener(v -> {
             if (currentBook.getStatus().equals("available") || currentBook.getStatus().equals("requested")){
@@ -139,6 +161,9 @@ public class BookDetailsFragment extends Fragment {
                             dialog.cancel();
                             requestListViewModel.requestBook(currentBook, user.getEmail()); //creates a request
                             requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "requested"); //updates the books status
+                            Notification notification =
+                                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(currentBook.getOwner()));
+                            Utils.sendNotification(notification.getNotification(), requireContext());
                             Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                         })
                         .setNegativeButton("NO", (dialog, which) -> dialog.cancel())
@@ -168,6 +193,16 @@ public class BookDetailsFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void checkOwner(String owner, Button requestBt, Button viewRequestBt){
+        if (userEmail.equals(owner)){
+            viewRequestBt.setVisibility(View.VISIBLE);
+            requestBt.setVisibility(View.GONE);
+        } else {
+            viewRequestBt.setVisibility(View.GONE);
+            requestBt.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -72,6 +73,8 @@ public class RequestDetailsLiveData extends
                     requestTemp.setIsbn((String) requestDetails.getOrDefault("isbn", "12345678910"));
                     requestTemp.setAuthor((String) requestDetails.getOrDefault("author", "default author"));
                     requestTemp.setTitle((String) requestDetails.getOrDefault("title", "default title"));
+                    requestTemp.setImageUrls((List<String>) requestDetails.getOrDefault("imageUrls", null));
+                    requestTemp.setLocation((String) requestDetails.getOrDefault("location", ""));
                 }
                 request.setValue(requestTemp);
             } else {
