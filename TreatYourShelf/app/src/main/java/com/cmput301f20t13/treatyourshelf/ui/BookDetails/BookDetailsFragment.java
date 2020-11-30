@@ -162,7 +162,8 @@ public class BookDetailsFragment extends Fragment {
                             requestListViewModel.requestBook(currentBook, user.getEmail()); //creates a request
                             requestDetailsViewModel.updateBookStatusByIsbn(Isbn, "requested"); //updates the books status
                             Notification notification =
-                                    new Notification("Request Accepted", "Yay :)", Utils.emailStripper(currentBook.getOwner()));
+                                    new Notification("A request has been made on your book", "Woo :)",
+                                            Utils.emailStripper(currentBook.getOwner()));
                             Utils.sendNotification(notification.getNotification(), requireContext());
                             Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG).show();
                         })

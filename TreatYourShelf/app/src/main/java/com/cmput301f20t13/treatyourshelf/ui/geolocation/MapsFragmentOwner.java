@@ -105,6 +105,9 @@ public class MapsFragmentOwner extends Fragment {
                     lon = (float)markerAddress.longitude;
                 }
                 String coordinates = String.valueOf(lat) + "," + String.valueOf(lon);
+                if (coordinates.equals("0.0,0.0")){
+                    coordinates = "";
+                }
                 requestDetailsViewModel.setLocation(isbnString, requesterString, coordinates);
 
                 Notification notification =
